@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Biblioteca - Investep Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body style="background: var(--gray-100);">
+
+  <!-- Dashboard Navbar -->
+  <nav class="dash-navbar">
+    <div class="container-lg">
+      <div style="display:flex; align-items:center; gap:32px;">
+        <a href="index.html" class="navbar-brand">
+          <div class="logo-icon" style="width:36px;height:36px;font-size:1rem;">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="logo-text" style="font-size:1.2rem;">Invest<span>ep</span></div>
+        </a>
+        <div class="dash-nav-links">
+          <a href="dashboard.html" class="active"><i class="fas fa-th-large"></i> Mis programas</a>
+          <a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendario eventos</a>
+          <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
+        </div>
+      </div>
+      <div class="dash-user">
+        <div style="text-align:right;">
+          <div style="font-size:0.85rem; font-weight:600;">Estudiante</div>
+          <div style="font-size:0.75rem; opacity:0.7;">Plan Profesional</div>
+        </div>
+        <div class="dash-user-avatar">ES</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Header -->
+  <div class="dash-header">
+    <div class="container-lg">
+      <div class="dash-header-content">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div>
+            <h2 class="dash-welcome">Hola, <span>Estudiante</span>!</h2>
+            <p class="dash-welcome-sub">Continua tu ruta de aprendizaje. Tienes 3 programas en progreso.</p>
+          </div>
+          <div style="display:flex; gap:16px;">
+            <div style="background:rgba(255,255,255,0.1); border-radius:12px; padding:16px 24px; text-align:center; backdrop-filter:blur(10px);">
+              <div style="font-size:1.8rem; font-weight:800; color:var(--secondary);">7</div>
+              <div style="font-size:0.8rem; color:rgba(255,255,255,0.7);">Programas</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.1); border-radius:12px; padding:16px 24px; text-align:center; backdrop-filter:blur(10px);">
+              <div style="font-size:1.8rem; font-weight:800; color:var(--secondary);">42%</div>
+              <div style="font-size:0.8rem; color:rgba(255,255,255,0.7);">Completado</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.1); border-radius:12px; padding:16px 24px; text-align:center; backdrop-filter:blur(10px);">
+              <div style="font-size:1.8rem; font-weight:800; color:var(--secondary);">15</div>
+              <div style="font-size:0.8rem; color:rgba(255,255,255,0.7);">Clases vistas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main style="padding: 32px 0 80px;">
+    <div class="container-lg">
+
+      <!-- Calendar Banner -->
+      <a href="calendar.html" class="calendar-banner">
+        <div class="calendar-banner-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="calendar-banner-text" style="flex:1;">
+          <h4>Consulta el Calendario de Eventos</h4>
+          <p>Haz clic para ver las proximas clases y eventos. No te pierdas ninguna sesion en vivo.</p>
+        </div>
+        <div class="btn btn-primary btn-sm">
+          <i class="fas fa-external-link-alt"></i> Abrir calendario
+        </div>
+      </a>
+
+      <!-- Programs Grid -->
+      <h3 style="margin-bottom:24px; font-size:1.5rem;">
+        <i class="fas fa-th-large" style="color:var(--primary); margin-right:8px;"></i> Mis programas
+      </h3>
+
+      <div class="grid-3" style="margin-bottom:48px;">
+        <!-- Primeros Pasos -->
+        <div class="card course-card">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #0d4f4f, #00c9a7);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas &bull; Investep</span>
+            <div class="card-badge">
+              <span class="badge badge-success" style="background:rgba(16,185,129,0.9); color:white;"><i class="fas fa-check"></i> Completo</span>
+            </div>
+            <div class="card-img-text">
+              <div style="font-size:2.2rem; font-weight:900; line-height:1;">PRIMEROS</div>
+              <div style="font-size:2.2rem; font-weight:900; line-height:1;">PASOS</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">PRIMEROS PASOS</h4>
+            <div class="card-progress"><div class="card-progress-bar complete" style="width:100%;"></div></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <small class="text-gray">6/6 clases completadas</small>
+              <small style="color:var(--success); font-weight:600;">100%</small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div style="display:flex; gap:8px;">
+              <span class="tag"><i class="fas fa-play-circle"></i> 6 clases</span>
+            </div>
+            <a href="course.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+
+        <!-- Preguntas Frecuentes -->
+        <div class="card course-card">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #00bcd4, #00e5ff);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Investep</span>
+            <div class="card-img-text">
+              <div style="font-size:4rem; font-weight:900; line-height:1;">?</div>
+              <div style="font-size:1.6rem; font-weight:900; line-height:1; margin-top:8px;">PREGUNTAS</div>
+              <div style="font-size:1.6rem; font-weight:900; line-height:1;">FRECUENTES</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">PREGUNTAS FRECUENTES</h4>
+            <div class="card-progress"><div class="card-progress-bar in-progress" style="width:45%;"></div></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <small class="text-gray">5/11 clases completadas</small>
+              <small style="color:var(--info); font-weight:600;">45%</small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div style="display:flex; gap:8px;">
+              <span class="tag"><i class="fas fa-play-circle"></i> 11 clases</span>
+            </div>
+            <a href="faq.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+
+        <!-- Elementos de Soporte -->
+        <div class="card course-card">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #e8a838, #f5c563);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas &bull; Investep</span>
+            <div class="card-img-text">
+              <div style="font-size:1.8rem; font-weight:900; line-height:1;">ELEMENTOS</div>
+              <div style="font-size:1.8rem; font-weight:900; line-height:1;">DE SOPORTE</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">ELEMENTOS DE SOPORTE</h4>
+            <p class="card-text" style="margin-bottom:12px;">Bienvenido al Paso 5 de tu RUTA INVESTEP / Al haber finalizado tu Seminario Intensivo, en este modulo podras encontrar material de apoyo como: Tutoriales de compra-venta, tutoriales de refuerzo, calculo de rango optimo de precio, como restablecer saldo, entre otros.</p>
+            <div class="card-progress"><div class="card-progress-bar in-progress" style="width:70%;"></div></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <small class="text-gray">7/10 clases completadas</small>
+              <small style="color:var(--info); font-weight:600;">70%</small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div style="display:flex; gap:8px;">
+              <span class="tag"><i class="fas fa-play-circle"></i> 10 clases</span>
+              <span class="tag"><i class="fas fa-download"></i> 3 descargas</span>
+            </div>
+            <a href="course.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+
+        <!-- El Mercado -->
+        <div class="card course-card">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #1a1a2e, #2d4f4f);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas &bull; Investep</span>
+            <div class="card-img-text">
+              <div style="font-size:2.5rem; font-weight:900; line-height:1;">EL</div>
+              <div style="font-size:2.5rem; font-weight:900; line-height:1;">MERCADO</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">El mercado</h4>
+            <p class="card-text" style="margin-bottom:12px;">Bienvenido al Paso 9 de tu RUTA INVESTEP / Durante este curso, exploraremos una amplia gama de temas cruciales para tu comprension de los mercados financieros. Entenderas como calcular el rango de precios, analizar el mercado desde una perspectiva fundamental, examinar la estructura del mercado,...</p>
+            <div class="card-progress"><div class="card-progress-bar in-progress" style="width:20%;"></div></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <small class="text-gray">3/15 clases completadas</small>
+              <small style="color:var(--info); font-weight:600;">20%</small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div style="display:flex; gap:8px;">
+              <span class="tag"><i class="fas fa-play-circle"></i> 15 clases</span>
+            </div>
+            <a href="course.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+
+        <!-- Investips & Investnews -->
+        <div class="card course-card">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #0d4f4f, #1a6b6b); position:relative;">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas &bull; Investep</span>
+            <div class="card-img-text">
+              <div style="font-size:1.6rem; font-weight:900; line-height:1;">INVESTIPS</div>
+              <div style="font-size:1.6rem; font-weight:900; color:var(--secondary); line-height:1; margin:4px 0;">&amp;</div>
+              <div style="font-size:1.6rem; font-weight:900; line-height:1;">INVESTNEWS</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">INVESTIPS & INVESTNEWS</h4>
+            <p class="card-text" style="margin-bottom:12px;">Mantente actualizado con las ultimas noticias del mercado, tips de trading y analisis semanal del equipo de Investep.</p>
+            <div class="card-progress"><div class="card-progress-bar in-progress" style="width:30%;"></div></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <small class="text-gray">4/13 clases completadas</small>
+              <small style="color:var(--info); font-weight:600;">30%</small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div style="display:flex; gap:8px;">
+              <span class="tag"><i class="fas fa-play-circle"></i> 13 clases</span>
+            </div>
+            <a href="course.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+
+        <!-- Sabados Analiticos -->
+        <div class="card course-card">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #6b21a8, #9333ea);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas</span>
+            <div class="card-img-text">
+              <div style="font-size:1.8rem; font-weight:900; line-height:1;">SABADOS</div>
+              <div style="font-size:1.8rem; font-weight:900; line-height:1;">ANALITICOS</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">SABADOS ANALITICOS</h4>
+            <p class="card-text" style="margin-bottom:12px;">En este modulo podras encontrar el link de acceso para los "Sabados Analiticos" - Analisis semanal del mercado cada sabado.</p>
+            <div class="card-progress"><div class="card-progress-bar not-started" style="width:0%;"></div></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <small class="text-gray">0/8 clases completadas</small>
+              <small style="color:var(--gray-400); font-weight:600;">0%</small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div style="display:flex; gap:8px;">
+              <span class="tag"><i class="fas fa-play-circle"></i> 8 clases</span>
+            </div>
+            <a href="course.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+
+        <!-- Seminario Intensivo -->
+        <div class="card course-card">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #dc2626, #ef4444);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas &bull; Investep</span>
+            <div class="card-img-text">
+              <div style="font-size:1.6rem; font-weight:900; line-height:1;">SEMINARIO</div>
+              <div style="font-size:1.6rem; font-weight:900; line-height:1;">INTENSIVO</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">SEMINARIO INTENSIVO</h4>
+            <p class="card-text" style="margin-bottom:12px;">Aprende los fundamentos del trading, analisis tecnico avanzado, gestion de riesgo y psicologia del trader en este seminario completo.</p>
+            <div class="card-progress"><div class="card-progress-bar complete" style="width:100%;"></div></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+              <small class="text-gray">12/12 clases completadas</small>
+              <small style="color:var(--success); font-weight:600;">100%</small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div style="display:flex; gap:8px;">
+              <span class="tag"><i class="fas fa-play-circle"></i> 12 clases</span>
+            </div>
+            <a href="course.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Access Tools -->
+      <h3 style="margin-bottom:24px; font-size:1.5rem;">
+        <i class="fas fa-toolbox" style="color:var(--primary); margin-right:8px;"></i> Herramientas y Descargas
+      </h3>
+
+      <div class="grid-3" style="margin-bottom:48px;">
+        <div class="tool-card">
+          <div class="tool-icon excel"><i class="fas fa-file-excel"></i></div>
+          <div class="tool-info" style="flex:1;">
+            <h5>Calculo de Rango de Precio</h5>
+            <p>Plantilla Excel profesional</p>
+          </div>
+          <a href="#" class="btn btn-sm btn-accent"><i class="fas fa-download"></i></a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon pdf"><i class="fas fa-file-pdf"></i></div>
+          <div class="tool-info" style="flex:1;">
+            <h5>Descargar Checklist</h5>
+            <p>Checklist de Trading Investep</p>
+          </div>
+          <a href="#" class="btn btn-sm btn-accent"><i class="fas fa-download"></i></a>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon video"><i class="fas fa-video"></i></div>
+          <div class="tool-info" style="flex:1;">
+            <h5>Herramientas TC2000</h5>
+            <p>Las mas utilizadas en TC2000</p>
+          </div>
+          <a href="#" class="btn btn-sm btn-accent"><i class="fas fa-play"></i></a>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <h3 style="margin-bottom:24px; font-size:1.5rem;">
+        <i class="fas fa-clock" style="color:var(--primary); margin-right:8px;"></i> Actividad Reciente
+      </h3>
+      
+      <div style="background:var(--white); border-radius:var(--radius-md); border:1px solid var(--gray-200); overflow:hidden;">
+        <div style="padding:16px 24px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--gray-100);">
+          <div style="width:40px;height:40px;border-radius:8px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;color:var(--success);">
+            <i class="fas fa-check"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:0.9rem;">Completaste: Tus primeros Pasos en Investep Academy</div>
+            <div style="font-size:0.8rem; color:var(--gray-500);">Primeros Pasos - Hace 2 horas</div>
+          </div>
+          <span class="badge badge-success">Completado</span>
+        </div>
+        <div style="padding:16px 24px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--gray-100);">
+          <div style="width:40px;height:40px;border-radius:8px;background:rgba(59,130,246,0.1);display:flex;align-items:center;justify-content:center;color:var(--info);">
+            <i class="fas fa-play"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:0.9rem;">En progreso: Tutorial de Compra Venta ThinkorSwim</div>
+            <div style="font-size:0.8rem; color:var(--gray-500);">Elementos de Soporte - Hace 5 horas</div>
+          </div>
+          <span class="badge badge-accent">En progreso</span>
+        </div>
+        <div style="padding:16px 24px; display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--gray-100);">
+          <div style="width:40px;height:40px;border-radius:8px;background:rgba(232,168,56,0.1);display:flex;align-items:center;justify-content:center;color:var(--secondary);">
+            <i class="fas fa-download"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:0.9rem;">Descargaste: Calculo de Rango de Precio Excel</div>
+            <div style="font-size:0.8rem; color:var(--gray-500);">Herramientas - Ayer</div>
+          </div>
+          <span class="badge badge-secondary">Descarga</span>
+        </div>
+        <div style="padding:16px 24px; display:flex; align-items:center; gap:16px;">
+          <div style="width:40px;height:40px;border-radius:8px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;color:var(--success);">
+            <i class="fas fa-check"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:600; font-size:0.9rem;">Completaste: Descarga y Configura tu TC2000</div>
+            <div style="font-size:0.8rem; color:var(--gray-500);">Primeros Pasos - Hace 2 dias</div>
+          </div>
+          <span class="badge badge-success">Completado</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer Mini -->
+  <footer style="background: var(--dark); padding: 24px 0; text-align: center;">
+    <div class="container">
+      <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">&copy; 2026 Investep Academy. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

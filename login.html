@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesion - Investep Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="login-page">
+    <!-- Left Visual Side -->
+    <div class="login-visual">
+      <div class="login-visual-content animate-fade-in-left">
+        <div style="margin-bottom:32px;">
+          <a href="index.html" class="navbar-brand" style="justify-content:center;">
+            <div class="logo-icon" style="width:56px;height:56px;font-size:1.5rem;">
+              <i class="fas fa-chart-line"></i>
+            </div>
+          </a>
+        </div>
+        <h2>Bienvenido a<br>Invest<span>ep</span> Academy</h2>
+        <p style="margin:16px auto 40px;">Tu portal de estudio para dominar el trading profesional y alcanzar la libertad financiera.</p>
+        
+        <div style="display:flex; gap:32px; justify-content:center;">
+          <div class="hero-stat">
+            <span class="number" style="font-size:2rem;">2,500+</span>
+            <span class="label">Estudiantes</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number" style="font-size:2rem;">500+</span>
+            <span class="label">Clases</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number" style="font-size:2rem;">95%</span>
+            <span class="label">Satisfaccion</span>
+          </div>
+        </div>
+
+        <div style="margin-top:48px; display:flex; gap:12px; justify-content:center;">
+          <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); padding:10px 16px; border-radius:8px;">
+            <i class="fas fa-video" style="color:var(--secondary);"></i>
+            <span style="font-size:0.85rem;">Clases en vivo</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); padding:10px 16px; border-radius:8px;">
+            <i class="fas fa-users" style="color:var(--secondary);"></i>
+            <span style="font-size:0.85rem;">Comunidad activa</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); padding:10px 16px; border-radius:8px;">
+            <i class="fas fa-tools" style="color:var(--secondary);"></i>
+            <span style="font-size:0.85rem;">Herramientas pro</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Form Side -->
+    <div class="login-form-side">
+      <div class="login-form-wrapper animate-fade-in-right">
+        <h3>Iniciar Sesion</h3>
+        <p class="subtitle">Ingresa tus credenciales para acceder a tu portal de estudio.</p>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="email"><i class="fas fa-envelope" style="color:var(--gray-400); margin-right:6px;"></i> Correo electronico</label>
+            <input type="email" id="email" class="form-control" placeholder="tu@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="password"><i class="fas fa-lock" style="color:var(--gray-400); margin-right:6px;"></i> Contrasena</label>
+            <div style="position:relative;">
+              <input type="password" id="password" class="form-control" placeholder="Tu contrasena" required>
+              <button type="button" onclick="togglePassword()" style="position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--gray-400);">
+                <i class="fas fa-eye" id="eyeIcon"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="checkbox-label">
+              <input type="checkbox" checked> Recordarme
+            </label>
+            <a href="#" class="forgot-link">Olvidaste tu contrasena?</a>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+            <i class="fas fa-sign-in-alt"></i> Ingresar al Portal
+          </button>
+        </form>
+
+        <div style="margin-top:24px; text-align:center;">
+          <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+            <div style="flex:1; height:1px; background:var(--gray-200);"></div>
+            <span style="color:var(--gray-400); font-size:0.85rem;">o continua con</span>
+            <div style="flex:1; height:1px; background:var(--gray-200);"></div>
+          </div>
+          <div style="display:flex; gap:12px;">
+            <button class="btn btn-outline" style="flex:1; padding:12px;">
+              <i class="fab fa-google" style="color:#ea4335;"></i> Google
+            </button>
+            <button class="btn btn-outline" style="flex:1; padding:12px;">
+              <i class="fab fa-facebook" style="color:#1877f2;"></i> Facebook
+            </button>
+          </div>
+        </div>
+
+        <p style="text-align:center; margin-top:24px; color:var(--gray-500); font-size:0.9rem;">
+          No tienes una cuenta? <a href="index.html#pricing" style="color:var(--primary); font-weight:600;">Registrate aqui</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const pass = document.getElementById('password');
+      const eye = document.getElementById('eyeIcon');
+      if (pass.type === 'password') {
+        pass.type = 'text';
+        eye.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        pass.type = 'password';
+        eye.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      // Demo: redirect to dashboard
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>
