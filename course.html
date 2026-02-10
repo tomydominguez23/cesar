@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primeros Pasos - Investep Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body style="background: var(--gray-100);">
+
+  <!-- Dashboard Navbar -->
+  <nav class="dash-navbar">
+    <div class="container-lg">
+      <div style="display:flex; align-items:center; gap:32px;">
+        <a href="index.html" class="navbar-brand">
+          <div class="logo-icon" style="width:36px;height:36px;font-size:1rem;">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="logo-text" style="font-size:1.2rem;">Invest<span>ep</span></div>
+        </a>
+        <div class="dash-nav-links">
+          <a href="dashboard.html" class="active"><i class="fas fa-th-large"></i> Mis programas</a>
+          <a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendario eventos</a>
+          <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
+        </div>
+      </div>
+      <div class="dash-user">
+        <div style="text-align:right;">
+          <div style="font-size:0.85rem; font-weight:600;">Estudiante</div>
+          <div style="font-size:0.75rem; opacity:0.7;">Plan Profesional</div>
+        </div>
+        <div class="dash-user-avatar">ES</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div style="background:var(--white); border-bottom:1px solid var(--gray-200); padding:12px 0;">
+    <div class="container-lg">
+      <div style="display:flex; align-items:center; gap:8px; font-size:0.9rem; color:var(--gray-500);">
+        <a href="dashboard.html" style="color:var(--primary);">Mis programas</a>
+        <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i>
+        <span>Primeros Pasos</span>
+        <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i>
+        <span style="color:var(--dark); font-weight:600;">Tus primeros Pasos en Investep Academy</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Content -->
+  <main style="padding:32px 0 80px;">
+    <div class="container-lg">
+      <div class="course-layout">
+        
+        <!-- Main Content -->
+        <div>
+          <!-- Video Player -->
+          <div class="video-wrapper" style="margin-bottom:24px;">
+            <div class="video-placeholder">
+              <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(135deg, #0d4f4f 0%, #1a6b6b 40%, #00c9a7 100%); display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <div style="position:absolute; top:20px; right:24px; display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:0.8rem; color:rgba(255,255,255,0.7);">Joel Sardinas</span>
+                  <span style="font-size:0.8rem; color:var(--secondary); font-weight:600;">Investep</span>
+                </div>
+                <div style="text-align:center; margin-bottom:24px;">
+                  <div style="font-size:1.2rem; color:var(--secondary); font-weight:600; margin-bottom:4px;">TUS PRIMEROS</div>
+                  <div style="font-size:3rem; font-weight:900; color:var(--secondary); line-height:1;">PASOS EN</div>
+                  <div style="font-size:1.5rem; font-weight:700; color:var(--white); margin-top:8px; padding:6px 20px; border:2px solid var(--secondary);">INVESTEP ACADEMY</div>
+                </div>
+                <div class="play-button" onclick="this.style.display='none'">
+                  <i class="fas fa-play" style="margin-left:4px;"></i>
+                </div>
+                <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.6); padding:10px 20px; display:flex; align-items:center; gap:16px;">
+                  <button style="background:none; border:none; color:white; cursor:pointer; font-size:1.1rem;">
+                    <i class="fas fa-play"></i>
+                  </button>
+                  <span style="color:white; font-size:0.85rem;">4:29</span>
+                  <div style="flex:1; height:4px; background:rgba(255,255,255,0.2); border-radius:2px; position:relative; cursor:pointer;">
+                    <div style="width:35%; height:100%; background:var(--secondary); border-radius:2px;"></div>
+                  </div>
+                  <button style="background:none; border:none; color:white; cursor:pointer;">
+                    <i class="fas fa-volume-up"></i>
+                  </button>
+                  <button style="background:none; border:none; color:white; cursor:pointer;">
+                    <i class="fas fa-cog"></i>
+                  </button>
+                  <button style="background:none; border:none; color:white; cursor:pointer;">
+                    <i class="fas fa-expand"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Completion Banner -->
+          <div class="completion-banner">
+            <div class="check-icon"><i class="fas fa-check"></i></div>
+            <div class="next-lesson-info">
+              <small>Excelente trabajo! Sigue asi!</small>
+              <p>DESCARGA Y CONFIGURA TU TC2000</p>
+            </div>
+            <a href="#" class="next-lesson-link">
+              Siguiente clase <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <!-- Lesson Description -->
+          <div style="background:var(--white); border-radius:var(--radius-md); padding:32px; border:1px solid var(--gray-200); margin-bottom:24px;">
+            <h2 style="font-size:1.5rem; margin-bottom:16px;">Tus primeros Pasos en Investep Academy</h2>
+            <div style="display:flex; gap:12px; margin-bottom:20px;">
+              <span class="tag"><i class="fas fa-clock"></i> 4:29 min</span>
+              <span class="tag"><i class="fas fa-play-circle"></i> Video</span>
+              <span class="tag"><i class="fas fa-signal"></i> Principiante</span>
+              <span class="badge badge-success">Completado</span>
+            </div>
+            <p style="color:var(--gray-600); line-height:1.8; margin-bottom:20px;">
+              Bienvenido a Investep Academy! En esta primera leccion, te guiaremos por todo lo que necesitas saber para comenzar tu viaje en el trading profesional. Conoceras nuestra metodologia, la Ruta Investep, y como sacar el maximo provecho de cada modulo del programa.
+            </p>
+            <p style="color:var(--gray-600); line-height:1.8; margin-bottom:20px;">
+              En este video introductorio, Joel Sardinas te da la bienvenida y te explica paso a paso como navegar por la plataforma, acceder a las clases en vivo, descargar las herramientas y unirte a nuestra comunidad de traders.
+            </p>
+            <h4 style="margin-bottom:12px;">Lo que aprenderas:</h4>
+            <ul style="color:var(--gray-600); line-height:2;">
+              <li style="display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-check-circle" style="color:var(--success);"></i>
+                Como navegar por la plataforma de estudio
+              </li>
+              <li style="display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-check-circle" style="color:var(--success);"></i>
+                La Ruta Investep y cada uno de sus 9 pasos
+              </li>
+              <li style="display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-check-circle" style="color:var(--success);"></i>
+                Como acceder a las clases en vivo y grabaciones
+              </li>
+              <li style="display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-check-circle" style="color:var(--success);"></i>
+                Donde encontrar las herramientas y descargas
+              </li>
+              <li style="display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-check-circle" style="color:var(--success);"></i>
+                Como unirte a la comunidad de Discord
+              </li>
+            </ul>
+          </div>
+
+          <!-- Downloads Section -->
+          <div style="background:var(--white); border-radius:var(--radius-md); padding:32px; border:1px solid var(--gray-200); margin-bottom:24px;">
+            <h3 style="margin-bottom:20px;"><i class="fas fa-download" style="color:var(--primary); margin-right:8px;"></i> Material de Apoyo</h3>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="tool-card">
+                <div class="tool-icon excel"><i class="fas fa-file-excel"></i></div>
+                <div class="tool-info" style="flex:1;">
+                  <h5>CALCULO DE RANGO DE PRECIO - EXCEL</h5>
+                  <p>Plantilla profesional para calcular rangos de precio</p>
+                </div>
+                <a href="#" class="btn btn-sm btn-accent">Haz click para descargar</a>
+              </div>
+              <div class="tool-card">
+                <div class="tool-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                <div class="tool-info" style="flex:1;">
+                  <h5>Descargar Checklist - INVESTEP Academy</h5>
+                  <p>KEEP IT SIMPLE - Checklist de trading profesional</p>
+                </div>
+                <a href="#" class="btn btn-sm btn-accent">Haz click para descargar</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments Section -->
+          <div style="background:var(--white); border-radius:var(--radius-md); padding:32px; border:1px solid var(--gray-200);">
+            <h3 style="margin-bottom:20px;"><i class="fas fa-comments" style="color:var(--primary); margin-right:8px;"></i> Comentarios (12)</h3>
+            <div style="margin-bottom:24px;">
+              <textarea placeholder="Escribe un comentario o pregunta..." style="width:100%; padding:14px 16px; border:1.5px solid var(--gray-300); border-radius:var(--radius-sm); font-size:0.95rem; font-family:inherit; min-height:80px; resize:vertical; background:var(--gray-100); transition:var(--transition);" onfocus="this.style.borderColor='var(--primary)'; this.style.background='white';" onblur="this.style.borderColor='var(--gray-300)'; this.style.background='var(--gray-100)';"></textarea>
+              <div style="margin-top:8px; text-align:right;">
+                <button class="btn btn-sm btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+              </div>
+            </div>
+            <!-- Sample Comments -->
+            <div style="border-top:1px solid var(--gray-100); padding-top:20px;">
+              <div style="display:flex; gap:14px; margin-bottom:20px;">
+                <div style="width:40px;height:40px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;flex-shrink:0;">JM</div>
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                    <span style="font-weight:600; font-size:0.9rem;">Juan Martinez</span>
+                    <span style="font-size:0.75rem; color:var(--gray-400);">Hace 2 dias</span>
+                  </div>
+                  <p style="color:var(--gray-600); font-size:0.9rem; line-height:1.6;">Excelente introduccion! Todo muy claro y bien explicado. Ya configure mi TC2000 y estoy listo para el siguiente modulo.</p>
+                  <div style="margin-top:8px; display:flex; gap:16px;">
+                    <button style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
+                      <i class="fas fa-thumbs-up"></i> 5
+                    </button>
+                    <button style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
+                      <i class="fas fa-reply"></i> Responder
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex; gap:14px; margin-bottom:20px;">
+                <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg, #e8a838, #f5c563);display:flex;align-items:center;justify-content:center;color:var(--dark);font-weight:700;flex-shrink:0;">LP</div>
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                    <span style="font-weight:600; font-size:0.9rem;">Laura Perez</span>
+                    <span style="font-size:0.75rem; color:var(--gray-400);">Hace 5 dias</span>
+                  </div>
+                  <p style="color:var(--gray-600); font-size:0.9rem; line-height:1.6;">Muy contenta de haber comenzado! La plataforma es super intuitiva. Alguien mas esta empezando esta semana?</p>
+                  <div style="margin-top:8px; display:flex; gap:16px;">
+                    <button style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
+                      <i class="fas fa-thumbs-up"></i> 8
+                    </button>
+                    <button style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
+                      <i class="fas fa-reply"></i> Responder
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex; gap:14px;">
+                <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg, #6b21a8, #9333ea);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;flex-shrink:0;">RG</div>
+                <div>
+                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                    <span style="font-weight:600; font-size:0.9rem;">Roberto Garcia</span>
+                    <span style="font-size:0.75rem; color:var(--gray-400);">Hace 1 semana</span>
+                  </div>
+                  <p style="color:var(--gray-600); font-size:0.9rem; line-height:1.6;">Joel explica todo de forma muy sencilla. Recomiendo tomar notas de esta clase. Ya estoy ansioso por empezar con el seminario intensivo!</p>
+                  <div style="margin-top:8px; display:flex; gap:16px;">
+                    <button style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
+                      <i class="fas fa-thumbs-up"></i> 12
+                    </button>
+                    <button style="background:none; border:none; color:var(--gray-400); cursor:pointer; font-size:0.8rem; display:flex; align-items:center; gap:4px;">
+                      <i class="fas fa-reply"></i> Responder
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="course-sidebar">
+          <div class="sidebar-header">
+            <h4>Primeros pasos</h4>
+            <span class="lesson-count">6 Clases</span>
+          </div>
+
+          <!-- Progress bar -->
+          <div style="padding:16px 24px; background:var(--gray-100); border-bottom:1px solid var(--gray-200);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <span style="font-size:0.8rem; font-weight:600; color:var(--primary);">Progreso del modulo</span>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--success);">100%</span>
+            </div>
+            <div class="card-progress">
+              <div class="card-progress-bar complete" style="width:100%;"></div>
+            </div>
+          </div>
+
+          <!-- Lesson List -->
+          <div class="lesson-list">
+            <div class="lesson-item active completed" onclick="selectLesson(this)">
+              <div class="lesson-check"><i class="fas fa-check" style="font-size:0.65rem;"></i></div>
+              <div class="lesson-info">
+                <div class="lesson-title">Tus primeros Pasos en Investep Academy</div>
+                <div class="lesson-duration"><i class="fas fa-play-circle"></i> 4:29</div>
+              </div>
+            </div>
+
+            <div style="padding:12px 24px; font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.5px; background:var(--gray-50);">
+              TC-2000:
+            </div>
+
+            <div class="lesson-item completed" onclick="selectLesson(this)">
+              <div class="lesson-check"><i class="fas fa-check" style="font-size:0.65rem;"></i></div>
+              <div class="lesson-info">
+                <div class="lesson-title">DESCARGA Y CONFIGURA TU TC2000</div>
+                <div class="lesson-duration"><i class="fas fa-play-circle"></i> 12:15</div>
+              </div>
+            </div>
+
+            <div class="lesson-item completed" onclick="selectLesson(this)">
+              <div class="lesson-check"><i class="fas fa-check" style="font-size:0.65rem;"></i></div>
+              <div class="lesson-info">
+                <div class="lesson-title">TC2000 version WEB (MAC, Chromebook y otros dispositivos)</div>
+                <div class="lesson-duration"><i class="fas fa-play-circle"></i> 8:42</div>
+              </div>
+            </div>
+
+            <div style="padding:12px 24px; font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.5px;">
+              Clase Muestra TC-2000:
+            </div>
+
+            <div class="lesson-item completed" onclick="selectLesson(this)">
+              <div class="lesson-check"><i class="fas fa-check" style="font-size:0.65rem;"></i></div>
+              <div class="lesson-info">
+                <div class="lesson-title">Como llenar Formulario (Affidavit) TC2000</div>
+                <div class="lesson-duration"><i class="fas fa-play-circle"></i> 6:33</div>
+              </div>
+            </div>
+
+            <div style="padding:12px 24px; font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.5px;">
+              BROKERS CHARLES SCHWAB (THINKORSWIM):
+            </div>
+
+            <div class="lesson-item completed" onclick="selectLesson(this)">
+              <div class="lesson-check"><i class="fas fa-check" style="font-size:0.65rem;"></i></div>
+              <div class="lesson-info">
+                <div class="lesson-title">INDICACIONES PARA LA APERTURA DE CUENTAS</div>
+                <div class="lesson-duration"><i class="fas fa-play-circle"></i> 15:20</div>
+              </div>
+            </div>
+
+            <div class="lesson-item completed" onclick="selectLesson(this)">
+              <div class="lesson-check"><i class="fas fa-check" style="font-size:0.65rem;"></i></div>
+              <div class="lesson-info">
+                <div class="lesson-title">ORIENTACIONES PARA COMENZAR INTENSIVO</div>
+                <div class="lesson-duration"><i class="fas fa-play-circle"></i> 10:45</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Next Module Button -->
+          <div style="padding:16px 24px; border-top:1px solid var(--gray-200);">
+            <a href="#" class="btn btn-primary btn-sm" style="width:100%;">
+              <i class="fas fa-arrow-right"></i> Siguiente modulo
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Mini -->
+  <footer style="background: var(--dark); padding: 24px 0; text-align: center;">
+    <div class="container">
+      <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">&copy; 2026 Investep Academy. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    function selectLesson(el) {
+      document.querySelectorAll('.lesson-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+    }
+  </script>
+</body>
+</html>

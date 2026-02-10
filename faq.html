@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preguntas Frecuentes & Soporte - Investep Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body style="background: var(--gray-100);">
+
+  <!-- Dashboard Navbar -->
+  <nav class="dash-navbar">
+    <div class="container-lg">
+      <div style="display:flex; align-items:center; gap:32px;">
+        <a href="index.html" class="navbar-brand">
+          <div class="logo-icon" style="width:36px;height:36px;font-size:1rem;">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="logo-text" style="font-size:1.2rem;">Invest<span>ep</span></div>
+        </a>
+        <div class="dash-nav-links">
+          <a href="dashboard.html"><i class="fas fa-th-large"></i> Mis programas</a>
+          <a href="calendar.html"><i class="fas fa-calendar-alt"></i> Calendario eventos</a>
+          <a href="faq.html" class="active"><i class="fas fa-question-circle"></i> FAQ</a>
+        </div>
+      </div>
+      <div class="dash-user">
+        <div style="text-align:right;">
+          <div style="font-size:0.85rem; font-weight:600;">Estudiante</div>
+          <div style="font-size:0.75rem; opacity:0.7;">Plan Profesional</div>
+        </div>
+        <div class="dash-user-avatar">ES</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- FAQ Header -->
+  <div class="dash-header" style="padding:40px 0;">
+    <div class="container-lg">
+      <div class="dash-header-content text-center">
+        <h2 style="color:var(--white); font-size:2rem; margin-bottom:8px;">Preguntas Frecuentes & Centro de Soporte</h2>
+        <p style="color:rgba(255,255,255,0.7); font-size:1.05rem; max-width:600px; margin:0 auto 24px;">
+          Encuentra respuestas a las preguntas mas comunes y accede a todas las herramientas y recursos de apoyo.
+        </p>
+        <!-- Search -->
+        <div style="max-width:500px; margin:0 auto; position:relative;">
+          <input type="text" placeholder="Buscar preguntas o temas..." style="width:100%; padding:16px 20px 16px 48px; border:none; border-radius:50px; font-size:1rem; font-family:inherit; background:rgba(255,255,255,0.15); color:white; backdrop-filter:blur(10px);" onfocus="this.style.background='rgba(255,255,255,0.25)'" onblur="this.style.background='rgba(255,255,255,0.15)'">
+          <i class="fas fa-search" style="position:absolute; left:20px; top:50%; transform:translateY(-50%); color:rgba(255,255,255,0.6);"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Content -->
+  <main style="padding:32px 0 80px;">
+    <div class="container-lg">
+
+      <!-- Quick Categories -->
+      <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:16px; margin-bottom:40px;">
+        <div class="feature-card" style="padding:20px; cursor:pointer;" onclick="scrollToSection('general')">
+          <div class="feature-icon" style="width:48px; height:48px; font-size:1.2rem; margin-bottom:12px;">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <h5 style="font-size:0.9rem;">General</h5>
+        </div>
+        <div class="feature-card" style="padding:20px; cursor:pointer;" onclick="scrollToSection('plataformas')">
+          <div class="feature-icon" style="width:48px; height:48px; font-size:1.2rem; margin-bottom:12px;">
+            <i class="fas fa-desktop"></i>
+          </div>
+          <h5 style="font-size:0.9rem;">Plataformas</h5>
+        </div>
+        <div class="feature-card" style="padding:20px; cursor:pointer;" onclick="scrollToSection('brokers')">
+          <div class="feature-icon" style="width:48px; height:48px; font-size:1.2rem; margin-bottom:12px;">
+            <i class="fas fa-university"></i>
+          </div>
+          <h5 style="font-size:0.9rem;">Brokers</h5>
+        </div>
+        <div class="feature-card" style="padding:20px; cursor:pointer;" onclick="scrollToSection('clases')">
+          <div class="feature-icon" style="width:48px; height:48px; font-size:1.2rem; margin-bottom:12px;">
+            <i class="fas fa-video"></i>
+          </div>
+          <h5 style="font-size:0.9rem;">Clases en Vivo</h5>
+        </div>
+        <div class="feature-card" style="padding:20px; cursor:pointer;" onclick="scrollToSection('cuenta')">
+          <div class="feature-icon" style="width:48px; height:48px; font-size:1.2rem; margin-bottom:12px;">
+            <i class="fas fa-user-cog"></i>
+          </div>
+          <h5 style="font-size:0.9rem;">Mi Cuenta</h5>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 380px; gap:40px;">
+        
+        <!-- FAQ List -->
+        <div>
+          <!-- General -->
+          <div id="general" style="margin-bottom:40px;">
+            <h3 style="margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <i class="fas fa-info-circle" style="color:var(--primary);"></i> Preguntas Generales
+            </h3>
+
+            <div class="faq-item active">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Que es Investep Academy?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Investep Academy es una academia de trading fundada por Joel Sardinas que ofrece un programa completo para aprender trading profesional desde cero. Incluye clases en vivo diarias, sesiones de analisis de mercado, herramientas profesionales, mentoria personalizada y una comunidad activa de mas de 2,500 estudiantes.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Necesito experiencia previa en trading para unirme?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  No, absolutamente no. Nuestro programa esta disenado especificamente para principiantes absolutos. La Ruta Investep te guia paso a paso desde la configuracion basica de plataformas hasta convertirte en un trader profesional y consistente. El modulo "Primeros Pasos" te lleva de la mano desde el dia uno.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Cuanto capital necesito para empezar a operar?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Recomendamos iniciar con una cuenta de simulacion (paper trading) mientras aprendes los fundamentos. No necesitas invertir dinero real hasta que te sientas seguro y confiado con tu estrategia. Cuando estes listo, puedes empezar con tan solo $500-$1,000 dependiendo del broker que elijas. En las clases te ensenamos a gestionar tu capital de forma responsable.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Que es la Ruta Investep?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  La Ruta Investep es nuestro sistema de aprendizaje estructurado en 9 pasos que te lleva desde principiante hasta trader profesional. Incluye: 1) Primeros Pasos, 2) Descarga y Configuracion, 3) Seminario Intensivo, 4) Sesiones de Pre-Mercado, 5) Elementos de Soporte, 6) Sesion Europa, 7) Sesion Post-Intensivo, 8) Sabados Analiticos, y 9) El Mercado (curso avanzado completo).
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Puedo cancelar mi suscripcion en cualquier momento?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Si, puedes cancelar tu suscripcion en cualquier momento sin penalizaciones ni preguntas. Tu acceso continuara activo hasta el final del periodo de facturacion actual. Tambien ofrecemos una garantia de satisfaccion de 7 dias donde puedes solicitar un reembolso completo si no estas satisfecho.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Plataformas -->
+          <div id="plataformas" style="margin-bottom:40px;">
+            <h3 style="margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <i class="fas fa-desktop" style="color:var(--primary);"></i> Plataformas de Trading
+            </h3>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Que plataformas de trading necesito instalar?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Utilizamos principalmente dos plataformas: <strong>TC2000</strong> para analisis tecnico y escaneo de acciones, y <strong>ThinkorSwim (Charles Schwab)</strong> como broker para ejecutar operaciones de compra-venta. Ambas tienen versiones gratuitas disponibles. En el modulo de Primeros Pasos te ensenamos a configurarlas paso a paso con tutoriales en video detallados.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?TC2000 funciona en Mac o Chromebook?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Si! TC2000 tiene una version web que funciona en cualquier navegador, incluyendo Mac, Chromebook, y otros dispositivos. Tenemos un tutorial especifico para la version web de TC2000 en el modulo de Primeros Pasos. La version de escritorio esta disponible para Windows, pero la web es igualmente completa.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Como configuro mis indicadores en TC2000?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  En el modulo de "Elementos de Soporte" encontraras tutoriales completos sobre las herramientas mas utilizadas en TC2000. Tambien tenemos sesiones semanales de TC2000 (miercoles a las 11:30 AM) donde practicamos configuraciones en vivo y resolvemos dudas en tiempo real.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Como lleno el formulario Affidavit de TC2000?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Tenemos un tutorial en video paso a paso llamado "Como llenar Formulario (Affidavit) TC2000" dentro del modulo de Primeros Pasos. El Affidavit es un formulario que TC2000 requiere para verificar tu identidad. El tutorial te muestra exactamente que datos ingresar en cada campo.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Brokers -->
+          <div id="brokers" style="margin-bottom:40px;">
+            <h3 style="margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <i class="fas fa-university" style="color:var(--primary);"></i> Brokers y Cuentas
+            </h3>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Que brokers recomiendan?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Principalmente trabajamos con tres brokers:<br><br>
+                  <strong>1. Charles Schwab (ThinkorSwim)</strong> - Nuestro broker principal. Excelente plataforma con cuentas de simulacion gratuitas.<br>
+                  <strong>2. E*Trade</strong> - Buena alternativa con interfaz amigable.<br>
+                  <strong>3. Interactive Brokers</strong> - Para traders mas avanzados que buscan comisiones bajas.<br><br>
+                  En el modulo de Primeros Pasos tenemos tutoriales detallados de compra-venta para cada uno de estos brokers.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Como abro una cuenta en ThinkorSwim?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  En el modulo de Primeros Pasos, seccion "BROKERS CHARLES SCHWAB (THINKORSWIM)", encontraras el video "INDICACIONES PARA LA APERTURA DE CUENTAS" donde te guiamos paso a paso por todo el proceso. Incluye como llenar los formularios, que documentos necesitas, y como activar tu cuenta de simulacion para practicar sin riesgo.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Como activo mi cuenta de simulacion y restablezco saldo?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  En el modulo de "Elementos de Soporte" tenemos un tutorial especifico llamado "COMO ACTIVAR TU CUENTA DE SIMULACION Y RESTABLECER SALDO (INTERACTIVE BROKERS)". Ahi te explicamos paso a paso como activar el paper trading y como restaurar tu saldo virtual cuando lo necesites.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clases -->
+          <div id="clases" style="margin-bottom:40px;">
+            <h3 style="margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <i class="fas fa-video" style="color:var(--primary);"></i> Clases en Vivo y Sesiones
+            </h3>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?En que horario son las clases en vivo?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Nuestro horario semanal es:<br><br>
+                  <strong>Lunes a Viernes:</strong><br>
+                  - 8:00 AM - Clase con tu Mentor<br>
+                  - 11:30 AM - Sesion de Pre-Mercado<br><br>
+                  <strong>Martes y Miercoles:</strong><br>
+                  - 1:00 PM - EUROPA | Sesion Europea<br>
+                  - 7:00 PM - Sesion Post-Intensivo<br><br>
+                  <strong>Miercoles:</strong><br>
+                  - 11:30 AM - Sesion de TC2000<br><br>
+                  <strong>Sabado:</strong><br>
+                  - 8:00 AM - Sabados Analiticos<br><br>
+                  Todos los horarios son hora del Este (ET). Consulta el <a href="calendar.html" style="color:var(--primary); font-weight:600;">Calendario de Eventos</a> para mas detalles.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Las clases en vivo se graban?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Si! Todas las clases en vivo se graban y quedan disponibles en tu biblioteca de programas para que las revises cuando quieras, cuantas veces necesites. Las grabaciones se suben generalmente dentro de las 24 horas posteriores a la clase en vivo.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Que son los Sabados Analiticos?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Los Sabados Analiticos son sesiones especiales que se realizan todos los sabados a las 8:00 AM. En estas sesiones hacemos un analisis completo de la semana que paso, revisamos los trades ejecutados, analizamos patrones del mercado, y planificamos la estrategia para la proxima semana. Es una de las sesiones mas valiosas del programa.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cuenta -->
+          <div id="cuenta" style="margin-bottom:40px;">
+            <h3 style="margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+              <i class="fas fa-user-cog" style="color:var(--primary);"></i> Mi Cuenta y Suscripcion
+            </h3>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Que herramientas y descargas incluye el programa?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  El programa incluye multiples herramientas profesionales:<br><br>
+                  - <strong>Calculadora de Rango de Precio (Excel)</strong> - Plantilla profesional para calcular rangos optimos<br>
+                  - <strong>Checklist de Trading</strong> - Lista de verificacion para mantener la disciplina<br>
+                  - <strong>Tutoriales de compra-venta</strong> - Para ThinkorSwim, E*Trade e Interactive Brokers<br>
+                  - <strong>Estrategias de refuerzo</strong> - Material complementario avanzado<br>
+                  - <strong>Indicadores personalizados</strong> - Para TC2000<br>
+                  - <strong>Material actualizado constantemente</strong> - Nuevos recursos cada semana
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Como accedo a la comunidad de Discord?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Al inscribirte en cualquier plan, recibiras automaticamente una invitacion a nuestro servidor de Discord donde interactuas con otros estudiantes, compartes analisis, recibes notificaciones de clases en vivo y tienes acceso directo al equipo de soporte. El link de invitacion esta disponible en el modulo de Primeros Pasos.
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFaq(this)">
+                <span>?Como cambio o actualizo mi plan?</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <div class="faq-answer-content">
+                  Puedes cambiar tu plan en cualquier momento desde la seccion de configuracion de tu cuenta, o contactandonos directamente por Discord o email. Si actualizas a un plan superior, se te cobrara la diferencia proporcional. Si bajas de plan, el cambio se efectuara al siguiente ciclo de facturacion.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar: Tools & Resources -->
+        <div>
+          <!-- Tools Section -->
+          <div style="background:var(--white); border-radius:var(--radius-md); border:1px solid var(--gray-200); overflow:hidden; margin-bottom:24px; position:sticky; top:80px;">
+            <div style="padding:20px 24px; background:var(--dark); color:var(--white);">
+              <h4 style="color:var(--white); font-size:1rem;"><i class="fas fa-toolbox" style="margin-right:8px; color:var(--secondary);"></i> Herramientas y Descargas</h4>
+            </div>
+
+            <div style="padding:16px;">
+              <!-- Excel -->
+              <div style="display:flex; align-items:center; gap:14px; padding:14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); margin-bottom:12px; transition:var(--transition); cursor:pointer;" onmouseover="this.style.borderColor='var(--success)'; this.style.background='rgba(33,150,83,0.03)'" onmouseout="this.style.borderColor='var(--gray-200)'; this.style.background='transparent'">
+                <div style="width:48px; height:48px; background:rgba(33,150,83,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#219653; font-size:1.3rem; flex-shrink:0;">
+                  <i class="fas fa-file-excel"></i>
+                </div>
+                <div style="flex:1;">
+                  <div style="font-weight:700; font-size:0.85rem; margin-bottom:2px;">CALCULO DE RANGO DE PRECIO - EXCEL</div>
+                  <div style="font-size:0.75rem; color:var(--gray-500);">Plantilla profesional</div>
+                </div>
+                <a href="#" class="btn btn-sm btn-accent" style="padding:8px 14px; font-size:0.75rem;">
+                  <i class="fas fa-download"></i>
+                </a>
+              </div>
+
+              <!-- Checklist -->
+              <div style="display:flex; align-items:center; gap:14px; padding:14px; border-radius:var(--radius-sm); border:1px solid var(--gray-200); margin-bottom:12px; transition:var(--transition); cursor:pointer;" onmouseover="this.style.borderColor='var(--danger)'; this.style.background='rgba(235,87,87,0.03)'" onmouseout="this.style.borderColor='var(--gray-200)'; this.style.background='transparent'">
+                <div style="width:48px; height:48px; background:rgba(235,87,87,0.1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:#EB5757; font-size:1.3rem; flex-shrink:0;">
+                  <i class="fas fa-file-pdf"></i>
+                </div>
+                <div style="flex:1;">
+                  <div style="font-weight:700; font-size:0.85rem; margin-bottom:2px;">Descargar Checklist</div>
+                  <div style="font-size:0.75rem; color:var(--gray-500);">INVESTEP Academy - KEEP IT SIMPLE</div>
+                </div>
+                <a href="#" class="btn btn-sm btn-accent" style="padding:8px 14px; font-size:0.75rem;">
+                  <i class="fas fa-download"></i>
+                </a>
+              </div>
+
+              <!-- Video tutorials -->
+              <div style="padding:14px 0 8px; font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.5px;">
+                Tutoriales de Video
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <a href="course.html" style="display:flex; align-items:center; gap:12px; padding:10px; border-radius:6px; transition:var(--transition);" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">
+                  <div style="width:36px; height:36px; background:rgba(59,130,246,0.1); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#3b82f6; flex-shrink:0;">
+                    <i class="fas fa-play-circle"></i>
+                  </div>
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:600; color:var(--dark);">Herramientas mas utilizadas TC2000</div>
+                    <div style="font-size:0.7rem; color:var(--gray-400);"><i class="fas fa-check-circle" style="color:var(--success);"></i> Completado</div>
+                  </div>
+                </a>
+
+                <a href="course.html" style="display:flex; align-items:center; gap:12px; padding:10px; border-radius:6px; transition:var(--transition);" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">
+                  <div style="width:36px; height:36px; background:rgba(59,130,246,0.1); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#3b82f6; flex-shrink:0;">
+                    <i class="fas fa-play-circle"></i>
+                  </div>
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:600; color:var(--dark);">Tutorial Compra Venta ThinkorSwim</div>
+                    <div style="font-size:0.7rem; color:var(--gray-400);"><i class="fas fa-check-circle" style="color:var(--success);"></i> Completado</div>
+                  </div>
+                </a>
+
+                <a href="course.html" style="display:flex; align-items:center; gap:12px; padding:10px; border-radius:6px; transition:var(--transition);" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">
+                  <div style="width:36px; height:36px; background:rgba(59,130,246,0.1); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#3b82f6; flex-shrink:0;">
+                    <i class="fas fa-play-circle"></i>
+                  </div>
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:600; color:var(--dark);">Tutorial Compra Venta E*Trade</div>
+                    <div style="font-size:0.7rem; color:var(--gray-400);"><i class="fas fa-check-circle" style="color:var(--success);"></i> Completado</div>
+                  </div>
+                </a>
+
+                <a href="course.html" style="display:flex; align-items:center; gap:12px; padding:10px; border-radius:6px; transition:var(--transition);" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">
+                  <div style="width:36px; height:36px; background:rgba(59,130,246,0.1); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#3b82f6; flex-shrink:0;">
+                    <i class="fas fa-play-circle"></i>
+                  </div>
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:600; color:var(--dark);">Compra Venta Interactive Brokers</div>
+                    <div style="font-size:0.7rem; color:var(--gray-400);"><i class="fas fa-check-circle" style="color:var(--success);"></i> Completado</div>
+                  </div>
+                </a>
+
+                <a href="course.html" style="display:flex; align-items:center; gap:12px; padding:10px; border-radius:6px; transition:var(--transition);" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">
+                  <div style="width:36px; height:36px; background:rgba(59,130,246,0.1); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#3b82f6; flex-shrink:0;">
+                    <i class="fas fa-play-circle"></i>
+                  </div>
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:600; color:var(--dark);">Activar Cuenta Simulacion (IB)</div>
+                    <div style="font-size:0.7rem; color:var(--gray-400);"><i class="fas fa-check-circle" style="color:var(--success);"></i> Completado</div>
+                  </div>
+                </a>
+
+                <a href="course.html" style="display:flex; align-items:center; gap:12px; padding:10px; border-radius:6px; transition:var(--transition);" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">
+                  <div style="width:36px; height:36px; background:rgba(59,130,246,0.1); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#3b82f6; flex-shrink:0;">
+                    <i class="fas fa-play-circle"></i>
+                  </div>
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:600; color:var(--dark);">Estrategia de Refuerzo ThinkorSwim</div>
+                    <div style="font-size:0.7rem; color:var(--gray-400);"><i class="fas fa-check-circle" style="color:var(--success);"></i> Completado</div>
+                  </div>
+                </a>
+
+                <a href="course.html" style="display:flex; align-items:center; gap:12px; padding:10px; border-radius:6px; transition:var(--transition);" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='transparent'">
+                  <div style="width:36px; height:36px; background:rgba(59,130,246,0.1); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#3b82f6; flex-shrink:0;">
+                    <i class="fas fa-play-circle"></i>
+                  </div>
+                  <div>
+                    <div style="font-size:0.8rem; font-weight:600; color:var(--dark);">Calculo Rango Optimo de Precio</div>
+                    <div style="font-size:0.7rem; color:var(--gray-400);"><i class="fas fa-clock" style="color:var(--info);"></i> Pendiente</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Support -->
+          <div style="background:var(--gradient-primary); border-radius:var(--radius-md); padding:28px; text-align:center; color:var(--white);">
+            <div style="width:56px; height:56px; background:rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:1.5rem;">
+              <i class="fas fa-headset"></i>
+            </div>
+            <h4 style="color:var(--white); margin-bottom:8px;">Necesitas mas ayuda?</h4>
+            <p style="font-size:0.9rem; color:rgba(255,255,255,0.75); margin-bottom:20px;">Nuestro equipo de soporte esta disponible para ayudarte.</p>
+            <a href="#" class="btn btn-secondary btn-sm" style="width:100%; margin-bottom:8px;">
+              <i class="fab fa-discord"></i> Contactar por Discord
+            </a>
+            <a href="mailto:soporte@investep.com" class="btn btn-ghost btn-sm" style="width:100%;">
+              <i class="fas fa-envelope"></i> Enviar Email
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer Mini -->
+  <footer style="background: var(--dark); padding: 24px 0; text-align: center;">
+    <div class="container">
+      <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">&copy; 2026 Investep Academy. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq(el) {
+      const item = el.closest('.faq-item');
+      const isActive = item.classList.contains('active');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      // Toggle clicked
+      if (!isActive) item.classList.add('active');
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  </script>
+</body>
+</html>

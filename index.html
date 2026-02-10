@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investep Academy - Tu Ruta al Exito en Trading</title>
+  <meta name="description" content="Aprende trading desde cero con Investep Academy. Cursos en vivo, mentoria personalizada y herramientas profesionales para dominar los mercados financieros.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <div class="logo-icon"><i class="fas fa-chart-line"></i></div>
+        <div class="logo-text">Invest<span>ep</span></div>
+      </a>
+      <div class="navbar-nav" id="navMenu">
+        <a href="#features">Programa</a>
+        <a href="#courses">Cursos</a>
+        <a href="#pricing">Planes</a>
+        <a href="#testimonials">Testimonios</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="navbar-actions">
+        <a href="login.html" class="btn btn-ghost btn-sm">Iniciar Sesion</a>
+        <a href="#pricing" class="btn btn-secondary btn-sm">Inscribete</a>
+      </div>
+      <div class="mobile-toggle" id="mobileToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero-particles" id="particles"></div>
+    <div class="container" style="display:flex; align-items:center; gap:64px;">
+      <div class="hero-content animate-fade-in-left" style="animation-delay:0.2s;">
+        <div class="badge badge-secondary mb-2">
+          <i class="fas fa-fire"></i> Mas de 2,500 estudiantes activos
+        </div>
+        <h1>Domina el Arte del <span>Trading</span> Profesional</h1>
+        <p>Transforma tu futuro financiero con nuestra metodologia probada. Aprende desde cero con clases en vivo, mentoria personalizada y acceso a herramientas profesionales de analisis de mercado.</p>
+        <div class="hero-buttons">
+          <a href="#pricing" class="btn btn-secondary btn-lg">
+            <i class="fas fa-rocket"></i> Comenzar Ahora
+          </a>
+          <a href="#features" class="btn btn-outline-white btn-lg">
+            <i class="fas fa-play-circle"></i> Ver Demo
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="number" data-count="2500">0</span>
+            <span class="label">Estudiantes</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number" data-count="150">0</span>
+            <span class="label">Clases en Vivo</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number" data-count="95">0</span>
+            <span class="label">% Satisfaccion</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual animate-fade-in-right" style="animation-delay:0.4s; flex:1; min-width:380px;">
+        <div class="hero-chart">
+          <div class="hero-chart-header">
+            <span class="hero-chart-title"><i class="fas fa-chart-candlestick"></i> S&P 500</span>
+            <span class="hero-chart-badge"><i class="fas fa-arrow-up"></i> +12.4%</span>
+          </div>
+          <div class="chart-bars" id="chartBars"></div>
+          <div style="display:flex; justify-content:space-between; margin-top:12px;">
+            <span style="color:rgba(255,255,255,0.4); font-size:0.75rem;">Ene</span>
+            <span style="color:rgba(255,255,255,0.4); font-size:0.75rem;">Feb</span>
+            <span style="color:rgba(255,255,255,0.4); font-size:0.75rem;">Mar</span>
+            <span style="color:rgba(255,255,255,0.4); font-size:0.75rem;">Abr</span>
+            <span style="color:rgba(255,255,255,0.4); font-size:0.75rem;">May</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURES ========== -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="badge badge-primary mb-2">Nuestra Metodologia</div>
+        <h2 class="section-title">Tu Ruta Investep al Exito</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Un sistema paso a paso disenado para llevarte desde cero hasta convertirte en un trader profesional y consistente.</p>
+      </div>
+      <div class="grid-4">
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
+          <h4>Primeros Pasos</h4>
+          <p>Configuracion de plataformas TC2000 y ThinkorSwim. Apertura de cuentas y orientacion completa.</p>
+        </div>
+        <div class="feature-card animate-on-scroll" style="animation-delay:0.1s;">
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <h4>El Mercado</h4>
+          <p>Comprende el rango de precios, analisis fundamental, estructura del mercado y tendencias.</p>
+        </div>
+        <div class="feature-card animate-on-scroll" style="animation-delay:0.2s;">
+          <div class="feature-icon"><i class="fas fa-video"></i></div>
+          <h4>Clases en Vivo</h4>
+          <p>Sesiones diarias de Pre-Mercado, analisis tecnico y clases con mentores experimentados.</p>
+        </div>
+        <div class="feature-card animate-on-scroll" style="animation-delay:0.3s;">
+          <div class="feature-icon"><i class="fas fa-tools"></i></div>
+          <h4>Herramientas</h4>
+          <p>Acceso a calculadoras, checklists, tutoriales de compra-venta y material de soporte.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== RUTA INVESTEP (Steps) ========== -->
+  <section class="section" style="background: var(--white);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="badge badge-accent mb-2">Paso a Paso</div>
+        <h2 class="section-title">La Ruta Investep</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Sigue nuestra ruta de 9 pasos disenada para convertirte en un trader profesional y consistente.</p>
+      </div>
+      <div class="grid-3">
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">1</div>
+          <h4>Primeros Pasos</h4>
+          <p>Bienvenida a la academia, configuracion de herramientas y plataformas de trading.</p>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">2</div>
+          <h4>Descarga y Configuracion</h4>
+          <p>Instala TC2000 y ThinkorSwim. Configura tus cuentas de broker correctamente.</p>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">3</div>
+          <h4>Seminario Intensivo</h4>
+          <p>Aprende los fundamentos del trading, analisis tecnico y gestion de riesgo.</p>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">4</div>
+          <h4>Sesiones de Pre-Mercado</h4>
+          <p>Unete a las sesiones diarias de preparacion antes de la apertura del mercado.</p>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">5</div>
+          <h4>Elementos de Soporte</h4>
+          <p>Accede a tutoriales, calculadoras, checklists y material complementario.</p>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">6</div>
+          <h4>Sesion Europa</h4>
+          <p>Analiza los mercados europeos y aprovecha las oportunidades globales.</p>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">7</div>
+          <h4>Sesion Post-Intensivo</h4>
+          <p>Refuerza tus conocimientos con sesiones avanzadas post seminario.</p>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">8</div>
+          <h4>Sabados Analiticos</h4>
+          <p>Analisis semanal completo, revision de trades y planificacion estrategica.</p>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <div style="background:var(--gradient-gold);color:var(--dark);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 16px;">9</div>
+          <h4>El Mercado</h4>
+          <p>Domina el calculo de rango de precios, analisis fundamental y estructura del mercado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== COURSES PREVIEW ========== -->
+  <section class="section" id="courses" style="background: var(--gray-100);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="badge badge-primary mb-2">Contenido Premium</div>
+        <h2 class="section-title">Nuestros Programas</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Accede a una biblioteca completa de cursos, herramientas y recursos disenados para tu exito en el trading.</p>
+      </div>
+      <div class="grid-3">
+        <!-- Course 1 -->
+        <div class="card course-card animate-on-scroll">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #0d4f4f, #00c9a7);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas</span>
+            <div class="card-img-text">
+              <div style="font-size:2rem; font-weight:900; line-height:1.1;">PRIMEROS<br>PASOS</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Primeros Pasos</h4>
+            <p class="card-text">Tu bienvenida a Investep Academy. Configura tus plataformas y da los primeros pasos en el mundo del trading.</p>
+            <div class="card-progress">
+              <div class="card-progress-bar complete" style="width: 100%;"></div>
+            </div>
+            <small class="text-gray">100% completado</small>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-success"><i class="fas fa-check"></i> Completado</span>
+            <a href="course.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+        <!-- Course 2 -->
+        <div class="card course-card animate-on-scroll" style="animation-delay:0.1s;">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #00bcd4, #00e5ff);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Investep</span>
+            <div class="card-img-text">
+              <div style="font-size:1.6rem; font-weight:900;">?</div>
+              <div style="font-size:1.8rem; font-weight:900; line-height:1.1;">PREGUNTAS<br>FRECUENTES</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Preguntas Frecuentes</h4>
+            <p class="card-text">Resuelve todas tus dudas sobre la plataforma, brokers, configuracion de cuentas y mas.</p>
+            <div class="card-progress">
+              <div class="card-progress-bar in-progress" style="width: 45%;"></div>
+            </div>
+            <small class="text-gray">45% completado</small>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-accent"><i class="fas fa-clock"></i> En progreso</span>
+            <a href="faq.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+        <!-- Course 3 -->
+        <div class="card course-card animate-on-scroll" style="animation-delay:0.2s;">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #e8a838, #f5c563);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas</span>
+            <div class="card-img-text">
+              <div style="font-size:1.8rem; font-weight:900; line-height:1.1;">ELEMENTOS<br>DE SOPORTE</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Elementos de Soporte</h4>
+            <p class="card-text">Tutoriales de compra-venta, calculo de rango de precio, calculadoras y checklists profesionales.</p>
+            <div class="card-progress">
+              <div class="card-progress-bar in-progress" style="width: 60%;"></div>
+            </div>
+            <small class="text-gray">60% completado</small>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-accent"><i class="fas fa-clock"></i> En progreso</span>
+            <a href="dashboard.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+        <!-- Course 4 -->
+        <div class="card course-card animate-on-scroll">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #1a1a2e, #0d4f4f);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas</span>
+            <div class="card-img-text">
+              <div style="font-size:2rem; font-weight:900; line-height:1.1;">EL<br>MERCADO</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">El Mercado</h4>
+            <p class="card-text">Rango de precios, analisis fundamental, estructura del mercado, tendencias y patrones avanzados.</p>
+            <div class="card-progress">
+              <div class="card-progress-bar not-started" style="width: 0%;"></div>
+            </div>
+            <small class="text-gray">Sin comenzar</small>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-primary"><i class="fas fa-lock"></i> Nuevo</span>
+            <a href="dashboard.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+        <!-- Course 5 -->
+        <div class="card course-card animate-on-scroll" style="animation-delay:0.1s;">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #0d4f4f, #1a6b6b);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Investep</span>
+            <div class="card-img-text">
+              <div style="font-size:1.8rem; font-weight:900; line-height:1.1;">INVESTIPS<br>&amp;<br>INVESTNEWS</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Investips & Investnews</h4>
+            <p class="card-text">Mantente actualizado con las ultimas noticias del mercado y tips de trading profesional.</p>
+            <div class="card-progress">
+              <div class="card-progress-bar in-progress" style="width: 30%;"></div>
+            </div>
+            <small class="text-gray">30% completado</small>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-accent"><i class="fas fa-clock"></i> En progreso</span>
+            <a href="dashboard.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+        <!-- Course 6 -->
+        <div class="card course-card animate-on-scroll" style="animation-delay:0.2s;">
+          <div class="card-img-placeholder" style="background: linear-gradient(135deg, #6b21a8, #9333ea);">
+            <span class="instructor-badge"><i class="fas fa-user-tie"></i> Joel Sardinas</span>
+            <div class="card-img-text">
+              <div style="font-size:1.8rem; font-weight:900; line-height:1.1;">SABADOS<br>ANALITICOS</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Sabados Analiticos</h4>
+            <p class="card-text">Analisis semanal completo del mercado, revision de trades y planificacion de la proxima semana.</p>
+            <div class="card-progress">
+              <div class="card-progress-bar not-started" style="width: 0%;"></div>
+            </div>
+            <small class="text-gray">Sin comenzar</small>
+          </div>
+          <div class="card-footer">
+            <span class="badge badge-primary"><i class="fas fa-lock"></i> Nuevo</span>
+            <a href="dashboard.html" class="btn btn-sm btn-primary">Ver programa</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== COUNTERS ========== -->
+  <section class="counter-section">
+    <div class="container">
+      <div class="counter-grid">
+        <div class="counter-item animate-on-scroll">
+          <span class="counter-number" data-count="2500">0</span>
+          <span class="counter-label">Estudiantes Activos</span>
+        </div>
+        <div class="counter-item animate-on-scroll">
+          <span class="counter-number" data-count="500">0</span>
+          <span class="counter-label">Horas de Contenido</span>
+        </div>
+        <div class="counter-item animate-on-scroll">
+          <span class="counter-number" data-count="150">0</span>
+          <span class="counter-label">Clases en Vivo / Mes</span>
+        </div>
+        <div class="counter-item animate-on-scroll">
+          <span class="counter-number" data-count="95">0</span>
+          <span class="counter-label">% de Satisfaccion</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRICING ========== -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="badge badge-secondary mb-2">Planes de Inversion</div>
+        <h2 class="section-title">Invierte en tu Educacion Financiera</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Elige el plan que mejor se adapte a tus objetivos. Todos incluyen acceso a la comunidad y soporte.</p>
+      </div>
+      <div class="grid-3">
+        <!-- Basic Plan -->
+        <div class="pricing-card animate-on-scroll">
+          <div class="pricing-icon" style="background: rgba(13,79,79,0.1); color: var(--primary);">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <h3 class="pricing-name">Basico</h3>
+          <p class="text-gray mb-2">Para comenzar tu camino</p>
+          <div class="pricing-price">
+            <span class="currency">$</span>97<span class="period">/mes</span>
+          </div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check-circle"></i> Acceso a Primeros Pasos</li>
+            <li><i class="fas fa-check-circle"></i> Preguntas Frecuentes</li>
+            <li><i class="fas fa-check-circle"></i> Sesiones de Pre-Mercado grabadas</li>
+            <li><i class="fas fa-check-circle"></i> Comunidad de Discord</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Clases en vivo diarias</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Mentoria personalizada</li>
+            <li class="disabled"><i class="fas fa-times-circle"></i> Sabados Analiticos</li>
+          </ul>
+          <a href="#" class="btn btn-outline" style="width:100%;">Seleccionar Plan</a>
+        </div>
+        <!-- Pro Plan -->
+        <div class="pricing-card popular animate-on-scroll" style="animation-delay:0.1s;">
+          <div class="pricing-badge">Mas Popular</div>
+          <div class="pricing-icon" style="background: rgba(232,168,56,0.15); color: var(--secondary);">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="pricing-name">Profesional</h3>
+          <p class="text-gray mb-2">El plan mas completo</p>
+          <div class="pricing-price">
+            <span class="currency">$</span>197<span class="period">/mes</span>
+          </div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check-circle"></i> Todo del plan Basico</li>
+            <li><i class="fas fa-check-circle"></i> Clases en vivo diarias</li>
+            <li><i class="fas fa-check-circle"></i> El Mercado completo</li>
+            <li><i class="fas fa-check-circle"></i> Elementos de Soporte</li>
+            <li><i class="fas fa-check-circle"></i> Investips & Investnews</li>
+            <li><i class="fas fa-check-circle"></i> Sesion Europa</li>
+            <li><i class="fas fa-check-circle"></i> Sabados Analiticos</li>
+          </ul>
+          <a href="#" class="btn btn-secondary" style="width:100%;">Seleccionar Plan</a>
+        </div>
+        <!-- VIP Plan -->
+        <div class="pricing-card animate-on-scroll" style="animation-delay:0.2s;">
+          <div class="pricing-icon" style="background: rgba(139,92,246,0.1); color: #8b5cf6;">
+            <i class="fas fa-crown"></i>
+          </div>
+          <h3 class="pricing-name">VIP</h3>
+          <p class="text-gray mb-2">Experiencia premium</p>
+          <div class="pricing-price">
+            <span class="currency">$</span>397<span class="period">/mes</span>
+          </div>
+          <ul class="pricing-features">
+            <li><i class="fas fa-check-circle"></i> Todo del plan Profesional</li>
+            <li><i class="fas fa-check-circle"></i> Mentoria 1 a 1 semanal</li>
+            <li><i class="fas fa-check-circle"></i> Grupo exclusivo VIP</li>
+            <li><i class="fas fa-check-circle"></i> Senales de trading premium</li>
+            <li><i class="fas fa-check-circle"></i> Masterclass mensuales</li>
+            <li><i class="fas fa-check-circle"></i> Acceso de por vida grabaciones</li>
+            <li><i class="fas fa-check-circle"></i> Soporte prioritario 24/7</li>
+          </ul>
+          <a href="#" class="btn btn-outline" style="width:100%;">Seleccionar Plan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TESTIMONIALS ========== -->
+  <section class="section" id="testimonials" style="background: var(--white);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="badge badge-accent mb-2">Testimonios</div>
+        <h2 class="section-title">Lo que Dicen Nuestros Estudiantes</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Historias reales de personas que transformaron su vida financiera con Investep Academy.</p>
+      </div>
+      <div class="grid-3">
+        <div class="testimonial-card animate-on-scroll">
+          <i class="fas fa-quote-right quote-icon"></i>
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Antes de Investep no sabia nada de trading. En 3 meses ya estaba haciendo operaciones consistentes. La metodologia paso a paso es increible."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">MR</div>
+            <div class="testimonial-info">
+              <div class="name">Maria Rodriguez</div>
+              <div class="role">Trader desde 2024</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card animate-on-scroll" style="animation-delay:0.1s;">
+          <i class="fas fa-quote-right quote-icon"></i>
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Las clases en vivo y los sabados analiticos son gold. El equipo de Joel realmente se preocupa por cada estudiante. 100% recomendado."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">CL</div>
+            <div class="testimonial-info">
+              <div class="name">Carlos Lopez</div>
+              <div class="role">Trader desde 2023</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card animate-on-scroll" style="animation-delay:0.2s;">
+          <i class="fas fa-quote-right quote-icon"></i>
+          <div class="testimonial-stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Los elementos de soporte y herramientas son fantasticos. El calculo de rango de precio y los checklists me ayudan a mantener la disciplina."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">AG</div>
+            <div class="testimonial-info">
+              <div class="name">Ana Gutierrez</div>
+              <div class="role">Trader desde 2024</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SCHEDULE PREVIEW ========== -->
+  <section class="section" style="background: var(--gray-100);">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="badge badge-primary mb-2">Agenda Semanal</div>
+        <h2 class="section-title">Horario de Clases en Vivo</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Clases todos los dias de la semana con horarios flexibles para que nunca te pierdas una sesion.</p>
+      </div>
+      <div class="grid-2" style="max-width:900px; margin:0 auto;">
+        <div class="tool-card animate-on-scroll">
+          <div class="tool-icon" style="background:rgba(59,130,246,0.1); color:#3b82f6;">
+            <i class="fas fa-sun"></i>
+          </div>
+          <div class="tool-info">
+            <h5>Clase con tu Mentor</h5>
+            <p>Lunes a Viernes - 8:00 AM</p>
+          </div>
+        </div>
+        <div class="tool-card animate-on-scroll" style="animation-delay:0.05s;">
+          <div class="tool-icon" style="background:rgba(16,185,129,0.1); color:#10b981;">
+            <i class="fas fa-chart-area"></i>
+          </div>
+          <div class="tool-info">
+            <h5>Sesion de Pre-Mercado</h5>
+            <p>Lunes a Viernes - 11:30 AM</p>
+          </div>
+        </div>
+        <div class="tool-card animate-on-scroll" style="animation-delay:0.1s;">
+          <div class="tool-icon" style="background:rgba(236,72,153,0.1); color:#ec4899;">
+            <i class="fas fa-globe-europe"></i>
+          </div>
+          <div class="tool-info">
+            <h5>Sesion Europa</h5>
+            <p>Martes y Miercoles - 1:00 PM</p>
+          </div>
+        </div>
+        <div class="tool-card animate-on-scroll" style="animation-delay:0.15s;">
+          <div class="tool-icon" style="background:rgba(139,92,246,0.1); color:#8b5cf6;">
+            <i class="fas fa-brain"></i>
+          </div>
+          <div class="tool-info">
+            <h5>Sesion Post-Intensivo</h5>
+            <p>Martes y Miercoles - 7:00 PM</p>
+          </div>
+        </div>
+        <div class="tool-card animate-on-scroll" style="animation-delay:0.2s;">
+          <div class="tool-icon" style="background:rgba(232,168,56,0.1); color:var(--secondary);">
+            <i class="fas fa-desktop"></i>
+          </div>
+          <div class="tool-info">
+            <h5>Sesion de TC2000</h5>
+            <p>Miercoles - 11:30 AM</p>
+          </div>
+        </div>
+        <div class="tool-card animate-on-scroll" style="animation-delay:0.25s;">
+          <div class="tool-icon" style="background:rgba(239,68,68,0.1); color:#ef4444;">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="tool-info">
+            <h5>Sabados Analiticos</h5>
+            <p>Sabados - 8:00 AM</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <a href="calendar.html" class="btn btn-primary btn-lg"><i class="fas fa-calendar-alt"></i> Ver Calendario Completo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FAQ ========== -->
+  <section class="section" id="faq">
+    <div class="container" style="max-width:800px;">
+      <div class="text-center mb-5">
+        <div class="badge badge-primary mb-2">Preguntas Frecuentes</div>
+        <h2 class="section-title">Resuelve tus Dudas</h2>
+        <div class="divider"></div>
+        <p class="section-subtitle">Todo lo que necesitas saber antes de comenzar tu camino en el trading.</p>
+      </div>
+      
+      <div class="faq-item active">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>?Necesito experiencia previa en trading?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            No, nuestro programa esta disenado para principiantes absolutos. La Ruta Investep te guia paso a paso desde la configuracion de plataformas hasta convertirte en un trader profesional. Contamos con un modulo completo de "Primeros Pasos" que te lleva de la mano.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>?Que plataformas de trading necesito?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Utilizamos principalmente TC2000 para analisis tecnico y ThinkorSwim (Charles Schwab) como broker para ejecutar operaciones. Ambas plataformas tienen versiones gratuitas y te ensenamos a configurarlas paso a paso en nuestro modulo de primeros pasos.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>?Cuanto capital necesito para empezar?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Recomendamos iniciar con una cuenta de simulacion (paper trading) mientras aprendes. No necesitas invertir dinero real hasta que te sientas seguro. Cuando estes listo, puedes empezar con tan solo $500-$1,000 dependiendo del broker que elijas.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>?Las clases en vivo se graban?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Si, todas las clases en vivo se graban y estan disponibles en la plataforma para que las revises cuando quieras. Esto incluye las sesiones de Pre-Mercado, las clases con tu mentor, las sesiones de Europa y los Sabados Analiticos.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>?Que brokers recomiendan?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Principalmente trabajamos con Charles Schwab (ThinkorSwim), E*Trade e Interactive Brokers. En nuestro modulo de Primeros Pasos te damos indicaciones detalladas para la apertura de cuentas, como llenar el formulario Affidavit y la configuracion completa.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>?Puedo cancelar mi suscripcion en cualquier momento?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Si, puedes cancelar tu suscripcion en cualquier momento sin penalizaciones. Tu acceso continuara activo hasta el final del periodo de facturacion actual. Tambien ofrecemos una garantia de satisfaccion de 7 dias.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>?Que herramientas incluye el programa?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Incluimos una calculadora de rango de precio en Excel, checklists de trading profesionales, tutoriales de compra-venta para cada broker, estrategias de refuerzo, indicadores personalizados para TC2000 y material complementario actualizado constantemente.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>?En que horario son las clases?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-content">
+            Las clases con tu mentor son de lunes a viernes a las 8:00 AM (hora Este). Las sesiones de Pre-Mercado son a las 11:30 AM. Tambien tenemos sesiones de Europa (1:00 PM), Post-Intensivo (7:00 PM), sesiones de TC2000 (miercoles) y Sabados Analiticos a las 8:00 AM.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="cta-section">
+    <div class="container" style="position:relative; z-index:1;">
+      <h2>Comienza tu Camino Hacia la<br><span style="color:var(--secondary);">Libertad Financiera</span></h2>
+      <p>Unete a mas de 2,500 estudiantes que ya estan transformando su futuro con Investep Academy.</p>
+      <div style="display:flex; gap:16px; justify-content:center;">
+        <a href="#pricing" class="btn btn-secondary btn-lg"><i class="fas fa-rocket"></i> Inscribete Ahora</a>
+        <a href="login.html" class="btn btn-outline-white btn-lg"><i class="fas fa-sign-in-alt"></i> Ya tengo cuenta</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo-text">Invest<span>ep</span> Academy</div>
+          <p>Tu camino hacia la libertad financiera comienza aqui. Aprende trading profesional con la mejor metodologia del mercado.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-telegram"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Programas</h5>
+          <ul>
+            <li><a href="#">Primeros Pasos</a></li>
+            <li><a href="#">El Mercado</a></li>
+            <li><a href="#">Elementos de Soporte</a></li>
+            <li><a href="#">Investips & News</a></li>
+            <li><a href="#">Sabados Analiticos</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Recursos</h5>
+          <ul>
+            <li><a href="#">Calendario de Eventos</a></li>
+            <li><a href="#">Herramientas</a></li>
+            <li><a href="#">Preguntas Frecuentes</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Comunidad</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="#">Terminos de Servicio</a></li>
+            <li><a href="#">Politica de Privacidad</a></li>
+            <li><a href="#">Politica de Reembolso</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Investep Academy. Todos los derechos reservados. Trading implica riesgos financieros.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
