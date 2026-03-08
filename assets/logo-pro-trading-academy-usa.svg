@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="260" viewBox="0 0 1100 260" role="img" aria-labelledby="title desc">
+  <title id="title">Pro Trading Academy USA</title>
+  <desc id="desc">Logo con escudo dorado, toro estilizado y nombre Pro Trading Academy USA.</desc>
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8df9b"/>
+      <stop offset="50%" stop-color="#c49538"/>
+      <stop offset="100%" stop-color="#f3ca69"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f5c45"/>
+      <stop offset="100%" stop-color="#0a2f25"/>
+    </linearGradient>
+    <linearGradient id="bullGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5d17d"/>
+      <stop offset="100%" stop-color="#9a7123"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(10,24)">
+    <path d="M60 6 C76 16, 116 16, 132 6 L168 22 L168 108 C168 152, 132 185, 96 202 C60 185, 24 152, 24 108 L24 22 Z"
+          fill="url(#gold)"/>
+    <path d="M96 18 C110 24, 128 24, 144 20 L152 26 L152 106 C152 140, 126 166, 96 182 C66 166, 40 140, 40 106 L40 26 L48 20 C64 24, 82 24, 96 18 Z"
+          fill="url(#green)"/>
+    <path d="M62 130 L62 108 L78 98 L78 130 Z" fill="#f2cd74"/>
+    <path d="M84 130 L84 90 L100 80 L100 130 Z" fill="#f2cd74"/>
+    <path d="M106 130 L106 76 L122 64 L122 130 Z" fill="#f2cd74"/>
+    <path d="M50 82 L74 64 L96 72 L118 48 L126 58 L96 88 L74 80 L56 94 Z" fill="#ffffff"/>
+  </g>
+
+  <g transform="translate(195,40)">
+    <path d="M62 94 C88 70, 118 60, 154 60 C180 60, 196 52, 206 38 C210 32, 220 30, 224 38 C228 46, 224 54, 216 58 C226 56, 236 56, 246 60 C258 66, 258 78, 246 82 C232 86, 214 86, 196 82 C184 96, 166 106, 146 112 L134 142 C126 160, 106 166, 88 160 C70 154, 62 136, 62 120 Z"
+          fill="url(#bullGold)" stroke="#0a2f25" stroke-width="4"/>
+    <path d="M30 154 C42 136, 56 126, 80 120 L110 118 C92 128, 80 140, 74 156 C68 170, 48 174, 34 166 Z"
+          fill="url(#green)"/>
+    <circle cx="206" cy="68" r="4" fill="#0a2f25"/>
+  </g>
+
+  <g transform="translate(430,78)">
+    <text x="0" y="64" font-family="Georgia, Times New Roman, serif" font-size="98" fill="#0a2f25" letter-spacing="2">PROTRADING</text>
+    <line x1="0" y1="108" x2="170" y2="108" stroke="#bb8a35" stroke-width="3"/>
+    <text x="190" y="120" font-family="Inter, Arial, sans-serif" font-size="52" fill="#bb8a35" letter-spacing="8">ACADEMY USA</text>
+    <line x1="742" y1="108" x2="910" y2="108" stroke="#bb8a35" stroke-width="3"/>
+  </g>
+</svg>

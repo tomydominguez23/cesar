@@ -1,5 +1,5 @@
 /**
- * INVESTEP ACADEMY - Portal de Estudio Trading
+ * PRO TRADING ACADEMY USA - Portal de Estudio Trading
  * Main JavaScript File
  */
 
@@ -362,4 +362,4 @@ window.addEventListener('load', function() {
   document.body.classList.add('loaded');
 });
 
-console.log('Investep Academy Portal loaded successfully.');
+console.log('Pro Trading Academy USA Portal loaded successfully.');
