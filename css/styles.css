@@ -370,15 +370,15 @@ h6 { font-size: 1rem; }
 
 .navbar-brand .brand-logo {
   width: auto;
-  height: 66px;
-  max-width: 290px;
+  height: 62px;
+  max-width: 380px;
   object-fit: contain;
   display: block;
 }
 
 .navbar-brand .brand-logo.login-brand-logo {
-  height: 96px;
-  max-width: 360px;
+  height: 88px;
+  max-width: 520px;
 }
 
 .navbar-brand .logo-icon {
@@ -2038,13 +2038,13 @@ h6 { font-size: 1rem; }
   }
 
   .navbar-brand .brand-logo {
-    height: 54px;
-    max-width: 230px;
+    height: 48px;
+    max-width: 260px;
   }
 
   .navbar-brand .brand-logo.login-brand-logo {
-    height: 78px;
-    max-width: 280px;
+    height: 66px;
+    max-width: 320px;
   }
   
   .footer-grid {
