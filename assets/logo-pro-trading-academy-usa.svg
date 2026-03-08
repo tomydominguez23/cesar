@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="260" viewBox="0 0 1100 260" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="260" viewBox="0 0 420 260" role="img" aria-labelledby="title desc">
   <title id="title">Pro Trading Academy USA</title>
-  <desc id="desc">Logo con escudo dorado, toro estilizado y nombre Pro Trading Academy USA.</desc>
+  <desc id="desc">Logo con escudo dorado y toro estilizado al lado.</desc>
   <defs>
     <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#f8df9b"/>
@@ -36,10 +36,4 @@
     <circle cx="206" cy="68" r="4" fill="#0a2f25"/>
   </g>
 
-  <g transform="translate(430,78)">
-    <text x="0" y="64" font-family="Georgia, Times New Roman, serif" font-size="98" fill="#0a2f25" letter-spacing="2">PROTRADING</text>
-    <line x1="0" y1="108" x2="170" y2="108" stroke="#bb8a35" stroke-width="3"/>
-    <text x="190" y="120" font-family="Inter, Arial, sans-serif" font-size="52" fill="#bb8a35" letter-spacing="8">ACADEMY USA</text>
-    <line x1="742" y1="108" x2="910" y2="108" stroke="#bb8a35" stroke-width="3"/>
-  </g>
 </svg>
