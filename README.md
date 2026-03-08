@@ -1,4 +1,4 @@
-# Investep Academy - Portal de Estudio de Trading
+# Pro Trading Academy USA - Portal de Estudio de Trading
 
 Portal educativo completo para aprendizaje de trading profesional, inspirado en plataformas como Kajabi.
 
@@ -25,7 +25,7 @@ Portal educativo completo para aprendizaje de trading profesional, inspirado en 
 ### 1. Landing Page (`index.html`)
 - Hero section con estadisticas animadas y grafico de barras
 - Seccion de caracteristicas del programa
-- Ruta Investep (9 pasos)
+- Ruta Pro Trading (9 pasos)
 - Preview de cursos disponibles
 - Contadores animados
 - Planes de precios (Basico, Profesional, VIP)

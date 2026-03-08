@@ -1,5 +1,5 @@
 /* ============================================
-   INVESTEP ACADEMY - Portal de Estudio Trading
+   PRO TRADING ACADEMY USA - Portal de Estudio Trading
    Custom Styles
    ============================================ */
 
@@ -366,6 +366,19 @@ h6 { font-size: 1rem; }
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.navbar-brand .brand-logo {
+  width: auto;
+  height: 52px;
+  max-width: 320px;
+  object-fit: contain;
+  display: block;
+}
+
+.navbar-brand .brand-logo.login-brand-logo {
+  height: 76px;
+  max-width: 420px;
 }
 
 .navbar-brand .logo-icon {
@@ -1625,10 +1638,6 @@ h6 { font-size: 1rem; }
   margin-bottom: 16px;
 }
 
-.footer-brand .logo-text span {
-  color: var(--secondary);
-}
-
 .footer-brand p {
   font-size: 0.9rem;
   line-height: 1.7;
@@ -1723,10 +1732,6 @@ h6 { font-size: 1rem; }
   color: var(--white);
   font-size: 2.5rem;
   margin-bottom: 16px;
-}
-
-.login-visual-content h2 span {
-  color: var(--secondary);
 }
 
 .login-visual-content p {
@@ -2030,6 +2035,16 @@ h6 { font-size: 1rem; }
   
   .mobile-toggle {
     display: flex;
+  }
+
+  .navbar-brand .brand-logo {
+    height: 42px;
+    max-width: 230px;
+  }
+
+  .navbar-brand .brand-logo.login-brand-logo {
+    height: 62px;
+    max-width: 300px;
   }
   
   .footer-grid {
