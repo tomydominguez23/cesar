@@ -829,23 +829,86 @@ h6 { font-size: 1rem; }
 }
 
 /* ---- Pricing Section ---- */
-.pricing-card {
-  background: var(--white);
-  border-radius: var(--radius-lg);
-  padding: 40px;
-  text-align: center;
-  border: 2px solid var(--gray-200);
-  transition: var(--transition);
+.seminario-highlight {
+  background: linear-gradient(135deg, #0f2f45 0%, #14556d 55%, #1f7b8a 100%);
+  border-radius: var(--radius-xl);
+  padding: 42px;
+  margin: 0 0 36px;
   position: relative;
-}
-
-.pricing-card.popular {
-  border-color: var(--secondary);
-  transform: scale(1.05);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.14);
   box-shadow: var(--shadow-xl);
 }
 
-.pricing-card.popular .pricing-badge {
+.seminario-highlight::before {
+  content: '';
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  top: -150px;
+  right: -90px;
+  background: radial-gradient(circle, rgba(232, 168, 56, 0.35) 0%, rgba(232, 168, 56, 0) 70%);
+}
+
+.seminario-highlight-content {
+  max-width: 760px;
+  position: relative;
+  z-index: 1;
+}
+
+.seminario-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 50px;
+  background: rgba(255,255,255,0.16);
+  color: rgba(255,255,255,0.95);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.seminario-highlight h3 {
+  color: var(--white);
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.seminario-highlight p {
+  color: rgba(255,255,255,0.84);
+  max-width: 680px;
+}
+
+.seminario-highlight .seminario-subtext {
+  color: #d6edf6;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.seminario-highlight-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pricing-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: left;
+  border: 2px solid var(--gray-200);
+  transition: var(--transition);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.pricing-card .pricing-badge {
   position: absolute;
   top: -14px;
   left: 50%;
@@ -860,19 +923,26 @@ h6 { font-size: 1rem; }
   letter-spacing: 1px;
 }
 
+.pricing-card.premium-featured {
+  border-color: var(--secondary);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-xl);
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf2 100%);
+}
+
 .pricing-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-xl);
 }
 
-.pricing-card.popular:hover {
+.pricing-card.premium-featured:hover {
   transform: scale(1.05) translateY(-8px);
 }
 
 .pricing-icon {
   width: 60px;
   height: 60px;
-  margin: 0 auto 20px;
+  margin: 0 0 18px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -883,14 +953,14 @@ h6 { font-size: 1rem; }
 .pricing-name {
   font-size: 1.4rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .pricing-price {
-  font-size: 3rem;
+  font-size: 2.4rem;
   font-weight: 800;
   color: var(--primary);
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .pricing-price .currency {
@@ -904,24 +974,47 @@ h6 { font-size: 1rem; }
   font-weight: 400;
 }
 
+.plan-tag {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  border-radius: 50px;
+  background: rgba(13, 79, 79, 0.08);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.pricing-summary {
+  color: var(--gray-600);
+  font-size: 0.94rem;
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+
 .pricing-features {
-  margin: 32px 0;
+  margin: 18px 0;
   text-align: left;
 }
 
 .pricing-features li {
-  padding: 10px 0;
+  padding: 7px 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   color: var(--gray-700);
-  font-size: 0.95rem;
-  border-bottom: 1px solid var(--gray-100);
+  font-size: 0.88rem;
+  border-bottom: none;
+  line-height: 1.45;
 }
 
 .pricing-features li i {
   color: var(--success);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
+  margin-top: 3px;
 }
 
 .pricing-features li.disabled {
@@ -931,6 +1024,197 @@ h6 { font-size: 1rem; }
 
 .pricing-features li.disabled i {
   color: var(--gray-300);
+}
+
+.pricing-includes {
+  margin-top: auto;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--gray-100);
+  color: var(--gray-700);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.pricing-actions {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pricing-actions .btn {
+  width: 100%;
+}
+
+.pricing-link {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.pricing-link:hover {
+  color: var(--accent-dark);
+}
+
+/* ---- Seminario Intensivo Page ---- */
+.seminario-hero {
+  min-height: 72vh;
+  background: linear-gradient(135deg, #0d4f4f 0%, #124f65 55%, #00a88a 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 130px 0 90px;
+  overflow: hidden;
+}
+
+.seminario-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(232, 168, 56, 0.2), transparent 40%);
+}
+
+.seminario-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+}
+
+.seminario-hero h1 {
+  color: var(--white);
+  margin-bottom: 16px;
+}
+
+.seminario-hero .lead {
+  color: rgba(255,255,255,0.88);
+  font-size: 1.18rem;
+  margin-bottom: 16px;
+  line-height: 1.75;
+}
+
+.seminario-hero .muted {
+  color: rgba(255,255,255,0.74);
+  max-width: 700px;
+}
+
+.seminario-hero-actions {
+  margin-top: 26px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.what-learn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.learn-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.learn-card i {
+  font-size: 1.1rem;
+  color: var(--primary);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(13, 79, 79, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.module-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition);
+}
+
+.module-card:hover {
+  border-color: rgba(13, 79, 79, 0.35);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-3px);
+}
+
+.module-number {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(13, 79, 79, 0.1);
+  color: var(--primary);
+  font-size: 0.86rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.module-title {
+  font-weight: 600;
+  color: var(--gray-800);
+  font-size: 0.95rem;
+}
+
+.seminario-final-cta {
+  border-radius: var(--radius-xl);
+  background: var(--gradient-dark);
+  color: rgba(255,255,255,0.85);
+  padding: 42px;
+  position: relative;
+  overflow: hidden;
+}
+
+.seminario-final-cta::before {
+  content: '';
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  right: -130px;
+  top: -140px;
+  background: radial-gradient(circle, rgba(0, 201, 167, 0.35) 0%, transparent 70%);
+}
+
+.seminario-final-cta h3 {
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.seminario-final-cta p {
+  max-width: 720px;
+  position: relative;
+  z-index: 1;
+}
+
+.seminario-final-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 
 /* ---- Testimonials ---- */
@@ -1981,12 +2265,17 @@ h6 { font-size: 1rem; }
     font-size: 2.8rem;
   }
   
-  .pricing-card.popular {
+  .pricing-card.premium-featured {
     transform: scale(1);
   }
   
-  .pricing-card.popular:hover {
+  .pricing-card.premium-featured:hover {
     transform: translateY(-8px);
+  }
+
+  .what-learn-grid,
+  .modules-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -2078,6 +2367,11 @@ h6 { font-size: 1rem; }
   
   .pricing-card {
     padding: 28px;
+  }
+
+  .seminario-highlight,
+  .seminario-final-cta {
+    padding: 28px 22px;
   }
   
   .dash-nav-links {
