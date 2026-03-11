@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materiales - Admin Pro Trading Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">PT</div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">Pro Trading Academy</span>
+        <span class="sidebar-brand-sub">Panel de Administración</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i><span class="nav-item-text">Dashboard</span></a>
+        <a href="estadisticas.html" class="nav-item"><i class="fa-solid fa-chart-mixed"></i><span class="nav-item-text">Estadísticas</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Contenido</div>
+        <a href="cursos.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span class="nav-item-text">Cursos</span></a>
+        <a href="clases.html" class="nav-item"><i class="fa-solid fa-play-circle"></i><span class="nav-item-text">Clases</span></a>
+        <a href="materiales.html" class="nav-item active"><i class="fa-solid fa-file-lines"></i><span class="nav-item-text">Materiales</span></a>
+        <a href="media.html" class="nav-item"><i class="fa-solid fa-image"></i><span class="nav-item-text">Mediateca</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Comercial</div>
+        <a href="usuarios.html" class="nav-item"><i class="fa-solid fa-users"></i><span class="nav-item-text">Usuarios</span><span class="badge">3</span></a>
+        <a href="planes.html" class="nav-item"><i class="fa-solid fa-credit-card"></i><span class="nav-item-text">Planes y Pagos</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="configuracion.html" class="nav-item"><i class="fa-solid fa-gear"></i><span class="nav-item-text">Configuración</span></a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">AD</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin</div>
+          <div class="sidebar-user-role">Super Administrador</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="header-title">
+          <h1>Materiales de Apoyo</h1>
+          <p>PDFs, documentos y recursos descargables</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar materiales...">
+        </div>
+        <button class="header-btn"><i class="fa-solid fa-bell"></i><span class="notification-dot"></span></button>
+        <div class="header-divider"></div>
+        <button class="header-btn" onclick="window.location.href='../index.html'"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Upload Area -->
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="file-upload-area">
+            <input type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
+            <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <div class="file-upload-text">Arrastra archivos aquí o <strong>haz clic para seleccionar</strong></div>
+            <div class="file-upload-hint">PDF, DOC, XLS, PPT, ZIP. Máximo 50MB por archivo. Puedes subir varios a la vez.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h2 style="font-size: 15px; color: var(--gray-500); font-weight: 500;">47 materiales · 234 descargas totales</h2>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-secondary"><i class="fa-solid fa-filter"></i> Filtrar</button>
+          <button class="btn btn-primary" onclick="AdminModal.open('modal-material')"><i class="fa-solid fa-plus"></i> Nuevo Material</button>
+        </div>
+      </div>
+
+      <!-- Materials Table -->
+      <div class="card">
+        <div class="table-controls">
+          <div class="table-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Buscar por nombre..." oninput="filterTable(this, 'materialsTable')">
+          </div>
+          <div class="table-filters">
+            <select class="form-control" style="width: 150px; height: 38px; font-size: 13px;">
+              <option value="">Todos los tipos</option>
+              <option>PDF</option>
+              <option>DOC/DOCX</option>
+              <option>XLS/XLSX</option>
+              <option>PPT/PPTX</option>
+              <option>ZIP</option>
+            </select>
+            <select class="form-control" style="width: 180px; height: 38px; font-size: 13px;">
+              <option value="">Todos los cursos</option>
+              <option>Primeros Pasos</option>
+              <option>El Mercado</option>
+              <option>Análisis Técnico</option>
+              <option>Trading Avanzado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="admin-table" id="materialsTable">
+            <thead>
+              <tr>
+                <th style="width: 40px;"><input type="checkbox"></th>
+                <th>Material</th>
+                <th>Tipo</th>
+                <th>Curso / Clase</th>
+                <th>Tamaño</th>
+                <th>Descargas</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon doc" style="background: rgba(239,68,68,0.1); color: #ef4444;"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div>
+                      <strong>Guía de Inicio Rápido</strong>
+                      <div class="text-small text-muted">guia-inicio-rapido.pdf</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span style="font-size: 11px; font-weight: 600; background: rgba(239,68,68,0.1); color: #ef4444; padding: 3px 8px; border-radius: 4px;">PDF</span></td>
+                <td>
+                  <div>Primeros Pasos</div>
+                  <div class="text-small text-muted">¿Qué es el Trading?</div>
+                </td>
+                <td>2.4 MB</td>
+                <td>187</td>
+                <td>10 Mar 2026</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar" onclick="AdminModal.open('modal-material')"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon doc" style="background: rgba(59,130,246,0.1); color: #3b82f6;"><i class="fa-solid fa-file-word"></i></div>
+                    <div>
+                      <strong>Plantilla de Plan de Trading</strong>
+                      <div class="text-small text-muted">plan-trading-template.docx</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span style="font-size: 11px; font-weight: 600; background: rgba(59,130,246,0.1); color: #3b82f6; padding: 3px 8px; border-radius: 4px;">DOCX</span></td>
+                <td>
+                  <div>El Mercado</div>
+                  <div class="text-small text-muted">Creando tu Plan</div>
+                </td>
+                <td>856 KB</td>
+                <td>134</td>
+                <td>8 Mar 2026</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon doc" style="background: rgba(16,185,129,0.1); color: #10b981;"><i class="fa-solid fa-file-excel"></i></div>
+                    <div>
+                      <strong>Calculadora de Posiciones</strong>
+                      <div class="text-small text-muted">position-calculator.xlsx</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span style="font-size: 11px; font-weight: 600; background: rgba(16,185,129,0.1); color: #10b981; padding: 3px 8px; border-radius: 4px;">XLSX</span></td>
+                <td>
+                  <div>Gestión de Riesgo</div>
+                  <div class="text-small text-muted">Position Sizing</div>
+                </td>
+                <td>345 KB</td>
+                <td>98</td>
+                <td>5 Mar 2026</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon doc" style="background: rgba(239,68,68,0.1); color: #ef4444;"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div>
+                      <strong>Cheat Sheet - Patrones de Velas</strong>
+                      <div class="text-small text-muted">cheatsheet-velas.pdf</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span style="font-size: 11px; font-weight: 600; background: rgba(239,68,68,0.1); color: #ef4444; padding: 3px 8px; border-radius: 4px;">PDF</span></td>
+                <td>
+                  <div>Análisis Técnico</div>
+                  <div class="text-small text-muted">Velas Japonesas</div>
+                </td>
+                <td>1.8 MB</td>
+                <td>156</td>
+                <td>1 Mar 2026</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon doc" style="background: rgba(232,168,56,0.1); color: #e8a838;"><i class="fa-solid fa-file-powerpoint"></i></div>
+                    <div>
+                      <strong>Presentación: Estrategias de Scalping</strong>
+                      <div class="text-small text-muted">scalping-strategies.pptx</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span style="font-size: 11px; font-weight: 600; background: rgba(232,168,56,0.1); color: #e8a838; padding: 3px 8px; border-radius: 4px;">PPTX</span></td>
+                <td>
+                  <div>Trading Avanzado</div>
+                  <div class="text-small text-muted">Scalping Avanzada</div>
+                </td>
+                <td>5.2 MB</td>
+                <td>67</td>
+                <td>25 Feb 2026</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon doc" style="background: rgba(107,114,128,0.1); color: #6b7280;"><i class="fa-solid fa-file-zipper"></i></div>
+                    <div>
+                      <strong>Pack Indicadores MT4</strong>
+                      <div class="text-small text-muted">indicadores-mt4.zip</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span style="font-size: 11px; font-weight: 600; background: rgba(107,114,128,0.1); color: #6b7280; padding: 3px 8px; border-radius: 4px;">ZIP</span></td>
+                <td>
+                  <div>Análisis Técnico</div>
+                  <div class="text-small text-muted">Indicadores Personalizados</div>
+                </td>
+                <td>12.3 MB</td>
+                <td>89</td>
+                <td>20 Feb 2026</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-pagination">
+          <span>Mostrando 1-6 de 47 materiales</span>
+          <div class="pagination-btns">
+            <button class="pagination-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn">...</button>
+            <button class="pagination-btn">8</button>
+            <button class="pagination-btn"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Nuevo/Editar Material -->
+<div class="modal-overlay" id="modal-material">
+  <div class="modal large">
+    <div class="modal-header">
+      <h3>Nuevo Material de Apoyo</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Nombre del Material <span class="required">*</span></label>
+        <input type="text" class="form-control" placeholder="Ej: Guía de Análisis Fundamental">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-control" rows="3" placeholder="Describe el contenido del material..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Archivo <span class="required">*</span></label>
+        <div class="file-upload-area" style="padding: 30px;">
+          <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
+          <div class="file-upload-icon" style="font-size: 32px;"><i class="fa-solid fa-file-arrow-up"></i></div>
+          <div class="file-upload-text">Arrastra el archivo o <strong>haz clic para seleccionar</strong></div>
+          <div class="file-upload-hint">PDF, DOC, XLS, PPT, ZIP. Máximo 50MB</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Curso Asociado <span class="required">*</span></label>
+          <select class="form-control">
+            <option value="">Seleccionar curso...</option>
+            <option>Primeros Pasos</option>
+            <option>El Mercado</option>
+            <option>Análisis Técnico</option>
+            <option>Trading Avanzado</option>
+            <option>Gestión de Riesgo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Clase Asociada</label>
+          <select class="form-control">
+            <option value="">Sin clase específica</option>
+            <option>¿Qué es el Trading?</option>
+            <option>Tipos de Mercados</option>
+            <option>Velas Japonesas</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Categoría</label>
+          <select class="form-control">
+            <option>Guía</option>
+            <option>Plantilla</option>
+            <option>Calculadora</option>
+            <option>Cheat Sheet</option>
+            <option>Presentación</option>
+            <option>Herramienta</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Plan Mínimo Requerido</label>
+          <select class="form-control">
+            <option value="basico">Básico</option>
+            <option value="medio">Medio</option>
+            <option value="avanzado">Avanzado</option>
+            <option value="pro">Pro Trading</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="AdminModal.close('modal-material')">Cancelar</button>
+      <button class="btn btn-primary" onclick="AdminToast.success('Material subido', 'El material se ha guardado exitosamente'); AdminModal.close('modal-material');">
+        <i class="fa-solid fa-check"></i> Guardar Material
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

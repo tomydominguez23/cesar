@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración - Admin Pro Trading Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">PT</div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">Pro Trading Academy</span>
+        <span class="sidebar-brand-sub">Panel de Administración</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i><span class="nav-item-text">Dashboard</span></a>
+        <a href="estadisticas.html" class="nav-item"><i class="fa-solid fa-chart-mixed"></i><span class="nav-item-text">Estadísticas</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Contenido</div>
+        <a href="cursos.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span class="nav-item-text">Cursos</span></a>
+        <a href="clases.html" class="nav-item"><i class="fa-solid fa-play-circle"></i><span class="nav-item-text">Clases</span></a>
+        <a href="materiales.html" class="nav-item"><i class="fa-solid fa-file-lines"></i><span class="nav-item-text">Materiales</span></a>
+        <a href="media.html" class="nav-item"><i class="fa-solid fa-image"></i><span class="nav-item-text">Mediateca</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Comercial</div>
+        <a href="usuarios.html" class="nav-item"><i class="fa-solid fa-users"></i><span class="nav-item-text">Usuarios</span><span class="badge">3</span></a>
+        <a href="planes.html" class="nav-item"><i class="fa-solid fa-credit-card"></i><span class="nav-item-text">Planes y Pagos</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="configuracion.html" class="nav-item active"><i class="fa-solid fa-gear"></i><span class="nav-item-text">Configuración</span></a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">AD</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin</div>
+          <div class="sidebar-user-role">Super Administrador</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="header-title">
+          <h1>Configuración</h1>
+          <p>Ajustes generales de la plataforma</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="header-btn" onclick="window.location.href='../index.html'"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="tab-general">General</div>
+        <div class="tab" data-tab="tab-branding">Marca e Imagen</div>
+        <div class="tab" data-tab="tab-emails">Emails</div>
+        <div class="tab" data-tab="tab-seo">SEO</div>
+        <div class="tab" data-tab="tab-integrations">Integraciones</div>
+        <div class="tab" data-tab="tab-security">Seguridad</div>
+      </div>
+
+      <!-- Tab: General -->
+      <div class="tab-content active" id="tab-general">
+        <div class="card">
+          <div class="card-body">
+            <div class="settings-section">
+              <h3 class="settings-section-title">Información del Sitio</h3>
+              <p class="settings-section-desc">Configuración básica de tu plataforma educativa</p>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Nombre del Sitio</label>
+                  <input type="text" class="form-control" value="Pro Trading Academy USA">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">URL del Sitio</label>
+                  <input type="url" class="form-control" value="https://protradingacademyusa.com">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Descripción del Sitio</label>
+                <textarea class="form-control" rows="2">Academia de trading online con cursos en español para traders de todos los niveles.</textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email de Contacto</label>
+                  <input type="email" class="form-control" value="info@protradingacademyusa.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Teléfono de Contacto</label>
+                  <input type="tel" class="form-control" value="+1 (555) 123-4567">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Zona Horaria</label>
+                  <select class="form-control">
+                    <option>America/New_York (EST)</option>
+                    <option selected>America/Chicago (CST)</option>
+                    <option>America/Denver (MST)</option>
+                    <option>America/Los_Angeles (PST)</option>
+                    <option>America/Mexico_City</option>
+                    <option>America/Bogota</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Idioma Principal</label>
+                  <select class="form-control">
+                    <option selected>Español</option>
+                    <option>English</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3 class="settings-section-title">Plataforma de Estudio</h3>
+              <p class="settings-section-desc">Configuración del portal de estudiantes</p>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Registro Abierto</div>
+                  <div class="settings-row-desc">Permitir que nuevos usuarios se registren sin invitación</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Periodo de Prueba Gratis</div>
+                  <div class="settings-row-desc">Días de acceso gratuito antes de requerir pago</div>
+                </div>
+                <div class="settings-row-control">
+                  <input type="number" class="form-control" value="7" style="width: 80px; text-align: center;">
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Certificados de Completado</div>
+                  <div class="settings-row-desc">Emitir certificados automáticos al completar un curso</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Comentarios en Clases</div>
+                  <div class="settings-row-desc">Permitir que los estudiantes comenten en las lecciones</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Descargar Videos</div>
+                  <div class="settings-row-desc">Permitir que los estudiantes descarguen las clases</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox"><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Modo de Mantenimiento</div>
+                  <div class="settings-row-desc">Mostrar página de mantenimiento a los visitantes</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox"><span class="slider"></span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer" style="display: flex; justify-content: flex-end;">
+            <button class="btn btn-primary" onclick="AdminToast.success('Configuración guardada', 'Los cambios se han aplicado correctamente')">
+              <i class="fa-solid fa-check"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Branding -->
+      <div class="tab-content" id="tab-branding">
+        <div class="card">
+          <div class="card-body">
+            <div class="settings-section">
+              <h3 class="settings-section-title">Logo e Identidad</h3>
+              <p class="settings-section-desc">Personaliza la apariencia de tu plataforma</p>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Logo Principal</label>
+                  <div class="file-upload-area" style="padding: 24px;">
+                    <input type="file" accept="image/*,.svg">
+                    <div style="display: flex; align-items: center; justify-content: center; height: 40px; margin-bottom: 8px;">
+                      <span style="font-size: 20px; font-weight: 800; color: var(--primary);">PT</span>
+                      <span style="font-size: 12px; margin-left: 8px; color: var(--gray-500);">logo-actual.svg</span>
+                    </div>
+                    <div class="file-upload-text"><strong>Cambiar logo</strong></div>
+                    <div class="file-upload-hint">SVG, PNG. Recomendado: 200x60px</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Favicon</label>
+                  <div class="file-upload-area" style="padding: 24px;">
+                    <input type="file" accept="image/x-icon,image/png">
+                    <div class="file-upload-icon" style="font-size: 24px;"><i class="fa-solid fa-globe"></i></div>
+                    <div class="file-upload-text"><strong>Subir favicon</strong></div>
+                    <div class="file-upload-hint">ICO o PNG. 32x32px</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Colores de Marca</label>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+                  <div>
+                    <label class="form-label text-small">Primario</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                      <input type="color" value="#0d4f4f" style="width: 42px; height: 42px; border: 1px solid var(--gray-200); border-radius: 8px; padding: 2px; cursor: pointer;">
+                      <input type="text" class="form-control" value="#0d4f4f" style="font-family: monospace; font-size: 13px;">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label text-small">Secundario</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                      <input type="color" value="#e8a838" style="width: 42px; height: 42px; border: 1px solid var(--gray-200); border-radius: 8px; padding: 2px; cursor: pointer;">
+                      <input type="text" class="form-control" value="#e8a838" style="font-family: monospace; font-size: 13px;">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label text-small">Acento</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                      <input type="color" value="#00c9a7" style="width: 42px; height: 42px; border: 1px solid var(--gray-200); border-radius: 8px; padding: 2px; cursor: pointer;">
+                      <input type="text" class="form-control" value="#00c9a7" style="font-family: monospace; font-size: 13px;">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="form-label text-small">Oscuro</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                      <input type="color" value="#1a1a2e" style="width: 42px; height: 42px; border: 1px solid var(--gray-200); border-radius: 8px; padding: 2px; cursor: pointer;">
+                      <input type="text" class="form-control" value="#1a1a2e" style="font-family: monospace; font-size: 13px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3 class="settings-section-title">Redes Sociales</h3>
+              <p class="settings-section-desc">Enlaces a tus perfiles sociales</p>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label"><i class="fa-brands fa-instagram" style="color: #E4405F;"></i> Instagram</label>
+                  <input type="url" class="form-control" placeholder="https://instagram.com/..." value="https://instagram.com/protradingacademyusa">
+                </div>
+                <div class="form-group">
+                  <label class="form-label"><i class="fa-brands fa-youtube" style="color: #FF0000;"></i> YouTube</label>
+                  <input type="url" class="form-control" placeholder="https://youtube.com/..." value="https://youtube.com/@protradingacademyusa">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label"><i class="fa-brands fa-facebook" style="color: #1877F2;"></i> Facebook</label>
+                  <input type="url" class="form-control" placeholder="https://facebook.com/...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label"><i class="fa-brands fa-tiktok"></i> TikTok</label>
+                  <input type="url" class="form-control" placeholder="https://tiktok.com/...">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label"><i class="fa-brands fa-telegram" style="color: #0088cc;"></i> Telegram</label>
+                  <input type="url" class="form-control" placeholder="https://t.me/...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label"><i class="fa-brands fa-discord" style="color: #5865F2;"></i> Discord</label>
+                  <input type="url" class="form-control" placeholder="https://discord.gg/...">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer" style="display: flex; justify-content: flex-end;">
+            <button class="btn btn-primary" onclick="AdminToast.success('Marca actualizada', 'Los cambios de marca se han guardado')">
+              <i class="fa-solid fa-check"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Emails -->
+      <div class="tab-content" id="tab-emails">
+        <div class="card">
+          <div class="card-body">
+            <div class="settings-section">
+              <h3 class="settings-section-title">Configuración de Email</h3>
+              <p class="settings-section-desc">Configura los emails automáticos de la plataforma</p>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email Remitente</label>
+                  <input type="email" class="form-control" value="noreply@protradingacademyusa.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Nombre Remitente</label>
+                  <input type="text" class="form-control" value="Pro Trading Academy">
+                </div>
+              </div>
+
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label class="form-label">Proveedor SMTP</label>
+                  <select class="form-control">
+                    <option>SendGrid</option>
+                    <option>Amazon SES</option>
+                    <option>Mailgun</option>
+                    <option selected>SMTP Personalizado</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Host SMTP</label>
+                  <input type="text" class="form-control" placeholder="smtp.ejemplo.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Puerto</label>
+                  <input type="number" class="form-control" value="587">
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3 class="settings-section-title">Notificaciones por Email</h3>
+              <p class="settings-section-desc">Controla qué emails se envían automáticamente</p>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Bienvenida al Registrarse</div>
+                  <div class="settings-row-desc">Email de bienvenida con credenciales y guía de inicio</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Confirmación de Pago</div>
+                  <div class="settings-row-desc">Recibo y confirmación después de cada compra</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Recordatorio de Actividad</div>
+                  <div class="settings-row-desc">Recordar a usuarios inactivos que continúen sus cursos</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Nuevo Contenido Disponible</div>
+                  <div class="settings-row-desc">Notificar cuando se publique nuevo contenido en sus cursos</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Certificado de Completado</div>
+                  <div class="settings-row-desc">Enviar certificado al completar un curso</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Newsletter Semanal</div>
+                  <div class="settings-row-desc">Resumen semanal con tips de trading y actualizaciones</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox"><span class="slider"></span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer" style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button class="btn btn-secondary" onclick="AdminToast.info('Email de prueba enviado', 'Revisa tu bandeja de entrada')">
+              <i class="fa-solid fa-paper-plane"></i> Enviar Email de Prueba
+            </button>
+            <button class="btn btn-primary" onclick="AdminToast.success('Email configurado', 'Los ajustes de email se han guardado')">
+              <i class="fa-solid fa-check"></i> Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: SEO -->
+      <div class="tab-content" id="tab-seo">
+        <div class="card">
+          <div class="card-body">
+            <div class="settings-section">
+              <h3 class="settings-section-title">SEO y Meta Tags</h3>
+              <p class="settings-section-desc">Optimiza tu sitio para motores de búsqueda</p>
+
+              <div class="form-group">
+                <label class="form-label">Título del Sitio (Title Tag)</label>
+                <input type="text" class="form-control" value="Pro Trading Academy USA - Aprende Trading Online">
+                <div class="form-hint">Recomendado: 50-60 caracteres</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Meta Descripción</label>
+                <textarea class="form-control" rows="2">Aprende trading online con los mejores cursos en español. Desde principiante hasta trader profesional. Clases en vivo, mentorías y comunidad.</textarea>
+                <div class="form-hint">Recomendado: 150-160 caracteres</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Palabras Clave</label>
+                <div class="tag-input-container">
+                  <span class="tag">trading online <button class="remove">&times;</button></span>
+                  <span class="tag">cursos trading <button class="remove">&times;</button></span>
+                  <span class="tag">forex <button class="remove">&times;</button></span>
+                  <span class="tag">academia trading <button class="remove">&times;</button></span>
+                  <span class="tag">aprender trading <button class="remove">&times;</button></span>
+                  <input type="text" class="tag-input" placeholder="Añadir keyword...">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Imagen OG (Open Graph)</label>
+                <div class="file-upload-area" style="padding: 24px;">
+                  <input type="file" accept="image/*">
+                  <div class="file-upload-icon" style="font-size: 24px;"><i class="fa-solid fa-share-nodes"></i></div>
+                  <div class="file-upload-text"><strong>Subir imagen para redes sociales</strong></div>
+                  <div class="file-upload-hint">Recomendado: 1200x630px</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Google Analytics ID</label>
+                <input type="text" class="form-control" placeholder="G-XXXXXXXXXX" value="G-ABC123DEF4">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Google Tag Manager ID</label>
+                <input type="text" class="form-control" placeholder="GTM-XXXXXXX">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Facebook Pixel ID</label>
+                <input type="text" class="form-control" placeholder="123456789012345">
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3 class="settings-section-title">Robots & Sitemap</h3>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Indexación de Buscadores</div>
+                  <div class="settings-row-desc">Permitir que Google y otros buscadores indexen el sitio</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Sitemap Automático</div>
+                  <div class="settings-row-desc">Generar sitemap.xml automáticamente</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer" style="display: flex; justify-content: flex-end;">
+            <button class="btn btn-primary" onclick="AdminToast.success('SEO actualizado', 'Los meta tags se han guardado')">
+              <i class="fa-solid fa-check"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Integrations -->
+      <div class="tab-content" id="tab-integrations">
+        <div class="card">
+          <div class="card-body">
+            <div class="settings-section">
+              <h3 class="settings-section-title">Pasarela de Pagos</h3>
+              <p class="settings-section-desc">Configuración de Stripe para procesar pagos</p>
+
+              <div class="stripe-config" style="margin-bottom: 0;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                  <i class="fa-brands fa-stripe" style="font-size: 32px;"></i>
+                  <div>
+                    <h3 style="font-size: 16px; margin: 0;">Stripe</h3>
+                    <p style="margin: 0; font-size: 12px;">Procesa pagos con tarjeta de crédito/débito</p>
+                  </div>
+                  <span class="status-badge" style="background: rgba(255,255,255,0.2); color: #fff; margin-left: auto;">Modo Test</span>
+                </div>
+                <div class="stripe-input-group">
+                  <label>Publishable Key</label>
+                  <input type="text" placeholder="pk_test_..." value="pk_test_51abc...">
+                </div>
+                <div class="stripe-input-group">
+                  <label>Secret Key</label>
+                  <input type="password" placeholder="sk_test_..." value="sk_test_51abc...">
+                </div>
+                <div class="stripe-input-group">
+                  <label>Webhook Secret</label>
+                  <input type="password" placeholder="whsec_..." value="whsec_abc123...">
+                </div>
+                <div class="stripe-input-group">
+                  <label>Webhook URL</label>
+                  <input type="text" value="https://protradingacademyusa.com/api/webhooks/stripe" readonly>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section" style="margin-top: 28px;">
+              <h3 class="settings-section-title">Otras Integraciones</h3>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label"><i class="fa-brands fa-google" style="margin-right: 6px; color: #4285f4;"></i> Google OAuth</div>
+                  <div class="settings-row-desc">Login con cuenta de Google</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label"><i class="fa-brands fa-facebook" style="margin-right: 6px; color: #1877F2;"></i> Facebook OAuth</div>
+                  <div class="settings-row-desc">Login con cuenta de Facebook</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox"><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label"><i class="fa-solid fa-video" style="margin-right: 6px; color: #2D8CFF;"></i> Zoom Integration</div>
+                  <div class="settings-row-desc">Integración para clases en vivo y mentorías</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox"><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label"><i class="fa-brands fa-whatsapp" style="margin-right: 6px; color: #25D366;"></i> WhatsApp Business</div>
+                  <div class="settings-row-desc">Chat de soporte y notificaciones vía WhatsApp</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox"><span class="slider"></span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer" style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button class="btn btn-secondary"><i class="fa-solid fa-vial"></i> Probar Conexiones</button>
+            <button class="btn btn-primary" onclick="AdminToast.success('Integraciones guardadas', 'Las configuraciones de API se han actualizado')">
+              <i class="fa-solid fa-check"></i> Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Security -->
+      <div class="tab-content" id="tab-security">
+        <div class="card">
+          <div class="card-body">
+            <div class="settings-section">
+              <h3 class="settings-section-title">Seguridad de la Cuenta</h3>
+              <p class="settings-section-desc">Protege tu cuenta de administrador</p>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Contraseña Actual</label>
+                  <input type="password" class="form-control" placeholder="Tu contraseña actual">
+                </div>
+                <div></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Nueva Contraseña</label>
+                  <input type="password" class="form-control" placeholder="Mínimo 8 caracteres">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirmar Contraseña</label>
+                  <input type="password" class="form-control" placeholder="Repetir contraseña">
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3 class="settings-section-title">Opciones de Seguridad</h3>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Autenticación de Dos Factores (2FA)</div>
+                  <div class="settings-row-desc">Añadir una capa extra de seguridad a tu cuenta</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox"><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Sesiones Activas</div>
+                  <div class="settings-row-desc">Cerrar todas las sesiones excepto la actual</div>
+                </div>
+                <div class="settings-row-control">
+                  <button class="btn btn-sm btn-danger">Cerrar Sesiones</button>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Protección de Contenido</div>
+                  <div class="settings-row-desc">Prevenir descarga no autorizada de videos (DRM básico)</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Límite de Dispositivos</div>
+                  <div class="settings-row-desc">Máximo de dispositivos simultáneos por usuario</div>
+                </div>
+                <div class="settings-row-control">
+                  <input type="number" class="form-control" value="3" min="1" max="10" style="width: 80px; text-align: center;">
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">Logs de Actividad</div>
+                  <div class="settings-row-desc">Registrar actividad de administradores</div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch"><input type="checkbox" checked><span class="slider"></span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer" style="display: flex; justify-content: flex-end;">
+            <button class="btn btn-primary" onclick="AdminToast.success('Seguridad actualizada', 'Los ajustes de seguridad se han guardado')">
+              <i class="fa-solid fa-check"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

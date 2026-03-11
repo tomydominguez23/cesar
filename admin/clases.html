@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clases - Admin Pro Trading Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">PT</div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">Pro Trading Academy</span>
+        <span class="sidebar-brand-sub">Panel de Administración</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i><span class="nav-item-text">Dashboard</span></a>
+        <a href="estadisticas.html" class="nav-item"><i class="fa-solid fa-chart-mixed"></i><span class="nav-item-text">Estadísticas</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Contenido</div>
+        <a href="cursos.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span class="nav-item-text">Cursos</span></a>
+        <a href="clases.html" class="nav-item active"><i class="fa-solid fa-play-circle"></i><span class="nav-item-text">Clases</span></a>
+        <a href="materiales.html" class="nav-item"><i class="fa-solid fa-file-lines"></i><span class="nav-item-text">Materiales</span></a>
+        <a href="media.html" class="nav-item"><i class="fa-solid fa-image"></i><span class="nav-item-text">Mediateca</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Comercial</div>
+        <a href="usuarios.html" class="nav-item"><i class="fa-solid fa-users"></i><span class="nav-item-text">Usuarios</span><span class="badge">3</span></a>
+        <a href="planes.html" class="nav-item"><i class="fa-solid fa-credit-card"></i><span class="nav-item-text">Planes y Pagos</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="configuracion.html" class="nav-item"><i class="fa-solid fa-gear"></i><span class="nav-item-text">Configuración</span></a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">AD</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin</div>
+          <div class="sidebar-user-role">Super Administrador</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="header-title">
+          <h1>Clases</h1>
+          <p>Gestiona las clases y lecciones en video</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar clases...">
+        </div>
+        <button class="header-btn"><i class="fa-solid fa-bell"></i><span class="notification-dot"></span></button>
+        <div class="header-divider"></div>
+        <button class="header-btn" onclick="window.location.href='../index.html'"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h2 style="font-size: 15px; color: var(--gray-500); font-weight: 500;">188 clases en total · 45h 30min de contenido</h2>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-secondary"><i class="fa-solid fa-filter"></i> Filtrar</button>
+          <button class="btn btn-primary" onclick="AdminModal.open('modal-lesson')"><i class="fa-solid fa-plus"></i> Nueva Clase</button>
+        </div>
+      </div>
+
+      <!-- KPI Row -->
+      <div class="kpi-grid" style="margin-bottom: 24px;">
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Total Clases</h4>
+            <div class="kpi-value">188</div>
+          </div>
+          <div class="kpi-icon primary"><i class="fa-solid fa-play-circle"></i></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Horas de Video</h4>
+            <div class="kpi-value">45.5h</div>
+          </div>
+          <div class="kpi-icon accent"><i class="fa-solid fa-clock"></i></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Vistas Totales</h4>
+            <div class="kpi-value">12,847</div>
+          </div>
+          <div class="kpi-icon secondary"><i class="fa-solid fa-eye"></i></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Promedio Completado</h4>
+            <div class="kpi-value">73%</div>
+          </div>
+          <div class="kpi-icon info"><i class="fa-solid fa-check-circle"></i></div>
+        </div>
+      </div>
+
+      <!-- Lessons Table -->
+      <div class="card">
+        <div class="table-controls">
+          <div class="table-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Buscar por nombre..." oninput="filterTable(this, 'lessonsTable')">
+          </div>
+          <div class="table-filters">
+            <select class="form-control" style="width: 180px; height: 38px; font-size: 13px;">
+              <option value="">Todos los cursos</option>
+              <option>Primeros Pasos</option>
+              <option>El Mercado</option>
+              <option>Análisis Técnico</option>
+              <option>Trading Avanzado</option>
+            </select>
+            <select class="form-control" style="width: 150px; height: 38px; font-size: 13px;">
+              <option value="">Todos los estados</option>
+              <option>Publicado</option>
+              <option>Borrador</option>
+              <option>Programado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="admin-table" id="lessonsTable">
+            <thead>
+              <tr>
+                <th style="width: 40px;"><input type="checkbox"></th>
+                <th>Clase</th>
+                <th>Curso / Módulo</th>
+                <th>Duración</th>
+                <th>Vistas</th>
+                <th>Completado</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                    <div>
+                      <strong>¿Qué es el Trading?</strong>
+                      <div class="text-small text-muted">Lección introductoria</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>Primeros Pasos</div>
+                  <div class="text-small text-muted">Módulo 1: Introducción</div>
+                </td>
+                <td>15:30</td>
+                <td>1,234</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <div class="progress-bar" style="width: 60px;"><div class="progress-bar-fill" style="width: 92%;"></div></div>
+                    <span class="text-small">92%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge active">Publicado</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar" onclick="AdminModal.open('modal-lesson')"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Vista previa"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                    <div>
+                      <strong>Tipos de Mercados Financieros</strong>
+                      <div class="text-small text-muted">Forex, Acciones, Futuros</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>Primeros Pasos</div>
+                  <div class="text-small text-muted">Módulo 1: Introducción</div>
+                </td>
+                <td>22:15</td>
+                <td>987</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <div class="progress-bar" style="width: 60px;"><div class="progress-bar-fill accent" style="width: 85%;"></div></div>
+                    <span class="text-small">85%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge active">Publicado</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Vista previa"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                    <div>
+                      <strong>Configuración de MT4</strong>
+                      <div class="text-small text-muted">Setup paso a paso</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>Primeros Pasos</div>
+                  <div class="text-small text-muted">Módulo 2: Plataformas</div>
+                </td>
+                <td>18:45</td>
+                <td>756</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <div class="progress-bar" style="width: 60px;"><div class="progress-bar-fill gold" style="width: 78%;"></div></div>
+                    <span class="text-small">78%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge active">Publicado</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Vista previa"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                    <div>
+                      <strong>Velas Japonesas: La Guía Completa</strong>
+                      <div class="text-small text-muted">Patrones más importantes</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>Análisis Técnico</div>
+                  <div class="text-small text-muted">Módulo 1: Fundamentos</div>
+                </td>
+                <td>35:20</td>
+                <td>643</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <div class="progress-bar" style="width: 60px;"><div class="progress-bar-fill" style="width: 62%;"></div></div>
+                    <span class="text-small">62%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge active">Publicado</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Vista previa"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                    <div>
+                      <strong>Estrategia de Scalping Avanzada</strong>
+                      <div class="text-small text-muted">Trading intradía</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>Trading Avanzado</div>
+                  <div class="text-small text-muted">Módulo 5: Estrategias</div>
+                </td>
+                <td>42:10</td>
+                <td>312</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <div class="progress-bar" style="width: 60px;"><div class="progress-bar-fill accent" style="width: 45%;"></div></div>
+                    <span class="text-small">45%</span>
+                  </div>
+                </td>
+                <td><span class="status-badge active">Publicado</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn" title="Vista previa"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                    <div>
+                      <strong>Position Sizing y Money Management</strong>
+                      <div class="text-small text-muted">Gestión de capital</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div>Gestión de Riesgo</div>
+                  <div class="text-small text-muted">Módulo 3: Capital</div>
+                </td>
+                <td>28:55</td>
+                <td>0</td>
+                <td>—</td>
+                <td><span class="status-badge draft">Borrador</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn success" title="Publicar"><i class="fa-solid fa-check"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-pagination">
+          <span>Mostrando 1-6 de 188 clases</span>
+          <div class="pagination-btns">
+            <button class="pagination-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn">...</button>
+            <button class="pagination-btn">32</button>
+            <button class="pagination-btn"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Nueva/Editar Clase -->
+<div class="modal-overlay" id="modal-lesson">
+  <div class="modal xlarge">
+    <div class="modal-header">
+      <h3>Nueva Clase</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="tab-info">Información</div>
+        <div class="tab" data-tab="tab-video">Video</div>
+        <div class="tab" data-tab="tab-materials">Materiales</div>
+        <div class="tab" data-tab="tab-settings">Configuración</div>
+      </div>
+
+      <!-- Tab: Información -->
+      <div class="tab-content active" id="tab-info">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Título de la Clase <span class="required">*</span></label>
+            <input type="text" class="form-control" placeholder="Ej: Introducción a Velas Japonesas">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Slug</label>
+            <input type="text" class="form-control" placeholder="introduccion-velas-japonesas">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Descripción <span class="required">*</span></label>
+          <textarea class="form-control" rows="4" placeholder="Describe el contenido de esta clase..."></textarea>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label">Curso <span class="required">*</span></label>
+            <select class="form-control">
+              <option value="">Seleccionar curso...</option>
+              <option>Primeros Pasos</option>
+              <option>El Mercado</option>
+              <option>Análisis Técnico</option>
+              <option>Trading Avanzado</option>
+              <option>Gestión de Riesgo</option>
+              <option>Psicología del Trading</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Módulo <span class="required">*</span></label>
+            <select class="form-control">
+              <option value="">Seleccionar módulo...</option>
+              <option>Módulo 1: Introducción al Trading</option>
+              <option>Módulo 2: Plataformas de Trading</option>
+              <option>Módulo 3: Lectura de Gráficos</option>
+              <option>Módulo 4: Tu Primera Operación</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Orden en Módulo</label>
+            <input type="number" class="form-control" placeholder="1" min="1">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Imagen de Miniatura</label>
+          <div class="file-upload-area" style="padding: 24px;">
+            <input type="file" accept="image/*">
+            <div class="file-upload-icon" style="font-size: 28px;"><i class="fa-solid fa-image"></i></div>
+            <div class="file-upload-text">Arrastra una imagen o <strong>haz clic para seleccionar</strong></div>
+            <div class="file-upload-hint">PNG, JPG. Recomendado: 1280x720px</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Video -->
+      <div class="tab-content" id="tab-video">
+        <div class="form-group">
+          <label class="form-label">Tipo de Video</label>
+          <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+            <label class="form-check">
+              <input type="radio" name="video-type" value="upload" checked> Subir archivo
+            </label>
+            <label class="form-check">
+              <input type="radio" name="video-type" value="url"> URL externa
+            </label>
+            <label class="form-check">
+              <input type="radio" name="video-type" value="youtube"> YouTube
+            </label>
+            <label class="form-check">
+              <input type="radio" name="video-type" value="vimeo"> Vimeo
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" id="video-upload-section">
+          <label class="form-label">Archivo de Video</label>
+          <div class="file-upload-area">
+            <input type="file" accept="video/*">
+            <div class="file-upload-icon"><i class="fa-solid fa-video"></i></div>
+            <div class="file-upload-text">Arrastra el video o <strong>haz clic para seleccionar</strong></div>
+            <div class="file-upload-hint">MP4, WebM o MOV. Máximo 500MB</div>
+          </div>
+        </div>
+
+        <div class="form-group hidden" id="video-url-section">
+          <label class="form-label">URL del Video</label>
+          <input type="url" class="form-control" placeholder="https://...">
+          <div class="form-hint">URL directa al archivo de video o embed</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Duración</label>
+            <input type="text" class="form-control" placeholder="Ej: 15:30">
+            <div class="form-hint">Formato: MM:SS o HH:MM:SS</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Calidad Máxima</label>
+            <select class="form-control">
+              <option>1080p</option>
+              <option>720p</option>
+              <option>480p</option>
+              <option>4K</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Subtítulos (SRT)</label>
+          <div class="file-upload-area" style="padding: 20px;">
+            <input type="file" accept=".srt,.vtt">
+            <div class="file-upload-icon" style="font-size: 24px;"><i class="fa-solid fa-closed-captioning"></i></div>
+            <div class="file-upload-text"><strong>Subir archivo de subtítulos</strong></div>
+            <div class="file-upload-hint">Formatos: SRT, VTT</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Materiales -->
+      <div class="tab-content" id="tab-materials">
+        <div class="form-group">
+          <label class="form-label">Materiales de Apoyo</label>
+          <div class="file-upload-area">
+            <input type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip">
+            <div class="file-upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
+            <div class="file-upload-text">Arrastra archivos o <strong>haz clic para seleccionar</strong></div>
+            <div class="file-upload-hint">PDF, DOC, XLS, PPT, ZIP. Máximo 50MB por archivo</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Recursos Externos</label>
+          <div style="display: flex; flex-direction: column; gap: 10px;" id="external-resources">
+            <div style="display: flex; gap: 8px;">
+              <input type="text" class="form-control" placeholder="Nombre del recurso" style="flex: 1;">
+              <input type="url" class="form-control" placeholder="URL" style="flex: 2;">
+              <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-secondary mt-2" onclick="addResourceRow()"><i class="fa-solid fa-plus"></i> Añadir Recurso</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Notas de la Clase</label>
+          <textarea class="form-control" rows="5" placeholder="Notas adicionales que verán los estudiantes..."></textarea>
+        </div>
+      </div>
+
+      <!-- Tab: Configuración -->
+      <div class="tab-content" id="tab-settings">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Estado</label>
+            <select class="form-control">
+              <option value="draft">Borrador</option>
+              <option value="published">Publicado</option>
+              <option value="scheduled">Programado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fecha de Publicación</label>
+            <input type="datetime-local" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="settings-row" style="border: none; padding: 12px 0;">
+            <div class="settings-row-info">
+              <div class="settings-row-label">Clase Gratuita</div>
+              <div class="settings-row-desc">Permitir acceso sin suscripción activa (vista previa)</div>
+            </div>
+            <div class="settings-row-control">
+              <label class="form-switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="settings-row" style="border: none; padding: 12px 0;">
+            <div class="settings-row-info">
+              <div class="settings-row-label">Permitir Descargas</div>
+              <div class="settings-row-desc">Los estudiantes podrán descargar el video</div>
+            </div>
+            <div class="settings-row-control">
+              <label class="form-switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="settings-row" style="border: none; padding: 12px 0;">
+            <div class="settings-row-info">
+              <div class="settings-row-label">Comentarios</div>
+              <div class="settings-row-desc">Permitir comentarios en esta clase</div>
+            </div>
+            <div class="settings-row-control">
+              <label class="form-switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Requisitos Previos</label>
+          <select class="form-control" multiple style="height: auto; min-height: 80px; padding: 8px;">
+            <option>¿Qué es el Trading?</option>
+            <option>Tipos de Mercados Financieros</option>
+            <option>Configuración de MT4</option>
+          </select>
+          <div class="form-hint">Mantén Ctrl para seleccionar múltiples</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Meta Descripción (SEO)</label>
+          <textarea class="form-control" rows="2" placeholder="Descripción para motores de búsqueda..."></textarea>
+          <div class="form-hint">Recomendado: 150-160 caracteres</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="AdminModal.close('modal-lesson')">Cancelar</button>
+      <button class="btn btn-outline">Guardar como Borrador</button>
+      <button class="btn btn-primary" onclick="AdminToast.success('Clase creada', 'La clase se ha guardado exitosamente'); AdminModal.close('modal-lesson');">
+        <i class="fa-solid fa-check"></i> Publicar Clase
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+  // Video type toggle
+  document.querySelectorAll('input[name="video-type"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const uploadSection = document.getElementById('video-upload-section');
+      const urlSection = document.getElementById('video-url-section');
+      if (radio.value === 'upload') {
+        uploadSection.classList.remove('hidden');
+        urlSection.classList.add('hidden');
+      } else {
+        uploadSection.classList.add('hidden');
+        urlSection.classList.remove('hidden');
+      }
+    });
+  });
+
+  function addResourceRow() {
+    const container = document.getElementById('external-resources');
+    const row = document.createElement('div');
+    row.style.cssText = 'display: flex; gap: 8px;';
+    row.innerHTML = `
+      <input type="text" class="form-control" placeholder="Nombre del recurso" style="flex: 1;">
+      <input type="url" class="form-control" placeholder="URL" style="flex: 2;">
+      <button class="btn btn-sm btn-danger" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+    `;
+    container.appendChild(row);
+  }
+</script>
+</body>
+</html>

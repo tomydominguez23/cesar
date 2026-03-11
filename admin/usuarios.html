@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios - Admin Pro Trading Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">PT</div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">Pro Trading Academy</span>
+        <span class="sidebar-brand-sub">Panel de Administración</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i><span class="nav-item-text">Dashboard</span></a>
+        <a href="estadisticas.html" class="nav-item"><i class="fa-solid fa-chart-mixed"></i><span class="nav-item-text">Estadísticas</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Contenido</div>
+        <a href="cursos.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span class="nav-item-text">Cursos</span></a>
+        <a href="clases.html" class="nav-item"><i class="fa-solid fa-play-circle"></i><span class="nav-item-text">Clases</span></a>
+        <a href="materiales.html" class="nav-item"><i class="fa-solid fa-file-lines"></i><span class="nav-item-text">Materiales</span></a>
+        <a href="media.html" class="nav-item"><i class="fa-solid fa-image"></i><span class="nav-item-text">Mediateca</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Comercial</div>
+        <a href="usuarios.html" class="nav-item active"><i class="fa-solid fa-users"></i><span class="nav-item-text">Usuarios</span><span class="badge">3</span></a>
+        <a href="planes.html" class="nav-item"><i class="fa-solid fa-credit-card"></i><span class="nav-item-text">Planes y Pagos</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="configuracion.html" class="nav-item"><i class="fa-solid fa-gear"></i><span class="nav-item-text">Configuración</span></a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">AD</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin</div>
+          <div class="sidebar-user-role">Super Administrador</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="header-title">
+          <h1>Usuarios</h1>
+          <p>Gestiona estudiantes y suscripciones</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar usuarios...">
+        </div>
+        <button class="header-btn"><i class="fa-solid fa-bell"></i><span class="notification-dot"></span></button>
+        <div class="header-divider"></div>
+        <button class="header-btn" onclick="window.location.href='../index.html'"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Total Usuarios</h4>
+            <div class="kpi-value">362</div>
+            <div class="kpi-change positive"><i class="fa-solid fa-arrow-up"></i> +15 este mes</div>
+          </div>
+          <div class="kpi-icon primary"><i class="fa-solid fa-users"></i></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Activos</h4>
+            <div class="kpi-value">298</div>
+            <div class="kpi-change positive"><i class="fa-solid fa-arrow-up"></i> 82.3%</div>
+          </div>
+          <div class="kpi-icon success"><i class="fa-solid fa-user-check"></i></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Nuevos (30d)</h4>
+            <div class="kpi-value">95</div>
+            <div class="kpi-change positive"><i class="fa-solid fa-arrow-up"></i> +22.4%</div>
+          </div>
+          <div class="kpi-icon accent"><i class="fa-solid fa-user-plus"></i></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Churn Rate</h4>
+            <div class="kpi-value">3.2%</div>
+            <div class="kpi-change negative"><i class="fa-solid fa-arrow-up"></i> +0.8%</div>
+          </div>
+          <div class="kpi-icon danger"><i class="fa-solid fa-user-minus"></i></div>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="card">
+        <div class="table-controls">
+          <div class="table-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Buscar por nombre o email..." oninput="filterTable(this, 'usersTable')">
+          </div>
+          <div class="table-filters">
+            <select class="form-control" style="width: 140px; height: 38px; font-size: 13px;">
+              <option value="">Todos los planes</option>
+              <option>Básico</option>
+              <option>Medio</option>
+              <option>Avanzado</option>
+              <option>Pro Trading</option>
+            </select>
+            <select class="form-control" style="width: 140px; height: 38px; font-size: 13px;">
+              <option value="">Todos</option>
+              <option>Activo</option>
+              <option>Inactivo</option>
+              <option>Cancelado</option>
+            </select>
+            <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-download"></i> Exportar</button>
+            <button class="btn btn-sm btn-primary" onclick="AdminModal.open('modal-user')"><i class="fa-solid fa-plus"></i> Nuevo</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="admin-table" id="usersTable">
+            <thead>
+              <tr>
+                <th style="width: 40px;"><input type="checkbox"></th>
+                <th>Usuario</th>
+                <th>Plan</th>
+                <th>Estado</th>
+                <th>Progreso</th>
+                <th>Ingreso</th>
+                <th>Registro</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div class="table-user">
+                    <div class="table-avatar" style="background: var(--gradient-gold); color: var(--dark);">CR</div>
+                    <div class="table-user-info">
+                      <span class="table-user-name">Carlos Rodríguez</span>
+                      <span class="table-user-email">carlos@email.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="plan-badge pro">Pro</span></td>
+                <td><span class="status-badge active">Activo</span></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="progress-bar" style="width: 70px;"><div class="progress-bar-fill" style="width: 78%;"></div></div>
+                    <span class="text-small">78%</span>
+                  </div>
+                </td>
+                <td><strong>$1,799</strong></td>
+                <td>15 Nov 2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Ver detalle" onclick="AdminModal.open('modal-user-detail')"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn" title="Editar" onclick="AdminModal.open('modal-user')"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div class="table-user">
+                    <div class="table-avatar" style="background: var(--gradient-accent); color: var(--dark);">MG</div>
+                    <div class="table-user-info">
+                      <span class="table-user-name">María García</span>
+                      <span class="table-user-email">maria@email.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="plan-badge avanzado">Avanzado</span></td>
+                <td><span class="status-badge active">Activo</span></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="progress-bar" style="width: 70px;"><div class="progress-bar-fill accent" style="width: 45%;"></div></div>
+                    <span class="text-small">45%</span>
+                  </div>
+                </td>
+                <td><strong>$1,000</strong></td>
+                <td>1 Dic 2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div class="table-user">
+                    <div class="table-avatar" style="background: var(--gradient-primary); color: #fff;">JM</div>
+                    <div class="table-user-info">
+                      <span class="table-user-name">Juan Martínez</span>
+                      <span class="table-user-email">juan@email.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="plan-badge medio">Medio</span></td>
+                <td><span class="status-badge active">Activo</span></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="progress-bar" style="width: 70px;"><div class="progress-bar-fill gold" style="width: 62%;"></div></div>
+                    <span class="text-small">62%</span>
+                  </div>
+                </td>
+                <td><strong>$699</strong></td>
+                <td>10 Ene 2026</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div class="table-user">
+                    <div class="table-avatar" style="background: #eef0f3; color: var(--gray-600);">PS</div>
+                    <div class="table-user-info">
+                      <span class="table-user-name">Pedro Sánchez</span>
+                      <span class="table-user-email">pedro@email.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="plan-badge pro">Pro</span></td>
+                <td><span class="status-badge active">Activo</span></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="progress-bar" style="width: 70px;"><div class="progress-bar-fill" style="width: 91%;"></div></div>
+                    <span class="text-small">91%</span>
+                  </div>
+                </td>
+                <td><strong>$1,799</strong></td>
+                <td>5 Oct 2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div class="table-user">
+                    <div class="table-avatar" style="background: #eef0f3; color: var(--gray-600);">LT</div>
+                    <div class="table-user-info">
+                      <span class="table-user-name">Laura Torres</span>
+                      <span class="table-user-email">laura@email.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="plan-badge avanzado">Avanzado</span></td>
+                <td><span class="status-badge inactive">Inactivo</span></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="progress-bar" style="width: 70px;"><div class="progress-bar-fill" style="width: 55%;"></div></div>
+                    <span class="text-small">55%</span>
+                  </div>
+                </td>
+                <td><strong>$1,000</strong></td>
+                <td>20 Sep 2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div class="table-user">
+                    <div class="table-avatar" style="background: #eef0f3; color: var(--gray-600);">DH</div>
+                    <div class="table-user-info">
+                      <span class="table-user-name">Diego Hernández</span>
+                      <span class="table-user-email">diego@email.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="plan-badge basico">Básico</span></td>
+                <td><span class="status-badge cancelled">Cancelado</span></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="progress-bar" style="width: 70px;"><div class="progress-bar-fill danger" style="width: 22%;"></div></div>
+                    <span class="text-small">22%</span>
+                  </div>
+                </td>
+                <td><strong>$399</strong></td>
+                <td>15 Ago 2025</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td>
+                  <div class="table-user">
+                    <div class="table-avatar" style="background: var(--gradient-gold); color: var(--dark);">SR</div>
+                    <div class="table-user-info">
+                      <span class="table-user-name">Sofia Ramírez</span>
+                      <span class="table-user-email">sofia@email.com</span>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="plan-badge pro">Pro</span></td>
+                <td><span class="status-badge active">Activo</span></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="progress-bar" style="width: 70px;"><div class="progress-bar-fill accent" style="width: 68%;"></div></div>
+                    <span class="text-small">68%</span>
+                  </div>
+                </td>
+                <td><strong>$1,799</strong></td>
+                <td>5 Ene 2026</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="table-action-btn" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
+                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-pagination">
+          <span>Mostrando 1-7 de 362 usuarios</span>
+          <div class="pagination-btns">
+            <button class="pagination-btn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn">...</button>
+            <button class="pagination-btn">52</button>
+            <button class="pagination-btn"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Nuevo/Editar Usuario -->
+<div class="modal-overlay" id="modal-user">
+  <div class="modal large">
+    <div class="modal-header">
+      <h3>Nuevo Usuario</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nombre Completo <span class="required">*</span></label>
+          <input type="text" class="form-control" placeholder="Nombre y apellido">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email <span class="required">*</span></label>
+          <input type="email" class="form-control" placeholder="email@ejemplo.com">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Teléfono</label>
+          <input type="tel" class="form-control" placeholder="+1 (555) 000-0000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">País</label>
+          <select class="form-control">
+            <option value="">Seleccionar...</option>
+            <option>Estados Unidos</option>
+            <option>México</option>
+            <option>Colombia</option>
+            <option>Argentina</option>
+            <option>España</option>
+            <option>Chile</option>
+            <option>Perú</option>
+            <option>Ecuador</option>
+            <option>Venezuela</option>
+            <option>Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Plan <span class="required">*</span></label>
+          <select class="form-control">
+            <option value="">Seleccionar plan...</option>
+            <option value="basico">Básico ($399)</option>
+            <option value="medio">Medio ($699)</option>
+            <option value="avanzado">Avanzado ($1,000)</option>
+            <option value="pro">Pro Trading ($1,799)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estado</label>
+          <select class="form-control">
+            <option value="active">Activo</option>
+            <option value="inactive">Inactivo</option>
+            <option value="suspended">Suspendido</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Contraseña Temporal</label>
+        <input type="password" class="form-control" placeholder="Se enviará por email al usuario">
+        <div class="form-hint">El usuario recibirá un email con la contraseña temporal y un enlace para cambiarla</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Notas Internas</label>
+        <textarea class="form-control" rows="2" placeholder="Notas internas sobre el usuario (no visibles para el estudiante)..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <div class="settings-row" style="border: none; padding: 8px 0;">
+          <div class="settings-row-info">
+            <div class="settings-row-label">Enviar email de bienvenida</div>
+            <div class="settings-row-desc">Se enviará un email con credenciales y guía de inicio</div>
+          </div>
+          <div class="settings-row-control">
+            <label class="form-switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="AdminModal.close('modal-user')">Cancelar</button>
+      <button class="btn btn-primary" onclick="AdminToast.success('Usuario creado', 'Se ha enviado el email de bienvenida'); AdminModal.close('modal-user');">
+        <i class="fa-solid fa-check"></i> Crear Usuario
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Detalle de Usuario -->
+<div class="modal-overlay" id="modal-user-detail">
+  <div class="modal xlarge">
+    <div class="modal-header">
+      <h3>Detalle del Usuario</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="display: flex; gap: 24px; margin-bottom: 24px;">
+        <div style="flex-shrink: 0;">
+          <div class="table-avatar" style="width: 64px; height: 64px; font-size: 22px; background: var(--gradient-gold); color: var(--dark);">CR</div>
+        </div>
+        <div style="flex: 1;">
+          <h3 style="font-size: 20px; font-weight: 700; color: var(--dark);">Carlos Rodríguez</h3>
+          <p style="color: var(--gray-500); margin-top: 2px;">carlos@email.com · +1 (555) 123-4567</p>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <span class="plan-badge pro">Pro Trading</span>
+            <span class="status-badge active">Activo</span>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 12px; color: var(--gray-500);">Ingreso Total</div>
+          <div style="font-size: 24px; font-weight: 800; color: var(--dark);">$1,799</div>
+          <div style="font-size: 12px; color: var(--gray-500); margin-top: 4px;">Registro: 15 Nov 2025</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="detail-progress">Progreso</div>
+        <div class="tab" data-tab="detail-activity">Actividad</div>
+        <div class="tab" data-tab="detail-payments">Pagos</div>
+      </div>
+
+      <div class="tab-content active" id="detail-progress">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <div>
+            <span style="font-size: 28px; font-weight: 800; color: var(--dark);">78%</span>
+            <span style="color: var(--gray-500); font-size: 14px; margin-left: 4px;">completado general</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 13.5px; font-weight: 600;">Primeros Pasos</span>
+              <span style="font-size: 13px; color: var(--gray-500);">18/18 clases</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width: 100%;"></div></div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 13.5px; font-weight: 600;">El Mercado</span>
+              <span style="font-size: 13px; color: var(--gray-500);">28/32 clases</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar-fill accent" style="width: 87%;"></div></div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 13.5px; font-weight: 600;">Análisis Técnico</span>
+              <span style="font-size: 13px; color: var(--gray-500);">32/45 clases</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar-fill gold" style="width: 71%;"></div></div>
+          </div>
+          <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 13.5px; font-weight: 600;">Trading Avanzado</span>
+              <span style="font-size: 13px; color: var(--gray-500);">15/56 clases</span>
+            </div>
+            <div class="progress-bar"><div class="progress-bar-fill" style="width: 27%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="detail-activity">
+        <div class="activity-feed">
+          <div class="activity-item">
+            <div class="activity-icon course"><i class="fa-solid fa-play"></i></div>
+            <div class="activity-content">
+              <div class="activity-text">Completó la clase <strong>Estrategia Fibonacci</strong></div>
+              <div class="activity-time">Hace 2 horas</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon course"><i class="fa-solid fa-play"></i></div>
+            <div class="activity-content">
+              <div class="activity-text">Inició la clase <strong>Price Action Avanzado</strong></div>
+              <div class="activity-time">Hace 3 horas</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon new-user"><i class="fa-solid fa-download"></i></div>
+            <div class="activity-content">
+              <div class="activity-text">Descargó <strong>Cheat Sheet Patrones de Velas</strong></div>
+              <div class="activity-time">Ayer</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon course"><i class="fa-solid fa-check"></i></div>
+            <div class="activity-content">
+              <div class="activity-text">Completó el módulo <strong>Análisis Técnico - Módulo 5</strong></div>
+              <div class="activity-time">Hace 3 días</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="detail-payments">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Concepto</th>
+              <th>Método</th>
+              <th>Estado</th>
+              <th>Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>15 Nov 2025</td>
+              <td>Plan Pro Trading</td>
+              <td><i class="fa-brands fa-stripe" style="color: #635bff; font-size: 16px;"></i> Visa ****4242</td>
+              <td><span class="status-badge active">Completado</span></td>
+              <td><strong>$1,799.00</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm"><i class="fa-solid fa-ban"></i> Suspender</button>
+      <div style="flex: 1;"></div>
+      <button class="btn btn-secondary" onclick="AdminModal.close('modal-user-detail')">Cerrar</button>
+      <button class="btn btn-primary"><i class="fa-solid fa-pen"></i> Editar Usuario</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
