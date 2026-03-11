@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Admin Pro Trading Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">PT</div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">Pro Trading Academy</span>
+        <span class="sidebar-brand-sub">Panel de Administración</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="index.html" class="nav-item active">
+          <i class="fa-solid fa-grid-2"></i>
+          <span class="nav-item-text">Dashboard</span>
+        </a>
+        <a href="estadisticas.html" class="nav-item">
+          <i class="fa-solid fa-chart-mixed"></i>
+          <span class="nav-item-text">Estadísticas</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Contenido</div>
+        <a href="cursos.html" class="nav-item">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span class="nav-item-text">Cursos</span>
+        </a>
+        <a href="clases.html" class="nav-item">
+          <i class="fa-solid fa-play-circle"></i>
+          <span class="nav-item-text">Clases</span>
+        </a>
+        <a href="materiales.html" class="nav-item">
+          <i class="fa-solid fa-file-lines"></i>
+          <span class="nav-item-text">Materiales</span>
+        </a>
+        <a href="media.html" class="nav-item">
+          <i class="fa-solid fa-image"></i>
+          <span class="nav-item-text">Mediateca</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Comercial</div>
+        <a href="usuarios.html" class="nav-item">
+          <i class="fa-solid fa-users"></i>
+          <span class="nav-item-text">Usuarios</span>
+          <span class="badge">3</span>
+        </a>
+        <a href="planes.html" class="nav-item">
+          <i class="fa-solid fa-credit-card"></i>
+          <span class="nav-item-text">Planes y Pagos</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="configuracion.html" class="nav-item">
+          <i class="fa-solid fa-gear"></i>
+          <span class="nav-item-text">Configuración</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">AD</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin</div>
+          <div class="sidebar-user-role">Super Administrador</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="header-title">
+          <h1>Dashboard</h1>
+          <p>Resumen general de la plataforma</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar...">
+        </div>
+        <button class="header-btn">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notification-dot"></span>
+        </button>
+        <div class="header-divider"></div>
+        <button class="header-btn" onclick="window.location.href='../index.html'">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="admin-content">
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Estudiantes Totales</h4>
+            <div class="kpi-value">362</div>
+            <div class="kpi-change positive">
+              <i class="fa-solid fa-arrow-up"></i> +12.5%
+            </div>
+          </div>
+          <div class="kpi-icon primary">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Ingresos del Mes</h4>
+            <div class="kpi-value">$67,800</div>
+            <div class="kpi-change positive">
+              <i class="fa-solid fa-arrow-up"></i> +8.7%
+            </div>
+          </div>
+          <div class="kpi-icon accent">
+            <i class="fa-solid fa-dollar-sign"></i>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Planes Activos</h4>
+            <div class="kpi-value">298</div>
+            <div class="kpi-change positive">
+              <i class="fa-solid fa-arrow-up"></i> +5.2%
+            </div>
+          </div>
+          <div class="kpi-icon secondary">
+            <i class="fa-solid fa-credit-card"></i>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h4>Tasa de Completado</h4>
+            <div class="kpi-value">64.3%</div>
+            <div class="kpi-change negative">
+              <i class="fa-solid fa-arrow-down"></i> -2.1%
+            </div>
+          </div>
+          <div class="kpi-icon info">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid-2 mb-3">
+        <!-- Revenue Chart -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Ingresos Mensuales</h3>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-secondary" data-dropdown>
+                Últimos 12 meses <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-item">Últimos 6 meses</div>
+                <div class="dropdown-item">Últimos 12 meses</div>
+                <div class="dropdown-item">Este año</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Chart -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Nuevos Usuarios</h3>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-secondary" data-dropdown>
+                Últimos 12 meses <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-item">Últimos 6 meses</div>
+                <div class="dropdown-item">Últimos 12 meses</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="usersChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="grid-2">
+        <!-- Popular Courses -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Cursos Más Populares</h3>
+            <a href="cursos.html" class="btn btn-sm btn-secondary">Ver todos</a>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Curso</th>
+                  <th>Estudiantes</th>
+                  <th>Completado</th>
+                  <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Primeros Pasos</strong></td>
+                  <td>342</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div class="progress-bar" style="width: 80px;">
+                        <div class="progress-bar-fill" style="width: 78%;"></div>
+                      </div>
+                      <span class="text-small text-muted">78%</span>
+                    </div>
+                  </td>
+                  <td><i class="fa-solid fa-star" style="color: var(--secondary); font-size: 12px;"></i> 4.8</td>
+                </tr>
+                <tr>
+                  <td><strong>El Mercado</strong></td>
+                  <td>287</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div class="progress-bar" style="width: 80px;">
+                        <div class="progress-bar-fill accent" style="width: 65%;"></div>
+                      </div>
+                      <span class="text-small text-muted">65%</span>
+                    </div>
+                  </td>
+                  <td><i class="fa-solid fa-star" style="color: var(--secondary); font-size: 12px;"></i> 4.7</td>
+                </tr>
+                <tr>
+                  <td><strong>Gestión de Riesgo</strong></td>
+                  <td>234</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div class="progress-bar" style="width: 80px;">
+                        <div class="progress-bar-fill gold" style="width: 52%;"></div>
+                      </div>
+                      <span class="text-small text-muted">52%</span>
+                    </div>
+                  </td>
+                  <td><i class="fa-solid fa-star" style="color: var(--secondary); font-size: 12px;"></i> 4.6</td>
+                </tr>
+                <tr>
+                  <td><strong>Análisis Técnico</strong></td>
+                  <td>198</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div class="progress-bar" style="width: 80px;">
+                        <div class="progress-bar-fill" style="width: 41%;"></div>
+                      </div>
+                      <span class="text-small text-muted">41%</span>
+                    </div>
+                  </td>
+                  <td><i class="fa-solid fa-star" style="color: var(--secondary); font-size: 12px;"></i> 4.9</td>
+                </tr>
+                <tr>
+                  <td><strong>Trading Avanzado</strong></td>
+                  <td>156</td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <div class="progress-bar" style="width: 80px;">
+                        <div class="progress-bar-fill accent" style="width: 34%;"></div>
+                      </div>
+                      <span class="text-small text-muted">34%</span>
+                    </div>
+                  </td>
+                  <td><i class="fa-solid fa-star" style="color: var(--secondary); font-size: 12px;"></i> 4.9</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Actividad Reciente</h3>
+            <button class="btn btn-sm btn-secondary">Ver todo</button>
+          </div>
+          <div class="card-body">
+            <div class="activity-feed">
+              <div class="activity-item">
+                <div class="activity-icon payment">
+                  <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Sofia Ramírez</strong> adquirió el plan <strong>Pro Trading</strong></div>
+                  <div class="activity-time">Hace 12 minutos</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon new-user">
+                  <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Carmen Flores</strong> se registró en la plataforma</div>
+                  <div class="activity-time">Hace 1 hora</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon course">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Pedro Sánchez</strong> completó <strong>Trading Avanzado - Módulo 8</strong></div>
+                  <div class="activity-time">Hace 2 horas</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon payment">
+                  <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Roberto Díaz</strong> adquirió el plan <strong>Medio</strong></div>
+                  <div class="activity-time">Hace 3 horas</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon alert">
+                  <i class="fa-solid fa-exclamation"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Diego Hernández</strong> canceló su suscripción</div>
+                  <div class="activity-time">Hace 5 horas</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon new-user">
+                  <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-text"><strong>Ana López</strong> se registró en la plataforma</div>
+                  <div class="activity-time">Hace 8 horas</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plans Distribution -->
+      <div class="grid-3 mt-3">
+        <div class="card">
+          <div class="card-header">
+            <h3>Distribución por Plan</h3>
+          </div>
+          <div class="card-body">
+            <div class="chart-container small">
+              <canvas id="plansChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Embudo de Conversión</h3>
+          </div>
+          <div class="card-body">
+            <div class="funnel-chart">
+              <div class="funnel-step">
+                <span class="funnel-label">Visitantes</span>
+                <div class="funnel-bar" style="width: 100%; background: var(--gradient-primary);">4,820</div>
+              </div>
+              <div class="funnel-step">
+                <span class="funnel-label">Registros</span>
+                <div class="funnel-bar" style="width: 65%; background: var(--info);">1,245</div>
+              </div>
+              <div class="funnel-step">
+                <span class="funnel-label">Trial</span>
+                <div class="funnel-bar" style="width: 40%; background: var(--accent);">687</div>
+              </div>
+              <div class="funnel-step">
+                <span class="funnel-label">Compra</span>
+                <div class="funnel-bar" style="width: 22%; background: var(--secondary);">362</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Acciones Rápidas</h3>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <a href="cursos.html" class="btn btn-primary" style="justify-content: flex-start;">
+                <i class="fa-solid fa-plus"></i> Nuevo Curso
+              </a>
+              <a href="clases.html" class="btn btn-accent" style="justify-content: flex-start;">
+                <i class="fa-solid fa-video"></i> Subir Clase
+              </a>
+              <a href="materiales.html" class="btn btn-outline" style="justify-content: flex-start;">
+                <i class="fa-solid fa-file-arrow-up"></i> Subir Material
+              </a>
+              <a href="usuarios.html" class="btn btn-outline" style="justify-content: flex-start;">
+                <i class="fa-solid fa-user-plus"></i> Añadir Usuario
+              </a>
+              <a href="planes.html" class="btn btn-outline" style="justify-content: flex-start;">
+                <i class="fa-solid fa-tags"></i> Gestionar Planes
+              </a>
+              <a href="media.html" class="btn btn-outline" style="justify-content: flex-start;">
+                <i class="fa-solid fa-images"></i> Subir Imágenes
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  // Revenue Chart
+  createChart('revenueChart', {
+    type: 'bar',
+    data: {
+      labels: AdminData.monthLabels,
+      datasets: [{
+        label: 'Ingresos',
+        data: AdminData.monthlyRevenue,
+        backgroundColor: AdminData.monthlyRevenue.map((_, i) =>
+          i === AdminData.monthlyRevenue.length - 1 ? chartColors.accent : chartColors.primaryLight
+        ),
+        borderColor: AdminData.monthlyRevenue.map((_, i) =>
+          i === AdminData.monthlyRevenue.length - 1 ? chartColors.accent : chartColors.primary
+        ),
+        borderWidth: 1,
+        borderRadius: 6,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      ...defaultChartOptions,
+      plugins: {
+        ...defaultChartOptions.plugins,
+        tooltip: {
+          ...defaultChartOptions.plugins.tooltip,
+          callbacks: {
+            label: (ctx) => `Ingresos: ${formatCurrency(ctx.raw)}`
+          }
+        }
+      },
+      scales: {
+        ...defaultChartOptions.scales,
+        y: {
+          ...defaultChartOptions.scales.y,
+          ticks: {
+            ...defaultChartOptions.scales.y.ticks,
+            callback: (v) => '$' + (v / 1000) + 'k'
+          }
+        }
+      }
+    }
+  });
+
+  // Users Chart
+  createChart('usersChart', {
+    type: 'line',
+    data: {
+      labels: AdminData.monthLabels,
+      datasets: [{
+        label: 'Nuevos Usuarios',
+        data: AdminData.monthlyUsers,
+        borderColor: chartColors.accent,
+        backgroundColor: chartColors.accentLight,
+        borderWidth: 2.5,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: chartColors.accent,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: defaultChartOptions
+  });
+
+  // Plans Distribution Chart
+  createChart('plansChart', {
+    type: 'doughnut',
+    data: {
+      labels: ['Básico', 'Medio', 'Avanzado', 'Pro Trading'],
+      datasets: [{
+        data: [89, 134, 87, 52],
+        backgroundColor: ['#6b7280', '#3b82f6', '#8b5cf6', '#e8a838'],
+        borderWidth: 0,
+        borderRadius: 4,
+        spacing: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            font: { family: 'Inter', size: 12 },
+            padding: 16,
+            usePointStyle: true,
+            pointStyleWidth: 10
+          }
+        },
+        tooltip: {
+          ...defaultChartOptions.plugins.tooltip,
+          callbacks: {
+            label: (ctx) => ` ${ctx.label}: ${ctx.raw} estudiantes`
+          }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>

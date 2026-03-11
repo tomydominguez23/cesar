@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mediateca - Admin Pro Trading Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">PT</div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">Pro Trading Academy</span>
+        <span class="sidebar-brand-sub">Panel de Administración</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i><span class="nav-item-text">Dashboard</span></a>
+        <a href="estadisticas.html" class="nav-item"><i class="fa-solid fa-chart-mixed"></i><span class="nav-item-text">Estadísticas</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Contenido</div>
+        <a href="cursos.html" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><span class="nav-item-text">Cursos</span></a>
+        <a href="clases.html" class="nav-item"><i class="fa-solid fa-play-circle"></i><span class="nav-item-text">Clases</span></a>
+        <a href="materiales.html" class="nav-item"><i class="fa-solid fa-file-lines"></i><span class="nav-item-text">Materiales</span></a>
+        <a href="media.html" class="nav-item active"><i class="fa-solid fa-image"></i><span class="nav-item-text">Mediateca</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Comercial</div>
+        <a href="usuarios.html" class="nav-item"><i class="fa-solid fa-users"></i><span class="nav-item-text">Usuarios</span><span class="badge">3</span></a>
+        <a href="planes.html" class="nav-item"><i class="fa-solid fa-credit-card"></i><span class="nav-item-text">Planes y Pagos</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="configuracion.html" class="nav-item"><i class="fa-solid fa-gear"></i><span class="nav-item-text">Configuración</span></a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">AD</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin</div>
+          <div class="sidebar-user-role">Super Administrador</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="header-title">
+          <h1>Mediateca</h1>
+          <p>Biblioteca de imágenes y archivos multimedia</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar archivos...">
+        </div>
+        <button class="header-btn"><i class="fa-solid fa-bell"></i><span class="notification-dot"></span></button>
+        <div class="header-divider"></div>
+        <button class="header-btn" onclick="window.location.href='../index.html'"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Upload Area -->
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="file-upload-area">
+            <input type="file" multiple accept="image/*,video/*">
+            <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+            <div class="file-upload-text">Arrastra imágenes aquí o <strong>haz clic para seleccionar</strong></div>
+            <div class="file-upload-hint">PNG, JPG, WebP, GIF, SVG, MP4. Máximo 10MB por imagen, 500MB por video.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="page-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 14px; color: var(--gray-500);">34 archivos · 128 MB usado</span>
+          <div class="table-filters">
+            <select class="form-control" style="width: 140px; height: 36px; font-size: 13px;">
+              <option value="">Todos</option>
+              <option>Imágenes</option>
+              <option>Videos</option>
+              <option>SVG</option>
+            </select>
+            <select class="form-control" style="width: 140px; height: 36px; font-size: 13px;">
+              <option value="">Todas las carpetas</option>
+              <option>Cursos</option>
+              <option>Banners</option>
+              <option>Testimonios</option>
+              <option>Logos</option>
+            </select>
+          </div>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-sm btn-secondary" id="selectModeBtn" onclick="toggleSelectMode()"><i class="fa-solid fa-check-double"></i> Seleccionar</button>
+          <button class="btn btn-sm btn-danger hidden" id="deleteSelectedBtn"><i class="fa-solid fa-trash"></i> Eliminar Seleccionados</button>
+          <button class="btn btn-sm btn-secondary"><i class="fa-solid fa-folder-plus"></i> Nueva Carpeta</button>
+        </div>
+      </div>
+
+      <!-- Media Grid -->
+      <div class="media-grid" id="mediaGrid">
+        <div class="media-item" onclick="selectMedia(this)" ondblclick="AdminModal.open('modal-media-detail')">
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #0d4f4f, #1a6b6b); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-graduation-cap" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">curso-primeros-pasos.jpg</div>
+            <div class="media-item-size">245 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a6b6b, #00c9a7); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-chart-line" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">curso-mercado.jpg</div>
+            <div class="media-item-size">312 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #3b82f6, #60a5fa); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-chart-bar" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">curso-analisis-tecnico.jpg</div>
+            <div class="media-item-size">287 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #e8a838, #f0c060); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-bolt" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">curso-trading-avanzado.jpg</div>
+            <div class="media-item-size">198 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #8b5cf6, #a78bfa); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-shield" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">curso-gestion-riesgo.jpg</div>
+            <div class="media-item-size">156 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e, #2d2d44); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-brain" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">curso-psicologia.jpg</div>
+            <div class="media-item-size">178 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-image" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">banner-hero.jpg</div>
+            <div class="media-item-size">856 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: var(--gradient-gold); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-star" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">banner-pricing.jpg</div>
+            <div class="media-item-size">723 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: #f7f8fa; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-user" style="font-size: 48px; color: var(--gray-300);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">testimonio-carlos.jpg</div>
+            <div class="media-item-size">134 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: #f7f8fa; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-user" style="font-size: 48px; color: var(--gray-300);"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">testimonio-maria.jpg</div>
+            <div class="media-item-size">128 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: #f7f8fa; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-play" style="font-size: 48px; color: var(--danger); opacity: 0.3;"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">intro-video.mp4</div>
+            <div class="media-item-size">45.2 MB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+
+        <div class="media-item" onclick="selectMedia(this)">
+          <div style="width: 100%; height: 100%; background: #f7f8fa; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-vector-square" style="font-size: 48px; color: var(--accent); opacity: 0.3;"></i>
+          </div>
+          <div class="media-item-overlay">
+            <div class="media-item-name">logo-academy.svg</div>
+            <div class="media-item-size">12 KB</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Media Detail -->
+<div class="modal-overlay" id="modal-media-detail">
+  <div class="modal large">
+    <div class="modal-header">
+      <h3>Detalle del Archivo</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="display: flex; gap: 24px;">
+        <div style="flex: 1;">
+          <div style="width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #0d4f4f, #1a6b6b); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-graduation-cap" style="font-size: 64px; color: rgba(255,255,255,0.3);"></i>
+          </div>
+        </div>
+        <div style="width: 280px;">
+          <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" value="curso-primeros-pasos.jpg">
+          </div>
+          <div class="form-group">
+            <label class="form-label">URL</label>
+            <div style="display: flex; gap: 6px;">
+              <input type="text" class="form-control" value="/assets/images/curso-primeros-pasos.jpg" readonly style="font-size: 12px;">
+              <button class="btn btn-sm btn-secondary" onclick="AdminToast.info('Copiado', 'URL copiada al portapapeles')"><i class="fa-solid fa-copy"></i></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Alt Text</label>
+            <input type="text" class="form-control" placeholder="Descripción de la imagen...">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--gray-600);">
+            <div class="flex-between"><span>Tipo:</span> <strong>image/jpeg</strong></div>
+            <div class="flex-between"><span>Tamaño:</span> <strong>245 KB</strong></div>
+            <div class="flex-between"><span>Dimensiones:</span> <strong>1200 x 680px</strong></div>
+            <div class="flex-between"><span>Subido:</span> <strong>10 Mar 2026</strong></div>
+            <div class="flex-between"><span>Carpeta:</span> <strong>Cursos</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Eliminar</button>
+      <div style="flex: 1;"></div>
+      <button class="btn btn-secondary" onclick="AdminModal.close('modal-media-detail')">Cerrar</button>
+      <button class="btn btn-primary" onclick="AdminToast.success('Guardado', 'Los cambios se han guardado'); AdminModal.close('modal-media-detail');">
+        <i class="fa-solid fa-check"></i> Guardar
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+<script>
+  let selectMode = false;
+
+  function toggleSelectMode() {
+    selectMode = !selectMode;
+    const btn = document.getElementById('selectModeBtn');
+    const delBtn = document.getElementById('deleteSelectedBtn');
+    if (selectMode) {
+      btn.classList.add('btn-primary');
+      btn.classList.remove('btn-secondary');
+      btn.innerHTML = '<i class="fa-solid fa-xmark"></i> Cancelar';
+      delBtn.classList.remove('hidden');
+    } else {
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-secondary');
+      btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Seleccionar';
+      delBtn.classList.add('hidden');
+      document.querySelectorAll('.media-item.selected').forEach(item => item.classList.remove('selected'));
+    }
+  }
+
+  function selectMedia(el) {
+    if (selectMode) {
+      el.classList.toggle('selected');
+    }
+  }
+</script>
+</body>
+</html>

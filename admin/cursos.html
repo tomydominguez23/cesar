@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursos - Admin Pro Trading Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">PT</div>
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-name">Pro Trading Academy</span>
+        <span class="sidebar-brand-sub">Panel de Administración</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i><span class="nav-item-text">Dashboard</span></a>
+        <a href="estadisticas.html" class="nav-item"><i class="fa-solid fa-chart-mixed"></i><span class="nav-item-text">Estadísticas</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Contenido</div>
+        <a href="cursos.html" class="nav-item active"><i class="fa-solid fa-graduation-cap"></i><span class="nav-item-text">Cursos</span></a>
+        <a href="clases.html" class="nav-item"><i class="fa-solid fa-play-circle"></i><span class="nav-item-text">Clases</span></a>
+        <a href="materiales.html" class="nav-item"><i class="fa-solid fa-file-lines"></i><span class="nav-item-text">Materiales</span></a>
+        <a href="media.html" class="nav-item"><i class="fa-solid fa-image"></i><span class="nav-item-text">Mediateca</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Comercial</div>
+        <a href="usuarios.html" class="nav-item"><i class="fa-solid fa-users"></i><span class="nav-item-text">Usuarios</span><span class="badge">3</span></a>
+        <a href="planes.html" class="nav-item"><i class="fa-solid fa-credit-card"></i><span class="nav-item-text">Planes y Pagos</span></a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Sistema</div>
+        <a href="configuracion.html" class="nav-item"><i class="fa-solid fa-gear"></i><span class="nav-item-text">Configuración</span></a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar">AD</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Admin</div>
+          <div class="sidebar-user-role">Super Administrador</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="header-title">
+          <h1>Cursos</h1>
+          <p>Gestiona los cursos y módulos de la plataforma</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar cursos...">
+        </div>
+        <button class="header-btn"><i class="fa-solid fa-bell"></i><span class="notification-dot"></span></button>
+        <div class="header-divider"></div>
+        <button class="header-btn" onclick="window.location.href='../index.html'"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div>
+          <h2 style="font-size: 15px; color: var(--gray-500); font-weight: 500;">6 cursos en total · 4 publicados · 2 borradores</h2>
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-secondary"><i class="fa-solid fa-filter"></i> Filtrar</button>
+          <button class="btn btn-primary" onclick="AdminModal.open('modal-course')"><i class="fa-solid fa-plus"></i> Nuevo Curso</button>
+        </div>
+      </div>
+
+      <!-- Courses Grid -->
+      <div class="course-grid">
+        <!-- Course 1 -->
+        <div class="course-card-admin">
+          <div class="course-card-thumb" style="background: linear-gradient(135deg, #0d4f4f, #1a6b6b);">
+            <div class="course-card-status"><span class="status-badge active">Publicado</span></div>
+            <div class="course-card-plan"><span class="plan-badge basico">Básico</span></div>
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Primeros Pasos</h3>
+            <p class="course-card-desc">Introducción al mundo del trading. Aprende los conceptos fundamentales para comenzar.</p>
+            <div class="course-card-meta">
+              <span><i class="fa-solid fa-layer-group"></i> 4 módulos</span>
+              <span><i class="fa-solid fa-play"></i> 18 clases</span>
+              <span><i class="fa-solid fa-users"></i> 342</span>
+            </div>
+            <div class="course-card-footer">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-bar-fill" style="width: 78%;"></div>
+                </div>
+                <span class="text-small text-muted">78% completado</span>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn" title="Editar" onclick="AdminModal.open('modal-course')"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn" title="Módulos" onclick="AdminModal.open('modal-modules')"><i class="fa-solid fa-layer-group"></i></button>
+                <button class="table-action-btn danger" title="Eliminar" onclick="confirmDelete('Primeros Pasos')"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 2 -->
+        <div class="course-card-admin">
+          <div class="course-card-thumb" style="background: linear-gradient(135deg, #1a6b6b, #00c9a7);">
+            <div class="course-card-status"><span class="status-badge active">Publicado</span></div>
+            <div class="course-card-plan"><span class="plan-badge medio">Medio</span></div>
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">El Mercado</h3>
+            <p class="course-card-desc">Comprende cómo funciona el mercado financiero y sus principales instrumentos.</p>
+            <div class="course-card-meta">
+              <span><i class="fa-solid fa-layer-group"></i> 6 módulos</span>
+              <span><i class="fa-solid fa-play"></i> 32 clases</span>
+              <span><i class="fa-solid fa-users"></i> 287</span>
+            </div>
+            <div class="course-card-footer">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-bar-fill accent" style="width: 65%;"></div>
+                </div>
+                <span class="text-small text-muted">65% completado</span>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn" title="Módulos"><i class="fa-solid fa-layer-group"></i></button>
+                <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 3 -->
+        <div class="course-card-admin">
+          <div class="course-card-thumb" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">
+            <div class="course-card-status"><span class="status-badge active">Publicado</span></div>
+            <div class="course-card-plan"><span class="plan-badge avanzado">Avanzado</span></div>
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Análisis Técnico</h3>
+            <p class="course-card-desc">Domina las herramientas de análisis técnico para tomar mejores decisiones.</p>
+            <div class="course-card-meta">
+              <span><i class="fa-solid fa-layer-group"></i> 8 módulos</span>
+              <span><i class="fa-solid fa-play"></i> 45 clases</span>
+              <span><i class="fa-solid fa-users"></i> 198</span>
+            </div>
+            <div class="course-card-footer">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-bar-fill gold" style="width: 41%;"></div>
+                </div>
+                <span class="text-small text-muted">41% completado</span>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn" title="Módulos"><i class="fa-solid fa-layer-group"></i></button>
+                <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 4 -->
+        <div class="course-card-admin">
+          <div class="course-card-thumb" style="background: linear-gradient(135deg, #e8a838, #f0c060);">
+            <div class="course-card-status"><span class="status-badge active">Publicado</span></div>
+            <div class="course-card-plan"><span class="plan-badge pro">Pro</span></div>
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Trading Avanzado</h3>
+            <p class="course-card-desc">Estrategias avanzadas de trading profesional para traders experimentados.</p>
+            <div class="course-card-meta">
+              <span><i class="fa-solid fa-layer-group"></i> 10 módulos</span>
+              <span><i class="fa-solid fa-play"></i> 56 clases</span>
+              <span><i class="fa-solid fa-users"></i> 156</span>
+            </div>
+            <div class="course-card-footer">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-bar-fill" style="width: 34%;"></div>
+                </div>
+                <span class="text-small text-muted">34% completado</span>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn" title="Módulos"><i class="fa-solid fa-layer-group"></i></button>
+                <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 5 (Draft) -->
+        <div class="course-card-admin">
+          <div class="course-card-thumb" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+            <div class="course-card-status"><span class="status-badge draft">Borrador</span></div>
+            <div class="course-card-plan"><span class="plan-badge medio">Medio</span></div>
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Gestión de Riesgo</h3>
+            <p class="course-card-desc">Protege tu capital con estrategias avanzadas de gestión de riesgo.</p>
+            <div class="course-card-meta">
+              <span><i class="fa-solid fa-layer-group"></i> 5 módulos</span>
+              <span><i class="fa-solid fa-play"></i> 22 clases</span>
+              <span><i class="fa-solid fa-users"></i> 234</span>
+            </div>
+            <div class="course-card-footer">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="progress-bar" style="width: 100px;">
+                  <div class="progress-bar-fill accent" style="width: 52%;"></div>
+                </div>
+                <span class="text-small text-muted">52% completado</span>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn success" title="Publicar"><i class="fa-solid fa-check"></i></button>
+                <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 6 (Draft) -->
+        <div class="course-card-admin">
+          <div class="course-card-thumb" style="background: linear-gradient(135deg, #1a1a2e, #2d2d44);">
+            <div class="course-card-status"><span class="status-badge draft">Borrador</span></div>
+            <div class="course-card-plan"><span class="plan-badge avanzado">Avanzado</span></div>
+          </div>
+          <div class="course-card-body">
+            <h3 class="course-card-title">Psicología del Trading</h3>
+            <p class="course-card-desc">Control emocional y disciplina para el trading exitoso.</p>
+            <div class="course-card-meta">
+              <span><i class="fa-solid fa-layer-group"></i> 3 módulos</span>
+              <span><i class="fa-solid fa-play"></i> 15 clases</span>
+              <span><i class="fa-solid fa-users"></i> 0</span>
+            </div>
+            <div class="course-card-footer">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="text-small text-muted">Sin estudiantes aún</span>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn success" title="Publicar"><i class="fa-solid fa-check"></i></button>
+                <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Nuevo/Editar Curso -->
+<div class="modal-overlay" id="modal-course">
+  <div class="modal large">
+    <div class="modal-header">
+      <h3>Nuevo Curso</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nombre del Curso <span class="required">*</span></label>
+          <input type="text" class="form-control" placeholder="Ej: Análisis Técnico Avanzado">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Slug (URL)</label>
+          <input type="text" class="form-control" placeholder="analisis-tecnico-avanzado">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descripción <span class="required">*</span></label>
+        <textarea class="form-control" rows="3" placeholder="Describe el contenido y objetivos del curso..."></textarea>
+      </div>
+
+      <div class="form-row-3">
+        <div class="form-group">
+          <label class="form-label">Plan Requerido <span class="required">*</span></label>
+          <select class="form-control">
+            <option value="">Seleccionar plan...</option>
+            <option value="basico">Básico ($399)</option>
+            <option value="medio">Medio ($699)</option>
+            <option value="avanzado">Avanzado ($1,000)</option>
+            <option value="pro">Pro Trading ($1,799)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Orden de Visualización</label>
+          <input type="number" class="form-control" placeholder="1" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estado</label>
+          <select class="form-control">
+            <option value="draft">Borrador</option>
+            <option value="published">Publicado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Imagen de Portada</label>
+        <div class="file-upload-area">
+          <input type="file" accept="image/*">
+          <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <div class="file-upload-text">Arrastra una imagen o <strong>haz clic para seleccionar</strong></div>
+          <div class="file-upload-hint">PNG, JPG o WebP. Máximo 2MB. Recomendado: 1200x680px</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Color de Fondo (Gradiente)</label>
+        <div class="form-row">
+          <div>
+            <label class="form-label text-small">Color Inicial</label>
+            <input type="color" value="#0d4f4f" class="form-control" style="height: 42px; padding: 4px;">
+          </div>
+          <div>
+            <label class="form-label text-small">Color Final</label>
+            <input type="color" value="#1a6b6b" class="form-control" style="height: 42px; padding: 4px;">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Etiquetas</label>
+        <div class="tag-input-container">
+          <span class="tag">trading <button class="remove">&times;</button></span>
+          <span class="tag">principiante <button class="remove">&times;</button></span>
+          <input type="text" class="tag-input" placeholder="Añadir etiqueta...">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Qué Aprenderás (uno por línea)</label>
+        <textarea class="form-control" rows="4" placeholder="Análisis de gráficos&#10;Identificar tendencias&#10;Gestión de riesgo..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="AdminModal.close('modal-course')">Cancelar</button>
+      <button class="btn btn-primary" onclick="AdminToast.success('Curso creado', 'El curso se ha creado exitosamente'); AdminModal.close('modal-course');">
+        <i class="fa-solid fa-check"></i> Guardar Curso
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Gestión de Módulos -->
+<div class="modal-overlay" id="modal-modules">
+  <div class="modal large">
+    <div class="modal-header">
+      <h3>Módulos — Primeros Pasos</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <p class="text-muted" style="font-size: 13px;">Arrastra los módulos para reordenarlos</p>
+        <button class="btn btn-sm btn-accent" onclick="AdminModal.open('modal-new-module')"><i class="fa-solid fa-plus"></i> Nuevo Módulo</button>
+      </div>
+
+      <div class="module-list">
+        <div class="module-item expanded">
+          <div class="module-header">
+            <div class="module-header-left">
+              <i class="fa-solid fa-grip-vertical module-drag"></i>
+              <div class="module-number">1</div>
+              <div>
+                <div class="module-title">Introducción al Trading</div>
+                <div class="module-subtitle">5 clases · 1h 20min</div>
+              </div>
+            </div>
+            <div class="module-header-right">
+              <span class="status-badge active">Activo</span>
+              <button class="table-action-btn"><i class="fa-solid fa-pen"></i></button>
+              <button class="table-action-btn danger"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="lesson-item">
+              <div class="lesson-item-left">
+                <i class="fa-solid fa-grip-vertical lesson-drag"></i>
+                <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                <div>
+                  <div class="lesson-name">¿Qué es el Trading?</div>
+                  <div class="lesson-duration">15:30</div>
+                </div>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn danger"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <div class="lesson-item-left">
+                <i class="fa-solid fa-grip-vertical lesson-drag"></i>
+                <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                <div>
+                  <div class="lesson-name">Tipos de Mercados Financieros</div>
+                  <div class="lesson-duration">22:15</div>
+                </div>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn danger"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="lesson-item">
+              <div class="lesson-item-left">
+                <i class="fa-solid fa-grip-vertical lesson-drag"></i>
+                <div class="lesson-icon doc"><i class="fa-solid fa-file-pdf"></i></div>
+                <div>
+                  <div class="lesson-name">Guía de Inicio Rápido (PDF)</div>
+                  <div class="lesson-duration">Material de apoyo</div>
+                </div>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn danger"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module-item">
+          <div class="module-header">
+            <div class="module-header-left">
+              <i class="fa-solid fa-grip-vertical module-drag"></i>
+              <div class="module-number">2</div>
+              <div>
+                <div class="module-title">Plataformas de Trading</div>
+                <div class="module-subtitle">4 clases · 55min</div>
+              </div>
+            </div>
+            <div class="module-header-right">
+              <span class="status-badge active">Activo</span>
+              <button class="table-action-btn"><i class="fa-solid fa-pen"></i></button>
+              <button class="table-action-btn danger"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="lesson-item">
+              <div class="lesson-item-left">
+                <i class="fa-solid fa-grip-vertical lesson-drag"></i>
+                <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+                <div>
+                  <div class="lesson-name">Configuración de MT4</div>
+                  <div class="lesson-duration">18:45</div>
+                </div>
+              </div>
+              <div class="table-actions">
+                <button class="table-action-btn"><i class="fa-solid fa-pen"></i></button>
+                <button class="table-action-btn danger"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module-item">
+          <div class="module-header">
+            <div class="module-header-left">
+              <i class="fa-solid fa-grip-vertical module-drag"></i>
+              <div class="module-number">3</div>
+              <div>
+                <div class="module-title">Lectura de Gráficos</div>
+                <div class="module-subtitle">5 clases · 1h 10min</div>
+              </div>
+            </div>
+            <div class="module-header-right">
+              <span class="status-badge active">Activo</span>
+              <button class="table-action-btn"><i class="fa-solid fa-pen"></i></button>
+              <button class="table-action-btn danger"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="module-body"></div>
+        </div>
+
+        <div class="module-item">
+          <div class="module-header">
+            <div class="module-header-left">
+              <i class="fa-solid fa-grip-vertical module-drag"></i>
+              <div class="module-number">4</div>
+              <div>
+                <div class="module-title">Tu Primera Operación</div>
+                <div class="module-subtitle">4 clases · 50min</div>
+              </div>
+            </div>
+            <div class="module-header-right">
+              <span class="status-badge draft">Borrador</span>
+              <button class="table-action-btn"><i class="fa-solid fa-pen"></i></button>
+              <button class="table-action-btn danger"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="module-body"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="AdminModal.close('modal-modules')">Cerrar</button>
+      <button class="btn btn-primary" onclick="AdminToast.success('Módulos actualizados', 'Los cambios se han guardado correctamente'); AdminModal.close('modal-modules');">
+        <i class="fa-solid fa-check"></i> Guardar Cambios
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Módulo -->
+<div class="modal-overlay" id="modal-new-module">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Nuevo Módulo</h3>
+      <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Nombre del Módulo <span class="required">*</span></label>
+        <input type="text" class="form-control" placeholder="Ej: Análisis Fundamental">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-control" rows="3" placeholder="Describe el contenido del módulo..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Orden</label>
+          <input type="number" class="form-control" value="5" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estado</label>
+          <select class="form-control">
+            <option value="draft">Borrador</option>
+            <option value="active">Activo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="AdminModal.close('modal-new-module')">Cancelar</button>
+      <button class="btn btn-primary" onclick="AdminToast.success('Módulo creado', 'El módulo ha sido añadido al curso'); AdminModal.close('modal-new-module');">
+        <i class="fa-solid fa-check"></i> Crear Módulo
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>
