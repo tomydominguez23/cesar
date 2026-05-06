@@ -678,7 +678,7 @@
     tbody.insertBefore(row, tbody.firstChild);
   }
 
-  function appendMaterialToTable(material, courseTitle, moduleTitle, lessonTitle) {
+  function appendMaterialToTable(material, courseTitle, lessonTitle) {
     const table = document.getElementById("materialsTable");
     if (!table) return;
 
@@ -702,7 +702,6 @@
       <td><span style="font-size: 11px; font-weight: 600; background: rgba(13,79,79,0.1); color: #0d4f4f; padding: 3px 8px; border-radius: 4px;">${escapeHtml(extLabel)}</span></td>
       <td>
         <div>${escapeHtml(courseTitle || "—")}</div>
-        <div class="text-small text-muted">${escapeHtml(moduleTitle || "Sin módulo específico")}</div>
         <div class="text-small text-muted">${escapeHtml(lessonTitle || "Sin clase específica")}</div>
       </td>
       <td>${formatBytes(material.size_bytes)}</td>
@@ -748,7 +747,6 @@
 
     const rows = state.adminMaterials.map((material) => {
       const course = normalizeRelation(material.course);
-      const module = normalizeRelation(material.module);
       const lesson = normalizeRelation(material.lesson);
       const iconClass = fileIconByExt(material.file_ext);
       const extLabel = (material.file_ext || "archivo").toUpperCase();
@@ -767,7 +765,6 @@
           <td><span style="font-size: 11px; font-weight: 600; background: rgba(13,79,79,0.1); color: #0d4f4f; padding: 3px 8px; border-radius: 4px;">${escapeHtml(extLabel)}</span></td>
           <td>
             <div>${escapeHtml(course ? course.title : "—")}</div>
-            <div class="text-small text-muted">${escapeHtml(module ? module.title : "Sin módulo específico")}</div>
             <div class="text-small text-muted">${escapeHtml(lesson ? lesson.title : "Sin clase específica")}</div>
           </td>
           <td>${formatBytes(material.size_bytes)}</td>
@@ -2285,23 +2282,10 @@
     const descriptionInput = document.getElementById("materialDescriptionInput");
     const filesInput = document.getElementById("materialFilesInput");
     const courseSelect = document.getElementById("materialCourseSelect");
-    const moduleSelect = document.getElementById("materialModuleSelect");
     const lessonSelect = document.getElementById("materialLessonSelect");
     const categorySelect = document.getElementById("materialCategorySelect");
     const planSelect = document.getElementById("materialPlanSelect");
     const bulkInput = document.getElementById("bulkMaterialsInput");
-
-    function populateMaterialModuleSelect(modules, selectedValue) {
-      if (!moduleSelect) return;
-      const options = [{ value: "", label: "Sin módulo específico" }];
-      (modules || []).forEach((module) => {
-        options.push({
-          value: module.id,
-          label: `${module.module_order || "—"}. ${module.title}`
-        });
-      });
-      setOptions(moduleSelect, options, selectedValue);
-    }
 
     function populateMaterialLessonSelect(lessons, selectedValue) {
       if (!lessonSelect) return;
@@ -2316,7 +2300,6 @@
     }
 
     populateCourseSelect(courseSelect, true);
-    populateMaterialModuleSelect([], "");
     populateMaterialLessonSelect([], "");
 
     courseSelect.addEventListener("change", async () => {
@@ -2332,7 +2315,6 @@
         }
 
         if (!courseSelect.value) {
-          populateMaterialModuleSelect([], "");
           populateMaterialLessonSelect([], "");
           return;
         }
@@ -2340,44 +2322,12 @@
         if (selectedCourse && planSelect) {
           planSelect.value = selectedCourse.plan_required || "basico";
         }
-        const [modules, lessons] = await Promise.all([
-          loadModules(courseSelect.value),
-          loadLessons(courseSelect.value)
-        ]);
-        populateMaterialModuleSelect(modules, "");
+        const lessons = await loadLessons(courseSelect.value);
         populateMaterialLessonSelect(lessons, "");
       } catch (err) {
         toast("error", "No se pudo cargar clases", err.message);
       }
     });
-
-    if (moduleSelect) {
-      moduleSelect.addEventListener("change", async () => {
-        const courseId = courseSelect.value;
-        if (!courseId) {
-          populateMaterialLessonSelect([], "");
-          return;
-        }
-        const selectedModuleId = moduleSelect.value;
-        const lessons = state.lessonsByCourse.get(courseId) || await loadLessons(courseId);
-        const filteredLessons = selectedModuleId
-          ? lessons.filter((lesson) => sameId(lesson.module_id, selectedModuleId))
-          : lessons;
-        populateMaterialLessonSelect(filteredLessons, "");
-      });
-    }
-
-    if (lessonSelect) {
-      lessonSelect.addEventListener("change", async () => {
-        const lessonId = lessonSelect.value;
-        if (!lessonId || !courseSelect.value || !moduleSelect) return;
-        const lessons = state.lessonsByCourse.get(courseSelect.value) || await loadLessons(courseSelect.value);
-        const selectedLesson = lessons.find((item) => sameId(item.id, lessonId));
-        if (selectedLesson && selectedLesson.module_id) {
-          moduleSelect.value = selectedLesson.module_id;
-        }
-      });
-    }
 
     if (bulkInput) {
       bulkInput.addEventListener("change", () => {
@@ -2396,7 +2346,6 @@
       const files = filesInput.files ? Array.from(filesInput.files) : [];
       const courseId = courseSelect.value;
       const lessonId = lessonSelect.value || null;
-      const selectedModuleId = moduleSelect ? (moduleSelect.value || null) : null;
       const category = categorySelect ? categorySelect.value : null;
       const description = descriptionInput ? descriptionInput.value.trim() : "";
       const title = titleInput ? titleInput.value.trim() : "";
@@ -2417,10 +2366,10 @@
       saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo...';
 
       try {
-        let moduleId = selectedModuleId;
+        let moduleId = null;
         let lessonTitle = null;
         if (lessonId) {
-          const lessons = state.lessonsByCourse.get(courseId) || [];
+          const lessons = state.lessonsByCourse.get(courseId) || await loadLessons(courseId);
           const lesson = lessons.find((item) => sameId(item.id, lessonId));
           if (lesson) {
             moduleId = lesson.module_id;
@@ -2478,7 +2427,6 @@
         if (titleInput) titleInput.value = "";
         if (descriptionInput) descriptionInput.value = "";
         if (filesInput) filesInput.value = "";
-        if (moduleSelect) moduleSelect.value = "";
         if (lessonSelect) lessonSelect.value = "";
         if (categorySelect) categorySelect.selectedIndex = 0;
         if (bulkInput) bulkInput.value = "";
