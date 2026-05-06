@@ -56,6 +56,13 @@
     return idx === -1 ? "" : name.substring(idx + 1).toLowerCase();
   }
 
+  function normalizeRelation(value) {
+    if (Array.isArray(value)) {
+      return value[0] || null;
+    }
+    return value || null;
+  }
+
   function uniqueToken() {
     if (window.crypto && typeof window.crypto.randomUUID === "function") {
       return window.crypto.randomUUID().slice(0, 8);
