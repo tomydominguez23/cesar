@@ -61,6 +61,83 @@
     return Math.random().toString(36).slice(2, 10);
   }
 
+  function setupMediaPreview(config) {
+    const input = config && config.input ? config.input : null;
+    const box = config && config.box ? config.box : null;
+    const media = config && config.media ? config.media : null;
+    const fileName = config && config.fileName ? config.fileName : null;
+    const clearBtn = config && config.clearBtn ? config.clearBtn : null;
+    const kind = config && config.kind ? config.kind : "image";
+
+    if (!input || !box || !media) {
+      return { clear: function() {} };
+    }
+
+    let previewUrl = null;
+
+    function revokeUrl() {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+      }
+    }
+
+    function clearPreview() {
+      revokeUrl();
+      if (kind === "image") {
+        media.removeAttribute("src");
+      } else {
+        media.pause();
+        media.removeAttribute("src");
+        media.load();
+      }
+      if (fileName) {
+        fileName.textContent = "";
+      }
+      box.style.display = "none";
+      input.value = "";
+    }
+
+    function renderPreview() {
+      const file = input.files && input.files.length ? input.files[0] : null;
+      if (!file) {
+        clearPreview();
+        return;
+      }
+
+      const validType = kind === "video"
+        ? String(file.type || "").startsWith("video/")
+        : String(file.type || "").startsWith("image/");
+
+      if (!validType) {
+        toast("warning", "Archivo no compatible", `Selecciona un archivo de ${kind === "video" ? "video" : "imagen"} válido.`);
+        clearPreview();
+        return;
+      }
+
+      revokeUrl();
+      previewUrl = URL.createObjectURL(file);
+      media.src = previewUrl;
+      if (kind === "video") {
+        media.load();
+      }
+      if (fileName) {
+        fileName.textContent = file.name;
+      }
+      box.style.display = "block";
+    }
+
+    input.addEventListener("change", renderPreview);
+    if (clearBtn) {
+      clearBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        clearPreview();
+      });
+    }
+
+    return { clear: clearPreview };
+  }
+
   function parseDurationToSeconds(value) {
     const input = String(value || "").trim();
     if (!input) return null;
@@ -556,6 +633,14 @@
     const orderInput = document.getElementById("courseOrderInput");
     const statusSelect = document.getElementById("courseStatusSelect");
     const coverInput = document.getElementById("courseCoverInput");
+    const coverPreviewControl = setupMediaPreview({
+      input: coverInput,
+      box: document.getElementById("courseCoverPreviewWrap"),
+      media: document.getElementById("courseCoverPreview"),
+      fileName: document.getElementById("courseCoverFileName"),
+      clearBtn: document.getElementById("courseCoverClearBtn"),
+      kind: "image"
+    });
 
     if (titleInput && slugInput) {
       titleInput.addEventListener("blur", () => {
@@ -620,6 +705,15 @@
         appendCourseCard(created);
 
         toast("success", "Curso guardado", "El curso se creó correctamente en Supabase.");
+        if (titleInput) titleInput.value = "";
+        if (slugInput) slugInput.value = "";
+        if (descriptionInput) descriptionInput.value = "";
+        if (planSelect) planSelect.value = "";
+        if (orderInput) orderInput.value = "";
+        if (statusSelect) statusSelect.value = "draft";
+        if (coverPreviewControl && typeof coverPreviewControl.clear === "function") {
+          coverPreviewControl.clear();
+        }
         if (window.AdminModal) {
           window.AdminModal.close("modal-course");
         }
@@ -656,6 +750,22 @@
     const allowDownloadInput = document.getElementById("lessonAllowDownloadInput");
     const allowCommentsInput = document.getElementById("lessonAllowCommentsInput");
     const externalResourcesContainer = document.getElementById("external-resources");
+    const videoPreviewControl = setupMediaPreview({
+      input: videoFileInput,
+      box: document.getElementById("lessonVideoPreviewBox"),
+      media: document.getElementById("lessonVideoPreview"),
+      fileName: document.getElementById("lessonVideoFileName"),
+      clearBtn: document.getElementById("lessonVideoClearBtn"),
+      kind: "video"
+    });
+    const thumbnailPreviewControl = setupMediaPreview({
+      input: thumbnailInput,
+      box: document.getElementById("lessonThumbnailPreviewBox"),
+      media: document.getElementById("lessonThumbnailPreview"),
+      fileName: document.getElementById("lessonThumbnailFileName"),
+      clearBtn: document.getElementById("lessonThumbnailClearBtn"),
+      kind: "image"
+    });
 
     populateCourseSelect(courseSelect, true);
 
@@ -883,6 +993,26 @@
         );
 
         toast("success", "Clase guardada", "La clase y sus archivos se guardaron en Supabase.");
+        titleInput.value = "";
+        slugInput.value = "";
+        descriptionInput.value = "";
+        orderInput.value = "";
+        videoUrlInput.value = "";
+        durationInput.value = "";
+        subtitlesInput.value = "";
+        materialsInput.value = "";
+        notesInput.value = "";
+        statusSelect.value = "draft";
+        scheduledAtInput.value = "";
+        freePreviewInput.checked = false;
+        allowDownloadInput.checked = false;
+        allowCommentsInput.checked = true;
+        if (videoPreviewControl && typeof videoPreviewControl.clear === "function") {
+          videoPreviewControl.clear();
+        }
+        if (thumbnailPreviewControl && typeof thumbnailPreviewControl.clear === "function") {
+          thumbnailPreviewControl.clear();
+        }
         if (window.AdminModal) {
           window.AdminModal.close("modal-lesson");
         }
