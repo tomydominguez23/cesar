@@ -12,7 +12,9 @@
     isAdmin: false,
     courses: [],
     modulesByCourse: new Map(),
-    lessonsByCourse: new Map()
+    lessonsByCourse: new Map(),
+    adminLessons: [],
+    openModulesCourseId: null
   };
 
   function toast(type, title, message) {
@@ -183,6 +185,25 @@
     }
   }
 
+  function formatDurationLabel(seconds) {
+    const total = Number(seconds || 0);
+    if (!total) return "—";
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const secs = total % 60;
+    if (hours > 0) {
+      return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    }
+    return `${minutes}:${String(secs).padStart(2, "0")}`;
+  }
+
+  function unwrapRelation(value) {
+    if (Array.isArray(value)) {
+      return value[0] || null;
+    }
+    return value || null;
+  }
+
   function fileIconByExt(ext) {
     const normalized = (ext || "").toLowerCase();
     if (["pdf"].includes(normalized)) return "fa-file-pdf";
@@ -304,6 +325,38 @@
     const lessons = data || [];
     state.lessonsByCourse.set(courseId, lessons);
     return lessons;
+  }
+
+  async function loadAdminLessonsTable() {
+    const { data, error } = await supabase
+      .from("lessons")
+      .select(`
+        id,
+        title,
+        slug,
+        description,
+        status,
+        lesson_order,
+        duration_seconds,
+        course_id,
+        module_id,
+        video_type,
+        video_url,
+        video_path,
+        notes,
+        is_free_preview,
+        allow_video_download,
+        allow_comments,
+        scheduled_at,
+        created_at,
+        course:courses(id,title),
+        module:course_modules(id,title,module_order)
+      `)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    state.adminLessons = data || [];
+    return state.adminLessons;
   }
 
   function populateModuleSelect(select, modules, includeNew) {
@@ -565,6 +618,155 @@
     tbody.insertBefore(row, tbody.firstChild);
   }
 
+  function updateLessonsSummary() {
+    const summaryEl = document.getElementById("lessonsSummaryText");
+    const kpiTotal = document.getElementById("kpiLessonsTotal");
+    const kpiHours = document.getElementById("kpiLessonsHours");
+    const kpiViews = document.getElementById("kpiLessonsViews");
+    const kpiPublishedPct = document.getElementById("kpiLessonsPublishedPct");
+    const total = state.adminLessons.length;
+    const published = state.adminLessons.filter((lesson) => lesson.status === "published").length;
+    const hours = state.adminLessons.reduce((sum, lesson) => sum + (Number(lesson.duration_seconds) || 0), 0) / 3600;
+    const pct = total ? Math.round((published / total) * 100) : 0;
+    if (summaryEl) {
+      const draft = total - published;
+      summaryEl.textContent = `${total} clases en total · ${published} publicadas · ${draft} borradores/programadas`;
+    }
+    if (kpiTotal) kpiTotal.textContent = String(total);
+    if (kpiHours) kpiHours.textContent = `${hours.toFixed(1)}h`;
+    if (kpiViews) kpiViews.textContent = "—";
+    if (kpiPublishedPct) kpiPublishedPct.textContent = `${pct}%`;
+  }
+
+  function renderLessonsTable() {
+    const tbody = document.getElementById("lessonsTableBody");
+    if (!tbody) return;
+
+    if (!state.adminLessons.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-small text-muted" style="padding:16px;">No hay clases registradas todavía.</td>
+        </tr>
+      `;
+      updateLessonsSummary();
+      return;
+    }
+
+    const rows = state.adminLessons.map((lesson) => {
+      const course = normalizeRelation(lesson.course);
+      const module = normalizeRelation(lesson.module);
+      const statusMeta = getStatusMeta(lesson.status);
+      return `
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div class="lesson-icon video"><i class="fa-solid fa-play"></i></div>
+              <div>
+                <strong>${escapeHtml(lesson.title)}</strong>
+                <div class="text-small text-muted">${escapeHtml(lesson.description || "Sin descripción")}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div>${escapeHtml(course ? course.title : "—")}</div>
+            <div class="text-small text-muted">${escapeHtml(module ? module.title : "Sin módulo")}</div>
+          </td>
+          <td>${escapeHtml(formatDurationLabel(lesson.duration_seconds))}</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="status-badge ${statusMeta.cssClass}">${statusMeta.label}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="table-action-btn lesson-edit-btn" data-lesson-id="${lesson.id}" title="Editar"><i class="fa-solid fa-pen"></i></button>
+              <button class="table-action-btn lesson-preview-btn" data-course-id="${lesson.course_id}" data-lesson-id="${lesson.id}" title="Vista previa"><i class="fa-solid fa-eye"></i></button>
+              <button class="table-action-btn danger lesson-delete-btn" data-lesson-id="${lesson.id}" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      `;
+    });
+
+    tbody.innerHTML = rows.join("");
+    updateLessonsSummary();
+  }
+
+  function bindLessonsTableActions() {
+    const table = document.getElementById("lessonsTable");
+    if (!table || table.dataset.boundActions === "true") return;
+    table.dataset.boundActions = "true";
+
+    table.addEventListener("click", async (event) => {
+      const previewBtn = event.target.closest(".lesson-preview-btn");
+      if (previewBtn) {
+        const lessonId = previewBtn.getAttribute("data-lesson-id");
+        const lesson = state.adminLessons.find((item) => item.id === lessonId);
+        if (!lesson || !lesson.course_id) return;
+        window.open(`../course.html?course_id=${lesson.course_id}&lesson_id=${lesson.id}&admin_preview=1`, "_blank");
+        return;
+      }
+
+      const editBtn = event.target.closest(".lesson-edit-btn");
+      if (editBtn) {
+        const lessonId = editBtn.getAttribute("data-lesson-id");
+        const lesson = state.adminLessons.find((item) => item.id === lessonId);
+        if (!lesson) return;
+
+        const nextTitle = (window.prompt("Nuevo título de la clase:", lesson.title || "") || "").trim();
+        if (!nextTitle) return;
+
+        const nextDescription = window.prompt("Nueva descripción:", lesson.description || "");
+        const currentStatus = lesson.status || "draft";
+        const inputStatus = (window.prompt("Estado (draft / published / scheduled):", currentStatus) || currentStatus).trim().toLowerCase();
+        const validStatus = ["draft", "published", "scheduled"].includes(inputStatus) ? inputStatus : currentStatus;
+
+        try {
+          const { error } = await supabase
+            .from("lessons")
+            .update({
+              title: nextTitle,
+              description: nextDescription != null ? String(nextDescription).trim() : lesson.description,
+              status: validStatus
+            })
+            .eq("id", lesson.id);
+          if (error) throw error;
+
+          lesson.title = nextTitle;
+          lesson.description = nextDescription != null ? String(nextDescription).trim() : lesson.description;
+          lesson.status = validStatus;
+          renderLessonsTable();
+          toast("success", "Clase actualizada", "Los cambios se guardaron correctamente.");
+        } catch (updateError) {
+          toast("error", "No se pudo editar la clase", updateError.message);
+        }
+        return;
+      }
+
+      const deleteBtn = event.target.closest(".lesson-delete-btn");
+      if (deleteBtn) {
+        const lessonId = deleteBtn.getAttribute("data-lesson-id");
+        const lesson = state.adminLessons.find((item) => item.id === lessonId);
+        if (!lesson) return;
+        const ok = window.confirm(`¿Eliminar la clase "${lesson.title}"?`);
+        if (!ok) return;
+
+        try {
+          const { error } = await supabase
+            .from("lessons")
+            .delete()
+            .eq("id", lesson.id);
+          if (error) throw error;
+
+          state.adminLessons = state.adminLessons.filter((item) => item.id !== lesson.id);
+          renderLessonsTable();
+          toast("success", "Clase eliminada", "La clase fue eliminada correctamente.");
+        } catch (deleteError) {
+          toast("error", "No se pudo eliminar la clase", deleteError.message);
+        }
+      }
+    });
+  }
+
   function mapVideoType(value) {
     if (value === "upload") return "upload";
     if (value === "url") return "external_url";
@@ -629,9 +831,9 @@
             <span class="text-small text-muted">Slug: ${course.slug}</span>
           </div>
           <div class="table-actions">
-            <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+            <button class="table-action-btn edit-course-btn" data-course-id="${course.id}" title="Editar"><i class="fa-solid fa-pen"></i></button>
             <button class="table-action-btn open-modules-btn" data-course-id="${course.id}" title="Módulos"><i class="fa-solid fa-layer-group"></i></button>
-            <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+            <button class="table-action-btn danger delete-course-btn" data-course-id="${course.id}" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
       </div>
@@ -673,6 +875,7 @@
 
   async function openModulesModal(courseId) {
     if (!courseId) return;
+    state.modulesModalCourseId = courseId;
     const modalTitle = document.getElementById("modulesModalTitle");
     const listContainer = document.getElementById("modulesListContainer");
     const course = state.courses.find((item) => item.id === courseId);
@@ -731,6 +934,8 @@
             </div>
             <div class="module-header-right">
               <span class="status-badge ${statusMeta.cssClass}">${statusMeta.label}</span>
+              <button class="table-action-btn edit-module-btn" data-module-id="${module.id}" data-module-title="${escapeHtml(module.title)}" data-module-status="${module.status || "draft"}" title="Editar módulo"><i class="fa-solid fa-pen"></i></button>
+              <button class="table-action-btn danger delete-module-btn" data-module-id="${module.id}" data-module-title="${escapeHtml(module.title)}" title="Eliminar módulo"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         `;
@@ -754,10 +959,101 @@
 
     grid.addEventListener("click", (event) => {
       const modulesBtn = event.target.closest(".open-modules-btn");
-      if (!modulesBtn) return;
-      const courseId = modulesBtn.getAttribute("data-course-id");
-      openModulesModal(courseId);
+      if (modulesBtn) {
+        const courseId = modulesBtn.getAttribute("data-course-id");
+        openModulesModal(courseId);
+        return;
+      }
+
+      const deleteCourseBtn = event.target.closest(".delete-course-btn");
+      if (!deleteCourseBtn) return;
+      const courseId = deleteCourseBtn.getAttribute("data-course-id");
+      const course = state.courses.find((item) => item.id === courseId);
+      const label = course ? course.title : "este curso";
+      if (!window.confirm(`¿Eliminar "${label}"? Esta acción eliminará módulos y clases asociadas.`)) {
+        return;
+      }
+
+      supabase
+        .from("courses")
+        .delete()
+        .eq("id", courseId)
+        .then(async ({ error }) => {
+          if (error) {
+            toast("error", "No se pudo eliminar curso", error.message);
+            return;
+          }
+          state.courses = state.courses.filter((item) => item.id !== courseId);
+          renderCoursesGrid();
+          await loadAdminLessonsTable();
+          renderLessonsTable();
+          toast("success", "Curso eliminado", `"${label}" fue eliminado.`);
+        });
     });
+
+    const modulesListContainer = document.getElementById("modulesListContainer");
+    if (modulesListContainer && modulesListContainer.dataset.boundActions !== "true") {
+      modulesListContainer.dataset.boundActions = "true";
+      modulesListContainer.addEventListener("click", async (event) => {
+        const editBtn = event.target.closest(".edit-module-btn");
+        const deleteBtn = event.target.closest(".delete-module-btn");
+
+        if (!editBtn && !deleteBtn) return;
+
+        const moduleId = (editBtn || deleteBtn).getAttribute("data-module-id");
+        if (!moduleId) return;
+
+        if (editBtn) {
+          const currentTitle = editBtn.getAttribute("data-module-title") || "";
+          const currentStatus = editBtn.getAttribute("data-module-status") || "draft";
+          const nextTitle = (window.prompt("Nuevo nombre del módulo:", currentTitle) || "").trim();
+          if (!nextTitle) return;
+          let nextStatus = (window.prompt("Estado (draft/published/scheduled):", currentStatus) || "").trim().toLowerCase();
+          if (!["draft", "published", "scheduled"].includes(nextStatus)) {
+            nextStatus = currentStatus;
+          }
+
+          try {
+            const { error } = await supabase
+              .from("course_modules")
+              .update({ title: nextTitle, status: nextStatus })
+              .eq("id", moduleId);
+            if (error) throw error;
+            toast("success", "Módulo actualizado", "Los cambios se guardaron correctamente.");
+            if (state.currentModulesCourseId) {
+              await openModulesModal(state.currentModulesCourseId);
+            }
+            await loadAdminLessonsTable();
+            renderLessonsTable();
+          } catch (err) {
+            toast("error", "No se pudo editar módulo", err.message);
+          }
+          return;
+        }
+
+        if (deleteBtn) {
+          const moduleTitle = deleteBtn.getAttribute("data-module-title") || "este módulo";
+          if (!window.confirm(`¿Eliminar "${moduleTitle}"? También se eliminarán sus clases asociadas.`)) {
+            return;
+          }
+          try {
+            const { error } = await supabase
+              .from("course_modules")
+              .delete()
+              .eq("id", moduleId);
+            if (error) throw error;
+            toast("success", "Módulo eliminado", "El módulo y sus clases asociadas fueron eliminados.");
+            if (state.currentModulesCourseId) {
+              await openModulesModal(state.currentModulesCourseId);
+            }
+            await loadAdminLessonsTable();
+            renderLessonsTable();
+          } catch (err) {
+            toast("error", "No se pudo eliminar módulo", err.message);
+          }
+        }
+      });
+    }
   }
 
   async function initCoursesForm() {
@@ -1120,15 +1416,8 @@
           }
         }
 
-        const modules = state.modulesByCourse.get(courseId) || [];
-        const selectedModule = modules.find((module) => module.id === moduleId);
-        appendLessonToTable(
-          { title },
-          selectedCourse ? selectedCourse.title : "",
-          selectedModule ? selectedModule.title : "",
-          durationInput.value.trim(),
-          finalStatus
-        );
+        await loadAdminLessonsTable();
+        renderLessonsTable();
 
         toast("success", "Clase guardada", "La clase y sus archivos se guardaron en Supabase.");
         titleInput.value = "";
@@ -1320,6 +1609,11 @@
       renderCoursesGrid();
       await initCoursesForm();
       await initClassesForm();
+      if (document.getElementById("lessonsTableBody")) {
+        await loadAdminLessonsTable();
+        renderLessonsTable();
+        bindLessonsTableActions();
+      }
       await initMaterialsForm();
     } catch (err) {
       toast("error", "Error de Supabase", err.message);
