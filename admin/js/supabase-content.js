@@ -15,7 +15,9 @@
     lessonsByCourse: new Map(),
     adminLessons: [],
     openModulesCourseId: null,
-    lessonEditor: null
+    modulesModalCourseId: null,
+    lessonEditor: null,
+    moduleEditor: null
   };
 
   function toast(type, title, message) {
@@ -332,7 +334,7 @@
     if (!courseId) return [];
     const { data, error } = await supabase
       .from("course_modules")
-      .select("id,title,module_order,status")
+      .select("id,course_id,title,description,module_order,status")
       .eq("course_id", courseId)
       .order("module_order", { ascending: true });
 
@@ -487,7 +489,7 @@
         module_order: (lastModule && lastModule.module_order ? lastModule.module_order : 0) + 1,
         status: "draft"
       })
-      .select("id,title,module_order,status")
+      .select("id,course_id,title,description,module_order,status")
       .single();
 
     if (error) throw error;
@@ -498,6 +500,17 @@
     state.modulesByCourse.set(courseId, list);
     toast("success", "Módulo creado", `Se creó "${title}" en borrador.`);
     return created;
+  }
+
+  async function getNextModuleOrder(courseId) {
+    const { data: lastModule } = await supabase
+      .from("course_modules")
+      .select("module_order")
+      .eq("course_id", courseId)
+      .order("module_order", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    return (lastModule && lastModule.module_order ? lastModule.module_order : 0) + 1;
   }
 
   async function getNextLessonOrder(moduleId) {
@@ -924,6 +937,7 @@
   async function openModulesModal(courseId) {
     if (!courseId) return;
     state.modulesModalCourseId = courseId;
+    state.openModulesCourseId = courseId;
     const modalTitle = document.getElementById("modulesModalTitle");
     const listContainer = document.getElementById("modulesListContainer");
     const course = state.courses.find((item) => item.id === courseId);
@@ -957,7 +971,7 @@
             <div class="card-body" style="padding: 14px;">
               <strong>No hay módulos en este curso.</strong>
               <div class="text-small text-muted" style="margin-top: 6px;">
-                Crea módulos desde el flujo de clases (selecciona curso → crear módulo rápido).
+                Usa el botón "Nuevo Módulo" para crear el primero con todos los campos.
               </div>
             </div>
           </div>
@@ -977,12 +991,12 @@
               <div class="module-number">${module.module_order || "-"}</div>
               <div>
                 <div class="module-title">${module.title}</div>
-                <div class="module-subtitle">${lessonsCount} clase(s)</div>
+                <div class="module-subtitle">${lessonsCount} clase(s) · ${escapeHtml(module.description || "Sin descripción")}</div>
               </div>
             </div>
             <div class="module-header-right">
               <span class="status-badge ${statusMeta.cssClass}">${statusMeta.label}</span>
-              <button class="table-action-btn edit-module-btn" data-module-id="${module.id}" data-module-title="${escapeHtml(module.title)}" data-module-status="${module.status || "draft"}" title="Editar módulo"><i class="fa-solid fa-pen"></i></button>
+              <button class="table-action-btn edit-module-btn" data-module-id="${module.id}" title="Editar módulo"><i class="fa-solid fa-pen"></i></button>
               <button class="table-action-btn danger delete-module-btn" data-module-id="${module.id}" data-module-title="${escapeHtml(module.title)}" title="Eliminar módulo"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
@@ -998,6 +1012,163 @@
         </div>
       `;
     }
+  }
+
+  async function initModuleForm() {
+    const saveButton = document.getElementById("saveModuleBtn");
+    if (!saveButton) return;
+
+    const modalTitle = document.getElementById("moduleFormModalTitle");
+    const titleInput = document.getElementById("moduleTitleInput");
+    const descriptionInput = document.getElementById("moduleDescriptionInput");
+    const orderInput = document.getElementById("moduleOrderInput");
+    const statusInput = document.getElementById("moduleStatusInput");
+
+    const formState = {
+      mode: "create",
+      editingModuleId: null
+    };
+
+    function setMode(mode) {
+      formState.mode = mode === "edit" ? "edit" : "create";
+      if (modalTitle) {
+        modalTitle.textContent = formState.mode === "edit" ? "Editar Módulo" : "Nuevo Módulo";
+      }
+      saveButton.innerHTML = formState.mode === "edit"
+        ? '<i class="fa-solid fa-check"></i> Guardar Cambios'
+        : '<i class="fa-solid fa-check"></i> Crear Módulo';
+    }
+
+    function resetForm() {
+      formState.editingModuleId = null;
+      if (titleInput) titleInput.value = "";
+      if (descriptionInput) descriptionInput.value = "";
+      if (orderInput) orderInput.value = "";
+      if (statusInput) statusInput.value = "draft";
+    }
+
+    async function openCreateModal() {
+      const courseId = state.modulesModalCourseId;
+      if (!courseId) {
+        toast("warning", "Selecciona un curso", "Abre primero los módulos de un curso.");
+        return;
+      }
+      setMode("create");
+      resetForm();
+      if (orderInput) {
+        orderInput.value = String(await getNextModuleOrder(courseId));
+      }
+      if (window.AdminModal) {
+        window.AdminModal.open("modal-new-module");
+      }
+    }
+
+    async function openEditModal(module) {
+      if (!module) return;
+      setMode("edit");
+      resetForm();
+      formState.editingModuleId = module.id;
+      if (titleInput) titleInput.value = module.title || "";
+      if (descriptionInput) descriptionInput.value = module.description || "";
+      if (orderInput) orderInput.value = module.module_order != null ? String(module.module_order) : "";
+      if (statusInput) statusInput.value = module.status || "draft";
+      if (window.AdminModal) {
+        window.AdminModal.open("modal-new-module");
+      }
+    }
+
+    window.openCourseModuleModal = openCreateModal;
+    state.moduleEditor = {
+      openCreate: openCreateModal,
+      openEdit: openEditModal
+    };
+
+    saveButton.addEventListener("click", async () => {
+      const courseId = state.modulesModalCourseId;
+      const title = titleInput ? titleInput.value.trim() : "";
+      const description = descriptionInput ? descriptionInput.value.trim() : "";
+      const statusRaw = statusInput ? statusInput.value : "draft";
+      const status = ["draft", "published", "scheduled"].includes(statusRaw) ? statusRaw : "draft";
+      const isEditMode = formState.mode === "edit" && !!formState.editingModuleId;
+      const parsedOrder = Number(orderInput ? orderInput.value : "");
+
+      if (!courseId) {
+        toast("warning", "Curso requerido", "Abre primero los módulos de un curso.");
+        return;
+      }
+
+      if (!title) {
+        toast("warning", "Nombre requerido", "Ingresa el nombre del módulo.");
+        return;
+      }
+
+      const originalHtml = saveButton.innerHTML;
+      saveButton.disabled = true;
+      saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        const currentModule = isEditMode
+          ? ((state.modulesByCourse.get(courseId) || []).find((item) => item.id === formState.editingModuleId) || null)
+          : null;
+        const moduleOrder = parsedOrder > 0
+          ? parsedOrder
+          : (isEditMode && currentModule && Number(currentModule.module_order) > 0
+              ? Number(currentModule.module_order)
+              : await getNextModuleOrder(courseId));
+        if (isEditMode) {
+          const { error } = await supabase
+            .from("course_modules")
+            .update({
+              title,
+              description: description || "",
+              module_order: moduleOrder,
+              status
+            })
+            .eq("id", formState.editingModuleId);
+          if (error) {
+            if (error.code === "23505") {
+              throw new Error("Ya existe un módulo con ese orden para este curso.");
+            }
+            throw error;
+          }
+        } else {
+          const { error } = await supabase
+            .from("course_modules")
+            .insert({
+              course_id: courseId,
+              title,
+              description: description || "",
+              module_order: moduleOrder,
+              status
+            });
+          if (error) {
+            if (error.code === "23505") {
+              throw new Error("Ya existe un módulo con ese orden para este curso.");
+            }
+            throw error;
+          }
+        }
+
+        await openModulesModal(courseId);
+        await loadAdminLessonsTable();
+        renderLessonsTable();
+        toast(
+          "success",
+          isEditMode ? "Módulo actualizado" : "Módulo creado",
+          isEditMode
+            ? "El módulo se actualizó con el formulario completo."
+            : "El módulo se creó correctamente."
+        );
+        if (window.AdminModal) {
+          window.AdminModal.close("modal-new-module");
+        }
+      } catch (err) {
+        toast("error", "No se pudo guardar módulo", err.message);
+      } finally {
+        saveButton.disabled = false;
+        saveButton.innerHTML = originalHtml;
+      }
+    });
   }
 
   function bindCoursesGridActions() {
@@ -1052,29 +1223,17 @@
         if (!moduleId) return;
 
         if (editBtn) {
-          const currentTitle = editBtn.getAttribute("data-module-title") || "";
-          const currentStatus = editBtn.getAttribute("data-module-status") || "draft";
-          const nextTitle = (window.prompt("Nuevo nombre del módulo:", currentTitle) || "").trim();
-          if (!nextTitle) return;
-          let nextStatus = (window.prompt("Estado (draft/published/scheduled):", currentStatus) || "").trim().toLowerCase();
-          if (!["draft", "published", "scheduled"].includes(nextStatus)) {
-            nextStatus = currentStatus;
+          const courseId = state.modulesModalCourseId;
+          const modules = courseId ? (state.modulesByCourse.get(courseId) || []) : [];
+          const module = modules.find((item) => item.id === moduleId);
+          if (!module) {
+            toast("warning", "Módulo no encontrado", "Recarga la lista de módulos e inténtalo de nuevo.");
+            return;
           }
-
-          try {
-            const { error } = await supabase
-              .from("course_modules")
-              .update({ title: nextTitle, status: nextStatus })
-              .eq("id", moduleId);
-            if (error) throw error;
-            toast("success", "Módulo actualizado", "Los cambios se guardaron correctamente.");
-            if (state.currentModulesCourseId) {
-              await openModulesModal(state.currentModulesCourseId);
-            }
-            await loadAdminLessonsTable();
-            renderLessonsTable();
-          } catch (err) {
-            toast("error", "No se pudo editar módulo", err.message);
+          if (state.moduleEditor && typeof state.moduleEditor.openEdit === "function") {
+            state.moduleEditor.openEdit(module);
+          } else {
+            toast("warning", "Editor no disponible", "Recarga la página para habilitar la edición de módulos.");
           }
           return;
         }
@@ -1091,8 +1250,8 @@
               .eq("id", moduleId);
             if (error) throw error;
             toast("success", "Módulo eliminado", "El módulo y sus clases asociadas fueron eliminados.");
-            if (state.currentModulesCourseId) {
-              await openModulesModal(state.currentModulesCourseId);
+            if (state.modulesModalCourseId) {
+              await openModulesModal(state.modulesModalCourseId);
             }
             await loadAdminLessonsTable();
             renderLessonsTable();
@@ -1964,6 +2123,7 @@
       bindCoursesGridActions();
       renderCoursesGrid();
       await initCoursesForm();
+      await initModuleForm();
       await initClassesForm();
       if (document.getElementById("lessonsTableBody")) {
         await loadAdminLessonsTable();
