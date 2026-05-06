@@ -81,7 +81,7 @@
       <div class="card mb-3">
         <div class="card-body">
           <div class="file-upload-area">
-            <input type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
+            <input id="bulkMaterialsInput" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
             <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
             <div class="file-upload-text">Arrastra archivos aquí o <strong>haz clic para seleccionar</strong></div>
             <div class="file-upload-hint">PDF, DOC, XLS, PPT, ZIP. Máximo 50MB por archivo. Puedes subir varios a la vez.</div>
@@ -334,43 +334,35 @@
     <div class="modal-body">
       <div class="form-group">
         <label class="form-label">Nombre del Material <span class="required">*</span></label>
-        <input type="text" class="form-control" placeholder="Ej: Guía de Análisis Fundamental">
+        <input id="materialTitleInput" type="text" class="form-control" placeholder="Ej: Guía de Análisis Fundamental">
       </div>
 
       <div class="form-group">
         <label class="form-label">Descripción</label>
-        <textarea class="form-control" rows="3" placeholder="Describe el contenido del material..."></textarea>
+        <textarea id="materialDescriptionInput" class="form-control" rows="3" placeholder="Describe el contenido del material..."></textarea>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Archivo <span class="required">*</span></label>
+        <label class="form-label">Archivo(s) <span class="required">*</span></label>
         <div class="file-upload-area" style="padding: 30px;">
-          <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
+          <input id="materialFilesInput" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar">
           <div class="file-upload-icon" style="font-size: 32px;"><i class="fa-solid fa-file-arrow-up"></i></div>
           <div class="file-upload-text">Arrastra el archivo o <strong>haz clic para seleccionar</strong></div>
-          <div class="file-upload-hint">PDF, DOC, XLS, PPT, ZIP. Máximo 50MB</div>
+          <div class="file-upload-hint">PDF, DOC, XLS, PPT, ZIP. Máximo 50MB por archivo</div>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Curso Asociado <span class="required">*</span></label>
-          <select class="form-control">
+          <select id="materialCourseSelect" class="form-control">
             <option value="">Seleccionar curso...</option>
-            <option>Primeros Pasos</option>
-            <option>El Mercado</option>
-            <option>Análisis Técnico</option>
-            <option>Trading Avanzado</option>
-            <option>Gestión de Riesgo</option>
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Clase Asociada</label>
-          <select class="form-control">
+          <select id="materialLessonSelect" class="form-control">
             <option value="">Sin clase específica</option>
-            <option>¿Qué es el Trading?</option>
-            <option>Tipos de Mercados</option>
-            <option>Velas Japonesas</option>
           </select>
         </div>
       </div>
@@ -378,7 +370,7 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Categoría</label>
-          <select class="form-control">
+          <select id="materialCategorySelect" class="form-control">
             <option>Guía</option>
             <option>Plantilla</option>
             <option>Calculadora</option>
@@ -390,7 +382,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">Plan Mínimo Requerido</label>
-          <select class="form-control">
+          <select id="materialPlanSelect" class="form-control">
             <option value="basico">Básico</option>
             <option value="medio">Medio</option>
             <option value="avanzado">Avanzado</option>
@@ -401,7 +393,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="AdminModal.close('modal-material')">Cancelar</button>
-      <button class="btn btn-primary" onclick="AdminToast.success('Material subido', 'El material se ha guardado exitosamente'); AdminModal.close('modal-material');">
+        <button id="saveMaterialBtn" class="btn btn-primary" type="button">
         <i class="fa-solid fa-check"></i> Guardar Material
       </button>
     </div>
@@ -409,5 +401,8 @@
 </div>
 
 <script src="js/admin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script src="js/supabase-content.js"></script>
 </body>
 </html>
