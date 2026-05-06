@@ -14,7 +14,8 @@
     modulesByCourse: new Map(),
     lessonsByCourse: new Map(),
     adminLessons: [],
-    openModulesCourseId: null
+    openModulesCourseId: null,
+    lessonEditor: null
   };
 
   function toast(type, title, message) {
@@ -240,6 +241,18 @@
     }
   }
 
+  async function getSignedStorageUrl(bucket, path) {
+    if (!path) return null;
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .createSignedUrl(path, 60 * 60);
+    if (error) {
+      console.warn(`No se pudo crear signed URL para ${bucket}/${path}:`, error.message);
+      return null;
+    }
+    return data && data.signedUrl ? data.signedUrl : null;
+  }
+
   async function ensureAdmin() {
     const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
     if (sessionError) {
@@ -356,9 +369,12 @@
         duration_seconds,
         course_id,
         module_id,
+        plan_required,
         video_type,
         video_url,
         video_path,
+        thumbnail_path,
+        subtitles_path,
         notes,
         is_free_preview,
         allow_video_download,
@@ -750,33 +766,10 @@
         const lessonId = editBtn.getAttribute("data-lesson-id");
         const lesson = state.adminLessons.find((item) => item.id === lessonId);
         if (!lesson) return;
-
-        const nextTitle = (window.prompt("Nuevo título de la clase:", lesson.title || "") || "").trim();
-        if (!nextTitle) return;
-
-        const nextDescription = window.prompt("Nueva descripción:", lesson.description || "");
-        const currentStatus = lesson.status || "draft";
-        const inputStatus = (window.prompt("Estado (draft / published / scheduled):", currentStatus) || currentStatus).trim().toLowerCase();
-        const validStatus = ["draft", "published", "scheduled"].includes(inputStatus) ? inputStatus : currentStatus;
-
-        try {
-          const { error } = await supabase
-            .from("lessons")
-            .update({
-              title: nextTitle,
-              description: nextDescription != null ? String(nextDescription).trim() : lesson.description,
-              status: validStatus
-            })
-            .eq("id", lesson.id);
-          if (error) throw error;
-
-          lesson.title = nextTitle;
-          lesson.description = nextDescription != null ? String(nextDescription).trim() : lesson.description;
-          lesson.status = validStatus;
-          renderLessonsTable();
-          toast("success", "Clase actualizada", "Los cambios se guardaron correctamente.");
-        } catch (updateError) {
-          toast("error", "No se pudo editar la clase", updateError.message);
+        if (state.lessonEditor && typeof state.lessonEditor.openEdit === "function") {
+          state.lessonEditor.openEdit(lesson);
+        } else {
+          toast("warning", "Editor no disponible", "Recarga la página para habilitar la edición completa.");
         }
         return;
       }
@@ -812,6 +805,22 @@
     if (value === "youtube") return "youtube";
     if (value === "vimeo") return "vimeo";
     return "upload";
+  }
+
+  function mapVideoTypeToInput(value) {
+    if (value === "external_url") return "url";
+    if (value === "youtube") return "youtube";
+    if (value === "vimeo") return "vimeo";
+    return "upload";
+  }
+
+  function toDatetimeLocalValue(value) {
+    if (!value) return "";
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return "";
+    const offsetMs = parsed.getTimezoneOffset() * 60 * 1000;
+    const local = new Date(parsed.getTime() - offsetMs);
+    return local.toISOString().slice(0, 16);
   }
 
   function getPlanBadgeClass(plan) {
@@ -1203,6 +1212,9 @@
     const saveButton = document.getElementById("saveLessonBtn");
     if (!saveButton) return;
 
+    const modal = document.getElementById("modal-lesson");
+    const modalTitle = modal ? modal.querySelector(".modal-header h3") : null;
+    const newLessonButton = document.querySelector(".page-header-actions .btn.btn-primary");
     const draftButton = document.getElementById("saveLessonDraftBtn");
     const titleInput = document.getElementById("lessonTitleInput");
     const slugInput = document.getElementById("lessonSlugInput");
@@ -1223,24 +1235,294 @@
     const allowDownloadInput = document.getElementById("lessonAllowDownloadInput");
     const allowCommentsInput = document.getElementById("lessonAllowCommentsInput");
     const externalResourcesContainer = document.getElementById("external-resources");
+    const videoPreviewBox = document.getElementById("lessonVideoPreviewBox");
+    const videoPreviewMedia = document.getElementById("lessonVideoPreview");
+    const videoPreviewFileName = document.getElementById("lessonVideoFileName");
+    const videoClearBtn = document.getElementById("lessonVideoClearBtn");
+    const thumbnailPreviewBox = document.getElementById("lessonThumbnailPreviewBox");
+    const thumbnailPreviewMedia = document.getElementById("lessonThumbnailPreview");
+    const thumbnailPreviewFileName = document.getElementById("lessonThumbnailFileName");
+    const thumbnailClearBtn = document.getElementById("lessonThumbnailClearBtn");
+    const videoTypeInputs = Array.from(document.querySelectorAll("input[name='video-type']"));
+
+    const formState = {
+      mode: "create",
+      editingLessonId: null,
+      existingVideoPath: null,
+      existingThumbnailPath: null,
+      existingSubtitlesPath: null
+    };
+
+    let subtitlesHint = document.getElementById("lessonSubtitlesCurrentHint");
+    if (!subtitlesHint && subtitlesInput && subtitlesInput.parentElement) {
+      subtitlesHint = document.createElement("div");
+      subtitlesHint.id = "lessonSubtitlesCurrentHint";
+      subtitlesHint.className = "form-hint";
+      subtitlesHint.style.marginTop = "8px";
+      subtitlesHint.style.display = "none";
+      subtitlesInput.parentElement.appendChild(subtitlesHint);
+    }
+
     const videoPreviewControl = setupMediaPreview({
       input: videoFileInput,
-      box: document.getElementById("lessonVideoPreviewBox"),
-      media: document.getElementById("lessonVideoPreview"),
-      fileName: document.getElementById("lessonVideoFileName"),
-      clearBtn: document.getElementById("lessonVideoClearBtn"),
+      box: videoPreviewBox,
+      media: videoPreviewMedia,
+      fileName: videoPreviewFileName,
+      clearBtn: videoClearBtn,
       kind: "video"
     });
     const thumbnailPreviewControl = setupMediaPreview({
       input: thumbnailInput,
-      box: document.getElementById("lessonThumbnailPreviewBox"),
-      media: document.getElementById("lessonThumbnailPreview"),
-      fileName: document.getElementById("lessonThumbnailFileName"),
-      clearBtn: document.getElementById("lessonThumbnailClearBtn"),
+      box: thumbnailPreviewBox,
+      media: thumbnailPreviewMedia,
+      fileName: thumbnailPreviewFileName,
+      clearBtn: thumbnailClearBtn,
       kind: "image"
     });
 
+    function setModalMode(mode) {
+      formState.mode = mode === "edit" ? "edit" : "create";
+      if (modalTitle) {
+        modalTitle.textContent = formState.mode === "edit" ? "Editar Clase" : "Nueva Clase";
+      }
+      if (saveButton) {
+        saveButton.innerHTML = formState.mode === "edit"
+          ? '<i class="fa-solid fa-check"></i> Guardar Cambios'
+          : '<i class="fa-solid fa-check"></i> Publicar Clase';
+      }
+      if (draftButton) {
+        draftButton.textContent = formState.mode === "edit"
+          ? "Guardar en borrador"
+          : "Guardar como Borrador";
+      }
+    }
+
+    function activateInfoTab() {
+      if (!modal) return;
+      const tabs = modal.querySelectorAll(".tabs .tab");
+      const tabPanels = modal.querySelectorAll(".tab-content");
+      tabs.forEach((tab) => {
+        tab.classList.toggle("active", tab.getAttribute("data-tab") === "tab-info");
+      });
+      tabPanels.forEach((panel) => {
+        panel.classList.toggle("active", panel.id === "tab-info");
+      });
+    }
+
+    function buildResourceRow(title, url) {
+      const row = document.createElement("div");
+      row.className = "external-resource-row";
+      row.style.cssText = "display: flex; gap: 8px;";
+      row.innerHTML = `
+        <input type="text" class="form-control" placeholder="Nombre del recurso" style="flex: 1;" value="${escapeHtml(title || "")}">
+        <input type="url" class="form-control" placeholder="URL" style="flex: 2;" value="${escapeHtml(url || "")}">
+        <button type="button" class="btn btn-sm btn-danger remove-resource-row"><i class="fa-solid fa-trash"></i></button>
+      `;
+      const removeBtn = row.querySelector(".remove-resource-row");
+      if (removeBtn) {
+        removeBtn.addEventListener("click", () => {
+          row.remove();
+          if (!externalResourcesContainer.querySelector(".external-resource-row")) {
+            externalResourcesContainer.appendChild(buildResourceRow("", ""));
+          }
+        });
+      }
+      return row;
+    }
+
+    function setExternalResourceRows(items) {
+      if (!externalResourcesContainer) return;
+      externalResourcesContainer.innerHTML = "";
+      const resources = Array.isArray(items) ? items : [];
+      if (!resources.length) {
+        externalResourcesContainer.appendChild(buildResourceRow("", ""));
+        return;
+      }
+      resources.forEach((item) => {
+        externalResourcesContainer.appendChild(buildResourceRow(item.title || "", item.url || ""));
+      });
+    }
+
+    function collectExternalResourceRows() {
+      if (!externalResourcesContainer) return [];
+      const resources = [];
+      externalResourcesContainer.querySelectorAll(".external-resource-row").forEach((row) => {
+        const fields = row.querySelectorAll("input");
+        if (fields.length < 2) return;
+        const resourceTitle = fields[0].value.trim();
+        const resourceUrl = fields[1].value.trim();
+        if (!resourceTitle || !resourceUrl) return;
+        resources.push({ title: resourceTitle, url: resourceUrl });
+      });
+      return resources;
+    }
+
+    function setVideoTypeInput(inputValue) {
+      const nextValue = ["upload", "url", "youtube", "vimeo"].includes(inputValue) ? inputValue : "upload";
+      const target = videoTypeInputs.find((input) => input.value === nextValue);
+      if (!target) return;
+      target.checked = true;
+      target.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    async function syncModuleOptions(courseId, selectedModuleId) {
+      if (!courseId) {
+        populateModuleSelect(moduleSelect, [], true);
+        return;
+      }
+      const modules = state.modulesByCourse.get(courseId) || await loadModules(courseId);
+      populateModuleSelect(moduleSelect, modules, true);
+      if (selectedModuleId) {
+        moduleSelect.value = selectedModuleId;
+      }
+    }
+
+    function updateSubtitlesHint(path) {
+      if (!subtitlesHint) return;
+      if (!path) {
+        subtitlesHint.style.display = "none";
+        subtitlesHint.textContent = "";
+        return;
+      }
+      subtitlesHint.style.display = "block";
+      subtitlesHint.textContent = `Subtítulo actual: ${path.split("/").pop()}`;
+    }
+
+    async function renderStoredMediaPreviews(lesson) {
+      if (!lesson) return;
+      if (formState.existingVideoPath && videoPreviewBox && videoPreviewMedia && videoPreviewFileName) {
+        const signedVideo = await getSignedStorageUrl("lesson-videos", formState.existingVideoPath);
+        if (signedVideo) {
+          videoPreviewMedia.src = signedVideo;
+          videoPreviewMedia.load();
+          videoPreviewFileName.textContent = `Actual: ${formState.existingVideoPath.split("/").pop()}`;
+          videoPreviewBox.style.display = "block";
+        }
+      }
+      if (formState.existingThumbnailPath && thumbnailPreviewBox && thumbnailPreviewMedia && thumbnailPreviewFileName) {
+        const signedThumbnail = await getSignedStorageUrl("media-library", formState.existingThumbnailPath);
+        if (signedThumbnail) {
+          thumbnailPreviewMedia.src = signedThumbnail;
+          thumbnailPreviewFileName.textContent = `Actual: ${formState.existingThumbnailPath.split("/").pop()}`;
+          thumbnailPreviewBox.style.display = "block";
+        }
+      }
+      updateSubtitlesHint(lesson.subtitles_path || null);
+    }
+
+    function resetLessonForm() {
+      formState.editingLessonId = null;
+      formState.existingVideoPath = null;
+      formState.existingThumbnailPath = null;
+      formState.existingSubtitlesPath = null;
+
+      titleInput.value = "";
+      slugInput.value = "";
+      descriptionInput.value = "";
+      courseSelect.value = "";
+      populateModuleSelect(moduleSelect, [], true);
+      orderInput.value = "";
+      videoUrlInput.value = "";
+      durationInput.value = "";
+      subtitlesInput.value = "";
+      thumbnailInput.value = "";
+      materialsInput.value = "";
+      notesInput.value = "";
+      statusSelect.value = "draft";
+      scheduledAtInput.value = "";
+      freePreviewInput.checked = false;
+      allowDownloadInput.checked = false;
+      allowCommentsInput.checked = true;
+      setVideoTypeInput("upload");
+      if (videoPreviewControl && typeof videoPreviewControl.clear === "function") {
+        videoPreviewControl.clear();
+      }
+      if (thumbnailPreviewControl && typeof thumbnailPreviewControl.clear === "function") {
+        thumbnailPreviewControl.clear();
+      }
+      setExternalResourceRows([]);
+      updateSubtitlesHint(null);
+      activateInfoTab();
+    }
+
+    async function openCreateLessonModal() {
+      setModalMode("create");
+      populateCourseSelect(courseSelect, true);
+      resetLessonForm();
+      if (window.AdminModal) {
+        window.AdminModal.open("modal-lesson");
+      }
+    }
+
+    async function openEditLessonModal(lesson) {
+      if (!lesson) return;
+      setModalMode("edit");
+      populateCourseSelect(courseSelect, true);
+      resetLessonForm();
+
+      formState.editingLessonId = lesson.id;
+      formState.existingVideoPath = lesson.video_path || null;
+      formState.existingThumbnailPath = lesson.thumbnail_path || null;
+      formState.existingSubtitlesPath = lesson.subtitles_path || null;
+
+      titleInput.value = lesson.title || "";
+      slugInput.value = lesson.slug || "";
+      descriptionInput.value = lesson.description || "";
+      courseSelect.value = lesson.course_id || "";
+      await syncModuleOptions(courseSelect.value, lesson.module_id || "");
+      orderInput.value = lesson.lesson_order != null ? String(lesson.lesson_order) : "";
+      durationInput.value = formatDurationLabel(lesson.duration_seconds || 0).replace(/^—$/, "");
+      notesInput.value = lesson.notes || "";
+      statusSelect.value = lesson.status || "draft";
+      scheduledAtInput.value = toDatetimeLocalValue(lesson.scheduled_at);
+      freePreviewInput.checked = !!lesson.is_free_preview;
+      allowDownloadInput.checked = !!lesson.allow_video_download;
+      allowCommentsInput.checked = !!lesson.allow_comments;
+      videoUrlInput.value = lesson.video_url || "";
+      setVideoTypeInput(mapVideoTypeToInput(lesson.video_type));
+
+      const { data: resources, error: resourcesError } = await supabase
+        .from("lesson_external_resources")
+        .select("title,url,display_order")
+        .eq("lesson_id", lesson.id)
+        .order("display_order", { ascending: true });
+      if (resourcesError) throw resourcesError;
+      setExternalResourceRows(resources || []);
+
+      await renderStoredMediaPreviews(lesson);
+      activateInfoTab();
+      if (window.AdminModal) {
+        window.AdminModal.open("modal-lesson");
+      }
+    }
+
+    window.addResourceRow = function() {
+      if (!externalResourcesContainer) return;
+      externalResourcesContainer.appendChild(buildResourceRow("", ""));
+    };
+
+    if (newLessonButton) {
+      newLessonButton.onclick = function(event) {
+        event.preventDefault();
+        openCreateLessonModal();
+      };
+    }
+    window.openLessonCreateModal = openCreateLessonModal;
+    state.lessonEditor = {
+      openCreate: openCreateLessonModal,
+      openEdit: async (lesson) => {
+        try {
+          await openEditLessonModal(lesson);
+        } catch (err) {
+          toast("error", "No se pudo cargar la clase", err.message);
+        }
+      }
+    };
+
     populateCourseSelect(courseSelect, true);
+    populateModuleSelect(moduleSelect, [], true);
+    setExternalResourceRows([]);
+    setModalMode("create");
 
     titleInput.addEventListener("blur", () => {
       if (!slugInput.value.trim()) {
@@ -1265,8 +1547,7 @@
           return;
         }
 
-        const modules = await loadModules(courseSelect.value);
-        populateModuleSelect(moduleSelect, modules, true);
+        await syncModuleOptions(courseSelect.value, null);
       } catch (err) {
         toast("error", "No se pudo cargar módulos", err.message);
       }
@@ -1300,6 +1581,11 @@
       const parsedDuration = parseDurationToSeconds(durationInput.value);
       const normalizedSlug = slugify(slugInput.value || title);
       const finalStatus = forceDraft ? "draft" : statusSelect.value;
+      const isEditMode = formState.mode === "edit" && !!formState.editingLessonId;
+      const lessonId = isEditMode ? formState.editingLessonId : null;
+      const currentLesson = isEditMode
+        ? state.adminLessons.find((item) => item.id === lessonId)
+        : null;
 
       if (!title || !description || !courseId || !moduleId || moduleId === SPECIAL_NEW_MODULE) {
         toast("warning", "Campos requeridos", "Completa título, descripción, curso y módulo.");
@@ -1316,7 +1602,7 @@
         return;
       }
 
-      if (videoType === "upload" && (!videoFileInput.files || !videoFileInput.files.length)) {
+      if (videoType === "upload" && (!videoFileInput.files || !videoFileInput.files.length) && !formState.existingVideoPath) {
         toast("warning", "Video requerido", "Selecciona un archivo de video para subir.");
         return;
       }
@@ -1338,8 +1624,12 @@
 
       try {
         const selectedCourse = state.courses.find((course) => course.id === courseId);
-        const lessonOrder = Number(orderInput.value) > 0 ? Number(orderInput.value) : await getNextLessonOrder(moduleId);
-        const lesson = await insertLessonWithUniqueSlug({
+        const lessonOrder = Number(orderInput.value) > 0
+          ? Number(orderInput.value)
+          : (currentLesson && Number(currentLesson.lesson_order) > 0
+              ? Number(currentLesson.lesson_order)
+              : await getNextLessonOrder(moduleId));
+        const baseLessonPayload = {
           course_id: courseId,
           module_id: moduleId,
           slug: normalizedSlug,
@@ -1356,10 +1646,29 @@
           allow_video_download: !!allowDownloadInput.checked,
           allow_comments: !!allowCommentsInput.checked,
           scheduled_at: finalStatus === "scheduled" ? new Date(scheduledAtInput.value).toISOString() : null
-        });
+        };
+
+        let storedLessonId = lessonId;
+        if (isEditMode) {
+          const { error: updateLessonError } = await supabase
+            .from("lessons")
+            .update(Object.assign({}, baseLessonPayload, {
+              video_path: mapVideoType(videoType) === "upload" ? (formState.existingVideoPath || null) : null
+            }))
+            .eq("id", lessonId);
+          if (updateLessonError) {
+            if (updateLessonError.code === "23505") {
+              throw new Error("Ya existe otra clase con ese slug u orden en el módulo.");
+            }
+            throw updateLessonError;
+          }
+        } else {
+          const lesson = await insertLessonWithUniqueSlug(baseLessonPayload);
+          storedLessonId = lesson.id;
+        }
 
         const updateFields = {};
-        const lessonBasePath = `courses/${courseId}/modules/${moduleId}/lessons/${lesson.id}`;
+        const lessonBasePath = `courses/${courseId}/modules/${moduleId}/lessons/${storedLessonId}`;
 
         if (videoType === "upload" && videoFileInput.files && videoFileInput.files.length) {
           const video = videoFileInput.files[0];
@@ -1368,6 +1677,11 @@
           await uploadToBucket("lesson-videos", videoPath, video);
           updateFields.video_path = videoPath;
           updateFields.video_url = null;
+          formState.existingVideoPath = videoPath;
+        } else if (videoType !== "upload") {
+          updateFields.video_path = null;
+          updateFields.video_url = videoUrlInput.value.trim() || null;
+          formState.existingVideoPath = null;
         }
 
         if (thumbnailInput.files && thumbnailInput.files.length) {
@@ -1376,6 +1690,14 @@
           const imagePath = `${lessonBasePath}/thumb-${Date.now()}-${uniqueToken()}.${ext}`;
           await uploadToBucket("media-library", imagePath, image);
           updateFields.thumbnail_path = imagePath;
+          formState.existingThumbnailPath = imagePath;
+        } else if (
+          isEditMode &&
+          currentLesson &&
+          currentLesson.thumbnail_path &&
+          !formState.existingThumbnailPath
+        ) {
+          updateFields.thumbnail_path = null;
         }
 
         if (subtitlesInput.files && subtitlesInput.files.length) {
@@ -1384,13 +1706,14 @@
           const subtitlePath = `${lessonBasePath}/subs-${Date.now()}-${uniqueToken()}.${ext}`;
           await uploadToBucket("media-library", subtitlePath, subtitle);
           updateFields.subtitles_path = subtitlePath;
+          formState.existingSubtitlesPath = subtitlePath;
         }
 
         if (Object.keys(updateFields).length) {
           const { error: updateError } = await supabase
             .from("lessons")
             .update(updateFields)
-            .eq("id", lesson.id);
+            .eq("id", storedLessonId);
           if (updateError) throw updateError;
         }
 
@@ -1404,7 +1727,7 @@
             materialRows.push({
               course_id: courseId,
               module_id: moduleId,
-              lesson_id: lesson.id,
+              lesson_id: storedLessonId,
               title: file.name.replace(/\.[^.]+$/, ""),
               description: null,
               category: "Clase",
@@ -1425,60 +1748,39 @@
           }
         }
 
-        if (externalResourcesContainer) {
-          const rows = [];
-          externalResourcesContainer.querySelectorAll("div").forEach((resourceRow) => {
-            const fields = resourceRow.querySelectorAll("input");
-            if (fields.length < 2) return;
-            const resourceTitle = fields[0].value.trim();
-            const resourceUrl = fields[1].value.trim();
-            if (resourceTitle && resourceUrl) {
-              rows.push({
-                lesson_id: lesson.id,
-                title: resourceTitle,
-                url: resourceUrl
-              });
-            }
-          });
-
-          if (rows.length) {
-            const payload = rows.map((item, index) => ({
-              lesson_id: item.lesson_id,
-              title: item.title,
-              url: item.url,
-              display_order: index + 1
-            }));
-            const { error: resourceError } = await supabase
-              .from("lesson_external_resources")
-              .insert(payload);
-            if (resourceError) throw resourceError;
-          }
+        const resources = collectExternalResourceRows();
+        if (isEditMode) {
+          const { error: deleteResourcesError } = await supabase
+            .from("lesson_external_resources")
+            .delete()
+            .eq("lesson_id", storedLessonId);
+          if (deleteResourcesError) throw deleteResourcesError;
+        }
+        if (resources.length) {
+          const payload = resources.map((item, index) => ({
+            lesson_id: storedLessonId,
+            title: item.title,
+            url: item.url,
+            display_order: index + 1
+          }));
+          const { error: resourceError } = await supabase
+            .from("lesson_external_resources")
+            .insert(payload);
+          if (resourceError) throw resourceError;
         }
 
         await loadAdminLessonsTable();
         renderLessonsTable();
 
-        toast("success", "Clase guardada", "La clase y sus archivos se guardaron en Supabase.");
-        titleInput.value = "";
-        slugInput.value = "";
-        descriptionInput.value = "";
-        orderInput.value = "";
-        videoUrlInput.value = "";
-        durationInput.value = "";
-        subtitlesInput.value = "";
-        materialsInput.value = "";
-        notesInput.value = "";
-        statusSelect.value = "draft";
-        scheduledAtInput.value = "";
-        freePreviewInput.checked = false;
-        allowDownloadInput.checked = false;
-        allowCommentsInput.checked = true;
-        if (videoPreviewControl && typeof videoPreviewControl.clear === "function") {
-          videoPreviewControl.clear();
-        }
-        if (thumbnailPreviewControl && typeof thumbnailPreviewControl.clear === "function") {
-          thumbnailPreviewControl.clear();
-        }
+        toast(
+          "success",
+          isEditMode ? "Clase actualizada" : "Clase guardada",
+          isEditMode
+            ? "La clase se actualizó con todas las opciones del formulario."
+            : "La clase y sus archivos se guardaron en Supabase."
+        );
+        resetLessonForm();
+        setModalMode("create");
         if (window.AdminModal) {
           window.AdminModal.close("modal-lesson");
         }
@@ -1488,6 +1790,21 @@
         submitButton.disabled = false;
         submitButton.innerHTML = originalHtml;
       }
+    }
+
+    if (videoClearBtn) {
+      videoClearBtn.addEventListener("click", () => {
+        if (formState.mode === "edit" && (!videoFileInput.files || !videoFileInput.files.length)) {
+          formState.existingVideoPath = null;
+        }
+      });
+    }
+    if (thumbnailClearBtn) {
+      thumbnailClearBtn.addEventListener("click", () => {
+        if (formState.mode === "edit" && (!thumbnailInput.files || !thumbnailInput.files.length)) {
+          formState.existingThumbnailPath = null;
+        }
+      });
     }
 
     saveButton.addEventListener("click", () => saveLesson(false));
