@@ -44,6 +44,10 @@
       .replace(/'/g, "&#039;");
   }
 
+  function sameId(a, b) {
+    return String(a) === String(b);
+  }
+
   function slugify(value) {
     return String(value || "")
       .normalize("NFD")
@@ -1181,7 +1185,7 @@
       const editCourseBtn = event.target.closest(".edit-course-btn");
       if (editCourseBtn) {
         const courseId = editCourseBtn.getAttribute("data-course-id");
-        const course = state.courses.find((item) => item.id === courseId);
+        const course = state.courses.find((item) => sameId(item.id, courseId));
         if (!course) {
           toast("warning", "Curso no encontrado", "Recarga la lista de cursos e inténtalo de nuevo.");
           return;
@@ -1204,7 +1208,7 @@
       const deleteCourseBtn = event.target.closest(".delete-course-btn");
       if (!deleteCourseBtn) return;
       const courseId = deleteCourseBtn.getAttribute("data-course-id");
-      const course = state.courses.find((item) => item.id === courseId);
+      const course = state.courses.find((item) => sameId(item.id, courseId));
       const label = course ? course.title : "este curso";
       if (!window.confirm(`¿Eliminar "${label}"? Esta acción eliminará módulos y clases asociadas.`)) {
         return;
@@ -1242,7 +1246,7 @@
         if (editBtn) {
           const courseId = state.modulesModalCourseId;
           const modules = courseId ? (state.modulesByCourse.get(courseId) || []) : [];
-          const module = modules.find((item) => item.id === moduleId);
+          const module = modules.find((item) => sameId(item.id, moduleId));
           if (!module) {
             toast("warning", "Módulo no encontrado", "Recarga la lista de módulos e inténtalo de nuevo.");
             return;
@@ -1418,7 +1422,7 @@
       const isEditMode = formState.mode === "edit" && !!formState.editingCourseId;
       const editingCourseId = isEditMode ? formState.editingCourseId : null;
       const existingCourse = isEditMode
-        ? state.courses.find((item) => item.id === editingCourseId)
+        ? state.courses.find((item) => sameId(item.id, editingCourseId))
         : null;
       const parsedOrder = Number(orderInput ? orderInput.value : "");
       const displayOrder = parsedOrder > 0
@@ -1502,7 +1506,7 @@
         }
 
         if (isEditMode) {
-          state.courses = state.courses.map((item) => (item.id === savedCourseId ? Object.assign({}, item, savedCourse) : item));
+          state.courses = state.courses.map((item) => (sameId(item.id, savedCourseId) ? Object.assign({}, item, savedCourse) : item));
         } else if (savedCourse) {
           state.courses.push(savedCourse);
         }
