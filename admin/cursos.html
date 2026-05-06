@@ -283,23 +283,23 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">Nombre del Curso <span class="required">*</span></label>
-          <input type="text" class="form-control" placeholder="Ej: Análisis Técnico Avanzado">
+          <input id="courseTitleInput" type="text" class="form-control" placeholder="Ej: Análisis Técnico Avanzado">
         </div>
         <div class="form-group">
           <label class="form-label">Slug (URL)</label>
-          <input type="text" class="form-control" placeholder="analisis-tecnico-avanzado">
+          <input id="courseSlugInput" type="text" class="form-control" placeholder="analisis-tecnico-avanzado">
         </div>
       </div>
 
       <div class="form-group">
         <label class="form-label">Descripción <span class="required">*</span></label>
-        <textarea class="form-control" rows="3" placeholder="Describe el contenido y objetivos del curso..."></textarea>
+        <textarea id="courseDescriptionInput" class="form-control" rows="3" placeholder="Describe el contenido y objetivos del curso..."></textarea>
       </div>
 
       <div class="form-row-3">
         <div class="form-group">
           <label class="form-label">Plan Requerido <span class="required">*</span></label>
-          <select class="form-control">
+          <select id="coursePlanSelect" class="form-control">
             <option value="">Seleccionar plan...</option>
             <option value="basico">Básico ($399)</option>
             <option value="medio">Medio ($699)</option>
@@ -309,11 +309,11 @@
         </div>
         <div class="form-group">
           <label class="form-label">Orden de Visualización</label>
-          <input type="number" class="form-control" placeholder="1" min="1">
+          <input id="courseOrderInput" type="number" class="form-control" placeholder="1" min="1">
         </div>
         <div class="form-group">
           <label class="form-label">Estado</label>
-          <select class="form-control">
+          <select id="courseStatusSelect" class="form-control">
             <option value="draft">Borrador</option>
             <option value="published">Publicado</option>
           </select>
@@ -323,10 +323,19 @@
       <div class="form-group">
         <label class="form-label">Imagen de Portada</label>
         <div class="file-upload-area">
-          <input type="file" accept="image/*">
+          <input id="courseCoverInput" type="file" accept="image/*">
           <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
           <div class="file-upload-text">Arrastra una imagen o <strong>haz clic para seleccionar</strong></div>
           <div class="file-upload-hint">PNG, JPG o WebP. Máximo 2MB. Recomendado: 1200x680px</div>
+        </div>
+        <div id="courseCoverPreviewWrap" style="display:none; margin-top:12px; border:1px solid var(--gray-200); border-radius:10px; padding:12px; background:var(--gray-50);">
+          <img id="courseCoverPreview" alt="Previsualización portada" style="width:100%; max-height:220px; object-fit:cover; border-radius:8px; border:1px solid var(--gray-200);">
+          <div style="margin-top:10px; display:flex; align-items:center; justify-content:space-between; gap:8px;">
+            <span id="courseCoverFileName" class="text-small text-muted">Sin archivo</span>
+            <button id="courseCoverClearBtn" type="button" class="btn btn-sm btn-danger">
+              <i class="fa-solid fa-trash"></i> Quitar imagen
+            </button>
+          </div>
         </div>
       </div>
 
@@ -360,7 +369,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="AdminModal.close('modal-course')">Cancelar</button>
-      <button class="btn btn-primary" onclick="AdminToast.success('Curso creado', 'El curso se ha creado exitosamente'); AdminModal.close('modal-course');">
+      <button id="saveCourseBtn" class="btn btn-primary" type="button">
         <i class="fa-solid fa-check"></i> Guardar Curso
       </button>
     </div>
@@ -565,5 +574,8 @@
 </div>
 
 <script src="js/admin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script src="js/supabase-content.js"></script>
 </body>
 </html>

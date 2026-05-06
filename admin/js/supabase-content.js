@@ -61,6 +61,83 @@
     return Math.random().toString(36).slice(2, 10);
   }
 
+  function setupMediaPreview(config) {
+    const input = config && config.input ? config.input : null;
+    const box = config && config.box ? config.box : null;
+    const media = config && config.media ? config.media : null;
+    const fileName = config && config.fileName ? config.fileName : null;
+    const clearBtn = config && config.clearBtn ? config.clearBtn : null;
+    const kind = config && config.kind ? config.kind : "image";
+
+    if (!input || !box || !media) {
+      return { clear: function() {} };
+    }
+
+    let previewUrl = null;
+
+    function revokeUrl() {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+      }
+    }
+
+    function clearPreview() {
+      revokeUrl();
+      if (kind === "image") {
+        media.removeAttribute("src");
+      } else {
+        media.pause();
+        media.removeAttribute("src");
+        media.load();
+      }
+      if (fileName) {
+        fileName.textContent = "";
+      }
+      box.style.display = "none";
+      input.value = "";
+    }
+
+    function renderPreview() {
+      const file = input.files && input.files.length ? input.files[0] : null;
+      if (!file) {
+        clearPreview();
+        return;
+      }
+
+      const validType = kind === "video"
+        ? String(file.type || "").startsWith("video/")
+        : String(file.type || "").startsWith("image/");
+
+      if (!validType) {
+        toast("warning", "Archivo no compatible", `Selecciona un archivo de ${kind === "video" ? "video" : "imagen"} válido.`);
+        clearPreview();
+        return;
+      }
+
+      revokeUrl();
+      previewUrl = URL.createObjectURL(file);
+      media.src = previewUrl;
+      if (kind === "video") {
+        media.load();
+      }
+      if (fileName) {
+        fileName.textContent = file.name;
+      }
+      box.style.display = "block";
+    }
+
+    input.addEventListener("change", renderPreview);
+    if (clearBtn) {
+      clearBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        clearPreview();
+      });
+    }
+
+    return { clear: clearPreview };
+  }
+
   function parseDurationToSeconds(value) {
     const input = String(value || "").trim();
     if (!input) return null;
@@ -378,6 +455,35 @@
     throw new Error("No se pudo crear la clase por conflicto de slug.");
   }
 
+  async function insertCourseWithUniqueSlug(payload) {
+    let attempt = 0;
+    const baseSlug = payload.slug;
+
+    while (attempt < 6) {
+      const currentPayload = Object.assign({}, payload, {
+        slug: attempt === 0 ? baseSlug : `${baseSlug}-${attempt}`
+      });
+
+      const { data, error } = await supabase
+        .from("courses")
+        .insert(currentPayload)
+        .select("id,title,slug,description,plan_required,status,display_order,cover_url")
+        .single();
+
+      if (!error) {
+        return data;
+      }
+
+      if (error.code !== "23505") {
+        throw error;
+      }
+
+      attempt += 1;
+    }
+
+    throw new Error("No se pudo crear el curso por conflicto de slug.");
+  }
+
   function appendLessonToTable(lesson, courseTitle, moduleTitle, durationLabel, status) {
     const table = document.getElementById("lessonsTable");
     if (!table) return;
@@ -466,6 +572,160 @@
     return "upload";
   }
 
+  function getPlanBadgeClass(plan) {
+    if (plan === "basico") return "basico";
+    if (plan === "medio") return "medio";
+    if (plan === "avanzado") return "avanzado";
+    return "pro";
+  }
+
+  function getPlanLabel(plan) {
+    if (plan === "basico") return "Básico";
+    if (plan === "medio") return "Medio";
+    if (plan === "avanzado") return "Avanzado";
+    return "Pro";
+  }
+
+  function appendCourseCard(course) {
+    const grid = document.querySelector(".course-grid");
+    if (!grid) return;
+
+    const row = document.createElement("div");
+    row.className = "course-card-admin";
+    const statusClass = course.status === "published" ? "active" : "draft";
+    const statusLabel = course.status === "published" ? "Publicado" : "Borrador";
+    row.innerHTML = `
+      <div class="course-card-thumb" style="background: linear-gradient(135deg, #0d4f4f, #1a6b6b);">
+        <div class="course-card-status"><span class="status-badge ${statusClass}">${statusLabel}</span></div>
+        <div class="course-card-plan"><span class="plan-badge ${getPlanBadgeClass(course.plan_required)}">${getPlanLabel(course.plan_required)}</span></div>
+      </div>
+      <div class="course-card-body">
+        <h3 class="course-card-title">${course.title}</h3>
+        <p class="course-card-desc">${course.description || "Curso creado desde panel de administración."}</p>
+        <div class="course-card-meta">
+          <span><i class="fa-solid fa-layer-group"></i> 0 módulos</span>
+          <span><i class="fa-solid fa-play"></i> 0 clases</span>
+          <span><i class="fa-solid fa-users"></i> 0</span>
+        </div>
+        <div class="course-card-footer">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="text-small text-muted">Curso recién creado</span>
+          </div>
+          <div class="table-actions">
+            <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
+            <button class="table-action-btn" title="Módulos"><i class="fa-solid fa-layer-group"></i></button>
+            <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.insertBefore(row, grid.firstChild);
+  }
+
+  async function initCoursesForm() {
+    const saveButton = document.getElementById("saveCourseBtn");
+    if (!saveButton) return;
+
+    const titleInput = document.getElementById("courseTitleInput");
+    const slugInput = document.getElementById("courseSlugInput");
+    const descriptionInput = document.getElementById("courseDescriptionInput");
+    const planSelect = document.getElementById("coursePlanSelect");
+    const orderInput = document.getElementById("courseOrderInput");
+    const statusSelect = document.getElementById("courseStatusSelect");
+    const coverInput = document.getElementById("courseCoverInput");
+    const coverPreviewControl = setupMediaPreview({
+      input: coverInput,
+      box: document.getElementById("courseCoverPreviewWrap"),
+      media: document.getElementById("courseCoverPreview"),
+      fileName: document.getElementById("courseCoverFileName"),
+      clearBtn: document.getElementById("courseCoverClearBtn"),
+      kind: "image"
+    });
+
+    if (titleInput && slugInput) {
+      titleInput.addEventListener("blur", () => {
+        if (!slugInput.value.trim()) {
+          slugInput.value = slugify(titleInput.value);
+        }
+      });
+    }
+
+    saveButton.addEventListener("click", async () => {
+      const title = titleInput ? titleInput.value.trim() : "";
+      const description = descriptionInput ? descriptionInput.value.trim() : "";
+      const planRequired = planSelect ? planSelect.value : "";
+      const status = statusSelect ? statusSelect.value : "draft";
+      const generatedSlug = slugify(slugInput ? slugInput.value : "") || slugify(title);
+      const parsedOrder = Number(orderInput ? orderInput.value : "");
+      const displayOrder = parsedOrder > 0
+        ? parsedOrder
+        : ((state.courses.reduce((max, item) => Math.max(max, Number(item.display_order) || 0), 0)) + 1);
+
+      if (!title || !description || !planRequired) {
+        toast("warning", "Campos requeridos", "Completa nombre, descripción y plan requerido.");
+        return;
+      }
+
+      if (!generatedSlug) {
+        toast("warning", "Slug inválido", "No se pudo generar un slug válido para el curso.");
+        return;
+      }
+
+      const originalHtml = saveButton.innerHTML;
+      saveButton.disabled = true;
+      saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        const created = await insertCourseWithUniqueSlug({
+          title,
+          slug: generatedSlug,
+          description,
+          plan_required: planRequired,
+          status,
+          display_order: displayOrder
+        });
+
+        if (coverInput && coverInput.files && coverInput.files.length) {
+          const coverFile = coverInput.files[0];
+          const ext = getExtension(coverFile.name) || "jpg";
+          const coverPath = `courses/${created.id}/cover-${Date.now()}-${uniqueToken()}.${ext}`;
+          await uploadToBucket("media-library", coverPath, coverFile);
+
+          const { error: coverError } = await supabase
+            .from("courses")
+            .update({ cover_url: coverPath })
+            .eq("id", created.id);
+
+          if (coverError) throw coverError;
+          created.cover_url = coverPath;
+        }
+
+        state.courses.push(created);
+        state.courses.sort((a, b) => a.display_order - b.display_order);
+        appendCourseCard(created);
+
+        toast("success", "Curso guardado", "El curso se creó correctamente en Supabase.");
+        if (titleInput) titleInput.value = "";
+        if (slugInput) slugInput.value = "";
+        if (descriptionInput) descriptionInput.value = "";
+        if (planSelect) planSelect.value = "";
+        if (orderInput) orderInput.value = "";
+        if (statusSelect) statusSelect.value = "draft";
+        if (coverPreviewControl && typeof coverPreviewControl.clear === "function") {
+          coverPreviewControl.clear();
+        }
+        if (window.AdminModal) {
+          window.AdminModal.close("modal-course");
+        }
+      } catch (err) {
+        toast("error", "No se pudo crear el curso", err.message);
+      } finally {
+        saveButton.disabled = false;
+        saveButton.innerHTML = originalHtml;
+      }
+    });
+  }
+
   async function initClassesForm() {
     const saveButton = document.getElementById("saveLessonBtn");
     if (!saveButton) return;
@@ -490,6 +750,22 @@
     const allowDownloadInput = document.getElementById("lessonAllowDownloadInput");
     const allowCommentsInput = document.getElementById("lessonAllowCommentsInput");
     const externalResourcesContainer = document.getElementById("external-resources");
+    const videoPreviewControl = setupMediaPreview({
+      input: videoFileInput,
+      box: document.getElementById("lessonVideoPreviewBox"),
+      media: document.getElementById("lessonVideoPreview"),
+      fileName: document.getElementById("lessonVideoFileName"),
+      clearBtn: document.getElementById("lessonVideoClearBtn"),
+      kind: "video"
+    });
+    const thumbnailPreviewControl = setupMediaPreview({
+      input: thumbnailInput,
+      box: document.getElementById("lessonThumbnailPreviewBox"),
+      media: document.getElementById("lessonThumbnailPreview"),
+      fileName: document.getElementById("lessonThumbnailFileName"),
+      clearBtn: document.getElementById("lessonThumbnailClearBtn"),
+      kind: "image"
+    });
 
     populateCourseSelect(courseSelect, true);
 
@@ -717,6 +993,26 @@
         );
 
         toast("success", "Clase guardada", "La clase y sus archivos se guardaron en Supabase.");
+        titleInput.value = "";
+        slugInput.value = "";
+        descriptionInput.value = "";
+        orderInput.value = "";
+        videoUrlInput.value = "";
+        durationInput.value = "";
+        subtitlesInput.value = "";
+        materialsInput.value = "";
+        notesInput.value = "";
+        statusSelect.value = "draft";
+        scheduledAtInput.value = "";
+        freePreviewInput.checked = false;
+        allowDownloadInput.checked = false;
+        allowCommentsInput.checked = true;
+        if (videoPreviewControl && typeof videoPreviewControl.clear === "function") {
+          videoPreviewControl.clear();
+        }
+        if (thumbnailPreviewControl && typeof thumbnailPreviewControl.clear === "function") {
+          thumbnailPreviewControl.clear();
+        }
         if (window.AdminModal) {
           window.AdminModal.close("modal-lesson");
         }
@@ -882,6 +1178,7 @@
       if (!allowed) return;
 
       await loadCourses();
+      await initCoursesForm();
       await initClassesForm();
       await initMaterialsForm();
     } catch (err) {
