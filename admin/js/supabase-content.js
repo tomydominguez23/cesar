@@ -16,6 +16,7 @@
     adminLessons: [],
     openModulesCourseId: null,
     modulesModalCourseId: null,
+    courseEditor: null,
     lessonEditor: null,
     moduleEditor: null
   };
@@ -1177,6 +1178,22 @@
     grid.dataset.boundActions = "true";
 
     grid.addEventListener("click", (event) => {
+      const editCourseBtn = event.target.closest(".edit-course-btn");
+      if (editCourseBtn) {
+        const courseId = editCourseBtn.getAttribute("data-course-id");
+        const course = state.courses.find((item) => item.id === courseId);
+        if (!course) {
+          toast("warning", "Curso no encontrado", "Recarga la lista de cursos e inténtalo de nuevo.");
+          return;
+        }
+        if (state.courseEditor && typeof state.courseEditor.openEdit === "function") {
+          state.courseEditor.openEdit(course);
+        } else {
+          toast("warning", "Editor no disponible", "Recarga la página para habilitar la edición de cursos.");
+        }
+        return;
+      }
+
       const modulesBtn = event.target.closest(".open-modules-btn");
       if (modulesBtn) {
         const courseId = modulesBtn.getAttribute("data-course-id");
@@ -1267,6 +1284,10 @@
     const saveButton = document.getElementById("saveCourseBtn");
     if (!saveButton) return;
 
+    const modal = document.getElementById("modal-course");
+    const modalTitle = document.getElementById("courseFormModalTitle")
+      || (modal ? modal.querySelector(".modal-header h3") : null);
+    const newCourseButton = document.querySelector(".page-header-actions .btn.btn-primary");
     const titleInput = document.getElementById("courseTitleInput");
     const slugInput = document.getElementById("courseSlugInput");
     const descriptionInput = document.getElementById("courseDescriptionInput");
@@ -1274,19 +1295,116 @@
     const orderInput = document.getElementById("courseOrderInput");
     const statusSelect = document.getElementById("courseStatusSelect");
     const coverInput = document.getElementById("courseCoverInput");
+    const coverPreviewWrap = document.getElementById("courseCoverPreviewWrap");
+    const coverPreview = document.getElementById("courseCoverPreview");
+    const coverFileName = document.getElementById("courseCoverFileName");
+    const coverClearBtn = document.getElementById("courseCoverClearBtn");
     const coverPreviewControl = setupMediaPreview({
       input: coverInput,
-      box: document.getElementById("courseCoverPreviewWrap"),
-      media: document.getElementById("courseCoverPreview"),
-      fileName: document.getElementById("courseCoverFileName"),
-      clearBtn: document.getElementById("courseCoverClearBtn"),
+      box: coverPreviewWrap,
+      media: coverPreview,
+      fileName: coverFileName,
+      clearBtn: coverClearBtn,
       kind: "image"
     });
+    const formState = {
+      mode: "create",
+      editingCourseId: null,
+      existingCoverPath: null
+    };
+
+    function setMode(mode) {
+      formState.mode = mode === "edit" ? "edit" : "create";
+      if (modalTitle) {
+        modalTitle.textContent = formState.mode === "edit" ? "Editar Curso" : "Nuevo Curso";
+      }
+      saveButton.innerHTML = formState.mode === "edit"
+        ? '<i class="fa-solid fa-check"></i> Guardar Cambios'
+        : '<i class="fa-solid fa-check"></i> Guardar Curso';
+    }
+
+    function resetForm() {
+      formState.editingCourseId = null;
+      formState.existingCoverPath = null;
+      if (titleInput) titleInput.value = "";
+      if (slugInput) slugInput.value = "";
+      if (descriptionInput) descriptionInput.value = "";
+      if (planSelect) planSelect.value = "";
+      if (orderInput) orderInput.value = "";
+      if (statusSelect) statusSelect.value = "draft";
+      if (coverPreviewControl && typeof coverPreviewControl.clear === "function") {
+        coverPreviewControl.clear();
+      }
+    }
+
+    async function renderExistingCoverPreview(path) {
+      if (!path || !coverPreviewWrap || !coverPreview || !coverFileName) return;
+      const signedUrl = await getSignedStorageUrl("media-library", path);
+      if (!signedUrl) return;
+      coverPreview.src = signedUrl;
+      coverFileName.textContent = `Actual: ${path.split("/").pop()}`;
+      coverPreviewWrap.style.display = "block";
+    }
+
+    async function openCreateCourseModal() {
+      setMode("create");
+      resetForm();
+      if (window.AdminModal) {
+        window.AdminModal.open("modal-course");
+      }
+    }
+
+    async function openEditCourseModal(course) {
+      if (!course) return;
+      setMode("edit");
+      resetForm();
+      formState.editingCourseId = course.id;
+      formState.existingCoverPath = course.cover_url || null;
+      if (titleInput) titleInput.value = course.title || "";
+      if (slugInput) slugInput.value = course.slug || "";
+      if (descriptionInput) descriptionInput.value = course.description || "";
+      if (planSelect) planSelect.value = course.plan_required || "";
+      if (orderInput) orderInput.value = course.display_order != null ? String(course.display_order) : "";
+      if (statusSelect) statusSelect.value = course.status || "draft";
+      await renderExistingCoverPreview(formState.existingCoverPath);
+      if (window.AdminModal) {
+        window.AdminModal.open("modal-course");
+      }
+    }
+
+    if (newCourseButton) {
+      newCourseButton.onclick = function(event) {
+        event.preventDefault();
+        openCreateCourseModal();
+      };
+    }
+
+    window.openCourseCreateModal = openCreateCourseModal;
+    state.courseEditor = {
+      openCreate: openCreateCourseModal,
+      openEdit: async (course) => {
+        try {
+          await openEditCourseModal(course);
+        } catch (err) {
+          toast("error", "No se pudo cargar el curso", err.message);
+        }
+      }
+    };
+    setMode("create");
+    resetForm();
 
     if (titleInput && slugInput) {
       titleInput.addEventListener("blur", () => {
         if (!slugInput.value.trim()) {
           slugInput.value = slugify(titleInput.value);
+        }
+      });
+    }
+
+    if (coverClearBtn) {
+      coverClearBtn.addEventListener("click", () => {
+        if (formState.mode === "edit" && (!coverInput.files || !coverInput.files.length)) {
+          formState.existingCoverPath = null;
         }
       });
     }
@@ -1297,10 +1415,17 @@
       const planRequired = planSelect ? planSelect.value : "";
       const status = statusSelect ? statusSelect.value : "draft";
       const generatedSlug = slugify(slugInput ? slugInput.value : "") || slugify(title);
+      const isEditMode = formState.mode === "edit" && !!formState.editingCourseId;
+      const editingCourseId = isEditMode ? formState.editingCourseId : null;
+      const existingCourse = isEditMode
+        ? state.courses.find((item) => item.id === editingCourseId)
+        : null;
       const parsedOrder = Number(orderInput ? orderInput.value : "");
       const displayOrder = parsedOrder > 0
         ? parsedOrder
-        : ((state.courses.reduce((max, item) => Math.max(max, Number(item.display_order) || 0), 0)) + 1);
+        : (existingCourse && Number(existingCourse.display_order) > 0
+            ? Number(existingCourse.display_order)
+            : ((state.courses.reduce((max, item) => Math.max(max, Number(item.display_order) || 0), 0)) + 1));
 
       if (!title || !description || !planRequired) {
         toast("warning", "Campos requeridos", "Completa nombre, descripción y plan requerido.");
@@ -1317,49 +1442,87 @@
       saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
 
       try {
-        const created = await insertCourseWithUniqueSlug({
-          title,
-          slug: generatedSlug,
-          description,
-          plan_required: planRequired,
-          status,
-          display_order: displayOrder
-        });
+        let savedCourseId = editingCourseId;
+        let savedCourse = null;
 
+        if (isEditMode) {
+          const updatePayload = {
+            title,
+            slug: generatedSlug,
+            description,
+            plan_required: planRequired,
+            status,
+            display_order: displayOrder
+          };
+          const { error: updateError } = await supabase
+            .from("courses")
+            .update(updatePayload)
+            .eq("id", editingCourseId);
+          if (updateError) {
+            if (updateError.code === "23505") {
+              throw new Error("Ya existe otro curso con ese slug.");
+            }
+            throw updateError;
+          }
+          savedCourse = Object.assign({}, existingCourse || {}, updatePayload, { id: editingCourseId });
+        } else {
+          const created = await insertCourseWithUniqueSlug({
+            title,
+            slug: generatedSlug,
+            description,
+            plan_required: planRequired,
+            status,
+            display_order: displayOrder
+          });
+          savedCourseId = created.id;
+          savedCourse = created;
+        }
+
+        let coverPath = formState.existingCoverPath || null;
         if (coverInput && coverInput.files && coverInput.files.length) {
           const coverFile = coverInput.files[0];
           const ext = getExtension(coverFile.name) || "jpg";
-          const coverPath = `courses/${created.id}/cover-${Date.now()}-${uniqueToken()}.${ext}`;
-          await uploadToBucket("media-library", coverPath, coverFile);
+          const uploadedCoverPath = `courses/${savedCourseId}/cover-${Date.now()}-${uniqueToken()}.${ext}`;
+          await uploadToBucket("media-library", uploadedCoverPath, coverFile);
+          coverPath = uploadedCoverPath;
+        } else if (isEditMode && existingCourse && existingCourse.cover_url && !formState.existingCoverPath) {
+          coverPath = null;
+        }
 
+        if (isEditMode || coverPath) {
           const { error: coverError } = await supabase
             .from("courses")
             .update({ cover_url: coverPath })
-            .eq("id", created.id);
+            .eq("id", savedCourseId);
 
           if (coverError) throw coverError;
-          created.cover_url = coverPath;
+          if (savedCourse) {
+            savedCourse.cover_url = coverPath;
+          }
         }
 
-        state.courses.push(created);
+        if (isEditMode) {
+          state.courses = state.courses.map((item) => (item.id === savedCourseId ? Object.assign({}, item, savedCourse) : item));
+        } else if (savedCourse) {
+          state.courses.push(savedCourse);
+        }
         state.courses.sort((a, b) => (Number(a.display_order) || 0) - (Number(b.display_order) || 0));
         renderCoursesGrid();
 
-        toast("success", "Curso guardado", "El curso se creó correctamente en Supabase.");
-        if (titleInput) titleInput.value = "";
-        if (slugInput) slugInput.value = "";
-        if (descriptionInput) descriptionInput.value = "";
-        if (planSelect) planSelect.value = "";
-        if (orderInput) orderInput.value = "";
-        if (statusSelect) statusSelect.value = "draft";
-        if (coverPreviewControl && typeof coverPreviewControl.clear === "function") {
-          coverPreviewControl.clear();
-        }
+        toast(
+          "success",
+          isEditMode ? "Curso actualizado" : "Curso guardado",
+          isEditMode
+            ? "Los cambios del curso se guardaron correctamente."
+            : "El curso se creó correctamente en Supabase."
+        );
+        resetForm();
+        setMode("create");
         if (window.AdminModal) {
           window.AdminModal.close("modal-course");
         }
       } catch (err) {
-        toast("error", "No se pudo crear el curso", err.message);
+        toast("error", "No se pudo guardar el curso", err.message);
       } finally {
         saveButton.disabled = false;
         saveButton.innerHTML = originalHtml;

@@ -84,7 +84,7 @@
         </div>
         <div class="page-header-actions">
           <button class="btn btn-secondary"><i class="fa-solid fa-filter"></i> Filtrar</button>
-          <button class="btn btn-primary" onclick="AdminModal.open('modal-course')"><i class="fa-solid fa-plus"></i> Nuevo Curso</button>
+          <button class="btn btn-primary" onclick="openCourseCreateModal()"><i class="fa-solid fa-plus"></i> Nuevo Curso</button>
         </div>
       </div>
 
@@ -99,7 +99,7 @@
 <div class="modal-overlay" id="modal-course">
   <div class="modal large">
     <div class="modal-header">
-      <h3>Nuevo Curso</h3>
+      <h3 id="courseFormModalTitle">Nuevo Curso</h3>
       <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
