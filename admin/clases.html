@@ -428,6 +428,15 @@
             <div class="file-upload-text">Arrastra una imagen o <strong>haz clic para seleccionar</strong></div>
             <div class="file-upload-hint">PNG, JPG. Recomendado: 1280x720px</div>
           </div>
+          <div id="lessonThumbnailPreviewBox" style="display:none; margin-top:12px; border:1px solid var(--gray-200); border-radius:10px; padding:10px; background:var(--gray-100);">
+            <img id="lessonThumbnailPreview" alt="Previsualización de miniatura" style="width:100%; max-height:220px; object-fit:cover; border-radius:8px; display:block;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:8px;">
+              <span id="lessonThumbnailFileName" class="text-small text-muted"></span>
+              <button id="lessonThumbnailClearBtn" type="button" class="btn btn-sm btn-danger">
+                <i class="fa-solid fa-trash"></i> Quitar imagen
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -458,6 +467,15 @@
             <div class="file-upload-icon"><i class="fa-solid fa-video"></i></div>
             <div class="file-upload-text">Arrastra el video o <strong>haz clic para seleccionar</strong></div>
             <div class="file-upload-hint">MP4, WebM o MOV. Máximo 500MB</div>
+          </div>
+          <div id="lessonVideoPreviewBox" style="display:none; margin-top:12px; border:1px solid var(--gray-200); border-radius:10px; padding:10px; background:var(--gray-100);">
+            <video id="lessonVideoPreview" controls style="width:100%; max-height:280px; border-radius:8px; background:#000;"></video>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:8px;">
+              <span id="lessonVideoFileName" class="text-small text-muted"></span>
+              <button id="lessonVideoClearBtn" type="button" class="btn btn-sm btn-danger">
+                <i class="fa-solid fa-trash"></i> Quitar video
+              </button>
+            </div>
           </div>
         </div>
 
