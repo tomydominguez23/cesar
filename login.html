@@ -110,6 +110,8 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
   <script>
     function togglePassword() {
       const pass = document.getElementById('password');
@@ -123,10 +125,48 @@
       }
     }
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
-      // Demo: redirect to dashboard
-      window.location.href = 'dashboard.html';
+      const supabase = window.getSupabaseClient ? window.getSupabaseClient() : null;
+      if (!supabase) {
+        alert('No se pudo inicializar Supabase. Revisa la configuración.');
+        return;
+      }
+
+      const submitBtn = document.querySelector('#loginForm button[type="submit"]');
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const originalLabel = submitBtn.innerHTML;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesión...';
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          throw error;
+        }
+
+        const userId = data.user ? data.user.id : null;
+        let isAdmin = false;
+
+        if (userId) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', userId)
+            .maybeSingle();
+          isAdmin = !!profile && profile.role === 'admin';
+        }
+
+        window.location.href = isAdmin ? 'admin/index.html' : 'dashboard.html';
+      } catch (err) {
+        const message = err && err.message ? err.message : 'No se pudo iniciar sesión.';
+        alert('Error de autenticación: ' + message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel;
+      }
     }
   </script>
 </body>

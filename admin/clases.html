@@ -388,52 +388,42 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Título de la Clase <span class="required">*</span></label>
-            <input type="text" class="form-control" placeholder="Ej: Introducción a Velas Japonesas">
+            <input id="lessonTitleInput" type="text" class="form-control" placeholder="Ej: Introducción a Velas Japonesas">
           </div>
           <div class="form-group">
             <label class="form-label">Slug</label>
-            <input type="text" class="form-control" placeholder="introduccion-velas-japonesas">
+            <input id="lessonSlugInput" type="text" class="form-control" placeholder="introduccion-velas-japonesas">
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Descripción <span class="required">*</span></label>
-          <textarea class="form-control" rows="4" placeholder="Describe el contenido de esta clase..."></textarea>
+          <textarea id="lessonDescriptionInput" class="form-control" rows="4" placeholder="Describe el contenido de esta clase..."></textarea>
         </div>
 
         <div class="form-row-3">
           <div class="form-group">
             <label class="form-label">Curso <span class="required">*</span></label>
-            <select class="form-control">
+            <select id="lessonCourseSelect" class="form-control">
               <option value="">Seleccionar curso...</option>
-              <option>Primeros Pasos</option>
-              <option>El Mercado</option>
-              <option>Análisis Técnico</option>
-              <option>Trading Avanzado</option>
-              <option>Gestión de Riesgo</option>
-              <option>Psicología del Trading</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-label">Módulo <span class="required">*</span></label>
-            <select class="form-control">
+            <select id="lessonModuleSelect" class="form-control">
               <option value="">Seleccionar módulo...</option>
-              <option>Módulo 1: Introducción al Trading</option>
-              <option>Módulo 2: Plataformas de Trading</option>
-              <option>Módulo 3: Lectura de Gráficos</option>
-              <option>Módulo 4: Tu Primera Operación</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-label">Orden en Módulo</label>
-            <input type="number" class="form-control" placeholder="1" min="1">
+            <input id="lessonOrderInput" type="number" class="form-control" placeholder="1" min="1">
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Imagen de Miniatura</label>
           <div class="file-upload-area" style="padding: 24px;">
-            <input type="file" accept="image/*">
+            <input id="lessonThumbnailInput" type="file" accept="image/*">
             <div class="file-upload-icon" style="font-size: 28px;"><i class="fa-solid fa-image"></i></div>
             <div class="file-upload-text">Arrastra una imagen o <strong>haz clic para seleccionar</strong></div>
             <div class="file-upload-hint">PNG, JPG. Recomendado: 1280x720px</div>
@@ -464,7 +454,7 @@
         <div class="form-group" id="video-upload-section">
           <label class="form-label">Archivo de Video</label>
           <div class="file-upload-area">
-            <input type="file" accept="video/*">
+            <input id="lessonVideoFileInput" type="file" accept="video/*">
             <div class="file-upload-icon"><i class="fa-solid fa-video"></i></div>
             <div class="file-upload-text">Arrastra el video o <strong>haz clic para seleccionar</strong></div>
             <div class="file-upload-hint">MP4, WebM o MOV. Máximo 500MB</div>
@@ -473,19 +463,19 @@
 
         <div class="form-group hidden" id="video-url-section">
           <label class="form-label">URL del Video</label>
-          <input type="url" class="form-control" placeholder="https://...">
+          <input id="lessonVideoUrlInput" type="url" class="form-control" placeholder="https://...">
           <div class="form-hint">URL directa al archivo de video o embed</div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Duración</label>
-            <input type="text" class="form-control" placeholder="Ej: 15:30">
+            <input id="lessonDurationInput" type="text" class="form-control" placeholder="Ej: 15:30">
             <div class="form-hint">Formato: MM:SS o HH:MM:SS</div>
           </div>
           <div class="form-group">
             <label class="form-label">Calidad Máxima</label>
-            <select class="form-control">
+            <select id="lessonMaxQualitySelect" class="form-control">
               <option>1080p</option>
               <option>720p</option>
               <option>480p</option>
@@ -497,7 +487,7 @@
         <div class="form-group">
           <label class="form-label">Subtítulos (SRT)</label>
           <div class="file-upload-area" style="padding: 20px;">
-            <input type="file" accept=".srt,.vtt">
+            <input id="lessonSubtitlesInput" type="file" accept=".srt,.vtt">
             <div class="file-upload-icon" style="font-size: 24px;"><i class="fa-solid fa-closed-captioning"></i></div>
             <div class="file-upload-text"><strong>Subir archivo de subtítulos</strong></div>
             <div class="file-upload-hint">Formatos: SRT, VTT</div>
@@ -510,7 +500,7 @@
         <div class="form-group">
           <label class="form-label">Materiales de Apoyo</label>
           <div class="file-upload-area">
-            <input type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip">
+            <input id="lessonMaterialsInput" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip">
             <div class="file-upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
             <div class="file-upload-text">Arrastra archivos o <strong>haz clic para seleccionar</strong></div>
             <div class="file-upload-hint">PDF, DOC, XLS, PPT, ZIP. Máximo 50MB por archivo</div>
@@ -531,7 +521,7 @@
 
         <div class="form-group">
           <label class="form-label">Notas de la Clase</label>
-          <textarea class="form-control" rows="5" placeholder="Notas adicionales que verán los estudiantes..."></textarea>
+          <textarea id="lessonNotesInput" class="form-control" rows="5" placeholder="Notas adicionales que verán los estudiantes..."></textarea>
         </div>
       </div>
 
@@ -540,7 +530,7 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Estado</label>
-            <select class="form-control">
+            <select id="lessonStatusSelect" class="form-control">
               <option value="draft">Borrador</option>
               <option value="published">Publicado</option>
               <option value="scheduled">Programado</option>
@@ -548,7 +538,7 @@
           </div>
           <div class="form-group">
             <label class="form-label">Fecha de Publicación</label>
-            <input type="datetime-local" class="form-control">
+            <input id="lessonScheduledAtInput" type="datetime-local" class="form-control">
           </div>
         </div>
 
@@ -560,7 +550,7 @@
             </div>
             <div class="settings-row-control">
               <label class="form-switch">
-                <input type="checkbox">
+                <input id="lessonFreePreviewInput" type="checkbox">
                 <span class="slider"></span>
               </label>
             </div>
@@ -575,7 +565,7 @@
             </div>
             <div class="settings-row-control">
               <label class="form-switch">
-                <input type="checkbox">
+                <input id="lessonAllowDownloadInput" type="checkbox">
                 <span class="slider"></span>
               </label>
             </div>
@@ -590,7 +580,7 @@
             </div>
             <div class="settings-row-control">
               <label class="form-switch">
-                <input type="checkbox" checked>
+                <input id="lessonAllowCommentsInput" type="checkbox" checked>
                 <span class="slider"></span>
               </label>
             </div>
@@ -616,8 +606,8 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="AdminModal.close('modal-lesson')">Cancelar</button>
-      <button class="btn btn-outline">Guardar como Borrador</button>
-      <button class="btn btn-primary" onclick="AdminToast.success('Clase creada', 'La clase se ha guardado exitosamente'); AdminModal.close('modal-lesson');">
+      <button id="saveLessonDraftBtn" class="btn btn-outline" type="button">Guardar como Borrador</button>
+      <button id="saveLessonBtn" class="btn btn-primary" type="button">
         <i class="fa-solid fa-check"></i> Publicar Clase
       </button>
     </div>
@@ -625,6 +615,9 @@
 </div>
 
 <script src="js/admin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script src="js/supabase-content.js"></script>
 <script>
   // Video type toggle
   document.querySelectorAll('input[name="video-type"]').forEach(radio => {
