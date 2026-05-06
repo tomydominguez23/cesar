@@ -331,10 +331,20 @@
       }
       if (playerContainer) playerContainer.innerHTML = playerHtml;
 
-      const { data: materials } = await supabase
+      const materialsQuery = supabase
         .from("lesson_materials")
-        .select("id,title,description,file_name,storage_path,file_ext")
-        .eq("lesson_id", lesson.id)
+        .select("id,title,description,file_name,storage_path,file_ext,course_id,module_id,lesson_id")
+        .eq("course_id", courseId);
+
+      if (lesson.module_id) {
+        materialsQuery.or(
+          `lesson_id.eq.${lesson.id},and(module_id.eq.${lesson.module_id},lesson_id.is.null),and(module_id.is.null,lesson_id.is.null)`
+        );
+      } else {
+        materialsQuery.or(`lesson_id.eq.${lesson.id},and(module_id.is.null,lesson_id.is.null)`);
+      }
+
+      const { data: materials } = await materialsQuery
         .order("created_at", { ascending: false });
 
       const materialsList = materials || [];

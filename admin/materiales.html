@@ -133,7 +133,7 @@
                 <th style="width: 40px;"><input type="checkbox"></th>
                 <th>Material</th>
                 <th>Tipo</th>
-                <th>Curso / Clase</th>
+                <th>Curso / Módulo / Clase</th>
                 <th>Tamaño</th>
                 <th>Descargas</th>
                 <th>Fecha</th>
@@ -193,12 +193,19 @@
         </div>
       </div>
 
-      <div class="form-row">
+      <div class="form-row-3">
         <div class="form-group">
           <label class="form-label">Curso Asociado <span class="required">*</span></label>
           <select id="materialCourseSelect" class="form-control">
             <option value="">Seleccionar curso...</option>
           </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Módulo Asociado</label>
+          <select id="materialModuleSelect" class="form-control">
+            <option value="">Sin módulo específico</option>
+          </select>
+          <div class="form-hint">Si eliges módulo y dejas clase vacía, el material se mostrará en todo el módulo.</div>
         </div>
         <div class="form-group">
           <label class="form-label">Clase Asociada</label>
