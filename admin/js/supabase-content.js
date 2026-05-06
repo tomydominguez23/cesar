@@ -237,7 +237,7 @@
   async function loadCourses() {
     const { data, error } = await supabase
       .from("courses")
-      .select("id,title,slug,plan_required,status,display_order")
+      .select("id,title,slug,description,plan_required,status,display_order,cover_url")
       .order("display_order", { ascending: true });
 
     if (error) throw error;
@@ -370,12 +370,13 @@
         status: "draft",
         display_order: (lastCourse && lastCourse.display_order ? lastCourse.display_order : 0) + 1
       })
-      .select("id,title,slug,plan_required,status,display_order")
+      .select("id,title,slug,description,plan_required,status,display_order,cover_url")
       .single();
 
     if (error) throw error;
     state.courses.push(created);
-    state.courses.sort((a, b) => a.display_order - b.display_order);
+    state.courses.sort((a, b) => (Number(a.display_order) || 0) - (Number(b.display_order) || 0));
+    renderCoursesGrid();
     toast("success", "Curso creado", `Se creó "${title}" en borrador.`);
     return created;
   }
@@ -586,40 +587,177 @@
     return "Pro";
   }
 
-  function appendCourseCard(course) {
+  function getStatusMeta(status) {
+    if (status === "published") return { cssClass: "active", label: "Publicado" };
+    if (status === "scheduled") return { cssClass: "draft", label: "Programado" };
+    return { cssClass: "draft", label: "Borrador" };
+  }
+
+  function updateCoursesSummary() {
+    const summaryEl = document.getElementById("coursesSummaryText");
+    if (!summaryEl) return;
+
+    const total = state.courses.length;
+    const published = state.courses.filter((course) => course.status === "published").length;
+    const drafts = total - published;
+    const courseWord = total === 1 ? "curso" : "cursos";
+    const publishedWord = published === 1 ? "publicado" : "publicados";
+    const draftWord = drafts === 1 ? "borrador" : "borradores";
+    summaryEl.textContent = `${total} ${courseWord} · ${published} ${publishedWord} · ${drafts} ${draftWord}`;
+  }
+
+  function appendCourseCard(course, prepend) {
     const grid = document.querySelector(".course-grid");
     if (!grid) return;
 
     const row = document.createElement("div");
     row.className = "course-card-admin";
-    const statusClass = course.status === "published" ? "active" : "draft";
-    const statusLabel = course.status === "published" ? "Publicado" : "Borrador";
+    const statusMeta = getStatusMeta(course.status);
     row.innerHTML = `
       <div class="course-card-thumb" style="background: linear-gradient(135deg, #0d4f4f, #1a6b6b);">
-        <div class="course-card-status"><span class="status-badge ${statusClass}">${statusLabel}</span></div>
+        <div class="course-card-status"><span class="status-badge ${statusMeta.cssClass}">${statusMeta.label}</span></div>
         <div class="course-card-plan"><span class="plan-badge ${getPlanBadgeClass(course.plan_required)}">${getPlanLabel(course.plan_required)}</span></div>
       </div>
       <div class="course-card-body">
         <h3 class="course-card-title">${course.title}</h3>
         <p class="course-card-desc">${course.description || "Curso creado desde panel de administración."}</p>
         <div class="course-card-meta">
-          <span><i class="fa-solid fa-layer-group"></i> 0 módulos</span>
-          <span><i class="fa-solid fa-play"></i> 0 clases</span>
-          <span><i class="fa-solid fa-users"></i> 0</span>
+          <span><i class="fa-solid fa-layer-group"></i> Gestiona módulos desde el botón</span>
         </div>
         <div class="course-card-footer">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="text-small text-muted">Curso recién creado</span>
+            <span class="text-small text-muted">Slug: ${course.slug}</span>
           </div>
           <div class="table-actions">
             <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-            <button class="table-action-btn" title="Módulos"><i class="fa-solid fa-layer-group"></i></button>
+            <button class="table-action-btn open-modules-btn" data-course-id="${course.id}" title="Módulos"><i class="fa-solid fa-layer-group"></i></button>
             <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
       </div>
     `;
-    grid.insertBefore(row, grid.firstChild);
+    if (prepend) {
+      grid.insertBefore(row, grid.firstChild);
+    } else {
+      grid.appendChild(row);
+    }
+  }
+
+  function renderCoursesGrid() {
+    const grid = document.querySelector(".course-grid");
+    if (!grid) return;
+
+    grid.innerHTML = "";
+    if (!state.courses.length) {
+      grid.innerHTML = `
+        <div class="card" style="grid-column: 1 / -1;">
+          <div class="card-body" style="padding: 18px;">
+            <strong>No hay cursos creados todavía.</strong>
+            <div class="text-small text-muted" style="margin-top: 6px;">
+              Usa el botón "Nuevo Curso" para empezar. Ya se eliminaron los cursos predeterminados del panel.
+            </div>
+          </div>
+        </div>
+      `;
+      updateCoursesSummary();
+      return;
+    }
+
+    state.courses
+      .slice()
+      .sort((a, b) => (Number(a.display_order) || 0) - (Number(b.display_order) || 0))
+      .forEach((course) => appendCourseCard(course, false));
+
+    updateCoursesSummary();
+  }
+
+  async function openModulesModal(courseId) {
+    if (!courseId) return;
+    const modalTitle = document.getElementById("modulesModalTitle");
+    const listContainer = document.getElementById("modulesListContainer");
+    const course = state.courses.find((item) => item.id === courseId);
+    if (!modalTitle || !listContainer) return;
+
+    modalTitle.textContent = course ? `Módulos — ${course.title}` : "Módulos del curso";
+    listContainer.innerHTML = `
+      <div class="card" style="border: 1px dashed var(--gray-300);">
+        <div class="card-body" style="padding: 14px; font-size: 13px; color: var(--gray-500);">
+          Cargando módulos...
+        </div>
+      </div>
+    `;
+
+    if (window.AdminModal) {
+      window.AdminModal.open("modal-modules");
+    }
+
+    try {
+      const modules = await loadModules(courseId);
+      const lessons = await loadLessons(courseId);
+      const lessonsByModule = new Map();
+      lessons.forEach((lesson) => {
+        const current = lessonsByModule.get(lesson.module_id) || 0;
+        lessonsByModule.set(lesson.module_id, current + 1);
+      });
+
+      if (!modules.length) {
+        listContainer.innerHTML = `
+          <div class="card" style="border: 1px dashed var(--gray-300);">
+            <div class="card-body" style="padding: 14px;">
+              <strong>No hay módulos en este curso.</strong>
+              <div class="text-small text-muted" style="margin-top: 6px;">
+                Crea módulos desde el flujo de clases (selecciona curso → crear módulo rápido).
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      listContainer.innerHTML = "";
+      modules.forEach((module) => {
+        const lessonsCount = lessonsByModule.get(module.id) || 0;
+        const statusMeta = getStatusMeta(module.status);
+        const moduleEl = document.createElement("div");
+        moduleEl.className = "module-item";
+        moduleEl.innerHTML = `
+          <div class="module-header">
+            <div class="module-header-left">
+              <div class="module-number">${module.module_order || "-"}</div>
+              <div>
+                <div class="module-title">${module.title}</div>
+                <div class="module-subtitle">${lessonsCount} clase(s)</div>
+              </div>
+            </div>
+            <div class="module-header-right">
+              <span class="status-badge ${statusMeta.cssClass}">${statusMeta.label}</span>
+            </div>
+          </div>
+        `;
+        listContainer.appendChild(moduleEl);
+      });
+    } catch (error) {
+      listContainer.innerHTML = `
+        <div class="card" style="border: 1px dashed var(--danger);">
+          <div class="card-body" style="padding: 14px; color: var(--danger);">
+            No se pudieron cargar los módulos: ${error.message}
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  function bindCoursesGridActions() {
+    const grid = document.querySelector(".course-grid");
+    if (!grid || grid.dataset.boundActions === "true") return;
+    grid.dataset.boundActions = "true";
+
+    grid.addEventListener("click", (event) => {
+      const modulesBtn = event.target.closest(".open-modules-btn");
+      if (!modulesBtn) return;
+      const courseId = modulesBtn.getAttribute("data-course-id");
+      openModulesModal(courseId);
+    });
   }
 
   async function initCoursesForm() {
@@ -701,8 +839,8 @@
         }
 
         state.courses.push(created);
-        state.courses.sort((a, b) => a.display_order - b.display_order);
-        appendCourseCard(created);
+        state.courses.sort((a, b) => (Number(a.display_order) || 0) - (Number(b.display_order) || 0));
+        renderCoursesGrid();
 
         toast("success", "Curso guardado", "El curso se creó correctamente en Supabase.");
         if (titleInput) titleInput.value = "";
@@ -1178,6 +1316,8 @@
       if (!allowed) return;
 
       await loadCourses();
+      bindCoursesGridActions();
+      renderCoursesGrid();
       await initCoursesForm();
       await initClassesForm();
       await initMaterialsForm();
