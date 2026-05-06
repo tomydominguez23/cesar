@@ -31,6 +31,15 @@
     }
   }
 
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function slugify(value) {
     return String(value || "")
       .normalize("NFD")
@@ -487,13 +496,24 @@
     return (lastLesson && lastLesson.lesson_order ? lastLesson.lesson_order : 0) + 1;
   }
 
-  async function insertLessonWithUniqueSlug(payload) {
-    let attempt = 0;
-    const baseSlug = payload.slug;
+  function lessonConflictType(error) {
+    const source = `${(error && error.message) || ""} ${(error && error.details) || ""} ${(error && error.hint) || ""}`.toLowerCase();
+    if (source.includes("module_id") && source.includes("lesson_order")) return "order";
+    if (source.includes("course_id") && source.includes("slug")) return "slug";
+    if (source.includes("slug")) return "slug";
+    return "unknown";
+  }
 
-    while (attempt < 6) {
+  async function insertLessonWithUniqueSlug(payload) {
+    let slugAttempt = 0;
+    let orderAttempt = 0;
+    const baseSlug = payload.slug;
+    const baseOrder = Number(payload.lesson_order) || 1;
+
+    while (slugAttempt < 8 && orderAttempt < 20) {
       const currentPayload = Object.assign({}, payload, {
-        slug: attempt === 0 ? baseSlug : `${baseSlug}-${attempt}`
+        slug: slugAttempt === 0 ? baseSlug : `${baseSlug}-${slugAttempt}`,
+        lesson_order: baseOrder + orderAttempt
       });
 
       const { data, error } = await supabase
@@ -510,10 +530,22 @@
         throw error;
       }
 
-      attempt += 1;
+      const conflict = lessonConflictType(error);
+      if (conflict === "slug") {
+        slugAttempt += 1;
+        continue;
+      }
+      if (conflict === "order") {
+        orderAttempt += 1;
+        continue;
+      }
+
+      // Si no se puede identificar el índice en conflicto, avanza ambos.
+      slugAttempt += 1;
+      orderAttempt += 1;
     }
 
-    throw new Error("No se pudo crear la clase por conflicto de slug.");
+    throw new Error("No se pudo crear la clase por conflicto de slug u orden en el módulo.");
   }
 
   async function insertCourseWithUniqueSlug(payload) {
