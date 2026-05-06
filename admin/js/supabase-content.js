@@ -14,6 +14,7 @@
     modulesByCourse: new Map(),
     lessonsByCourse: new Map(),
     adminLessons: [],
+    adminMaterials: [],
     openModulesCourseId: null,
     modulesModalCourseId: null,
     courseEditor: null,
@@ -398,6 +399,30 @@
     return state.adminLessons;
   }
 
+  async function loadAdminMaterialsTable() {
+    const { data, error } = await supabase
+      .from("lesson_materials")
+      .select(`
+        id,
+        title,
+        description,
+        file_name,
+        file_ext,
+        size_bytes,
+        storage_path,
+        created_at,
+        course_id,
+        lesson_id,
+        course:courses(id,title),
+        lesson:lessons(id,title)
+      `)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    state.adminMaterials = data || [];
+    return state.adminMaterials;
+  }
+
   function populateModuleSelect(select, modules, includeNew) {
     if (!select) return;
     const options = [{ value: "", label: "Seleccionar módulo..." }];
@@ -667,28 +692,136 @@
         <div style="display: flex; align-items: center; gap: 10px;">
           <div class="lesson-icon doc"><i class="fa-solid ${iconClass}"></i></div>
           <div>
-            <strong>${material.title}</strong>
-            <div class="text-small text-muted">${material.file_name}</div>
+            <strong>${escapeHtml(material.title || "Sin título")}</strong>
+            <div class="text-small text-muted">${escapeHtml(material.file_name || "archivo")}</div>
           </div>
         </div>
       </td>
-      <td><span style="font-size: 11px; font-weight: 600; background: rgba(13,79,79,0.1); color: #0d4f4f; padding: 3px 8px; border-radius: 4px;">${extLabel}</span></td>
+      <td><span style="font-size: 11px; font-weight: 600; background: rgba(13,79,79,0.1); color: #0d4f4f; padding: 3px 8px; border-radius: 4px;">${escapeHtml(extLabel)}</span></td>
       <td>
-        <div>${courseTitle || "—"}</div>
-        <div class="text-small text-muted">${lessonTitle || "Sin clase específica"}</div>
+        <div>${escapeHtml(courseTitle || "—")}</div>
+        <div class="text-small text-muted">${escapeHtml(lessonTitle || "Sin clase específica")}</div>
       </td>
       <td>${formatBytes(material.size_bytes)}</td>
       <td>0</td>
       <td>${formatDate(material.created_at)}</td>
       <td>
         <div class="table-actions">
-          <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-          <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
-          <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+          <button class="table-action-btn material-download-btn" data-material-id="${escapeHtml(material.id)}" title="Descargar"><i class="fa-solid fa-download"></i></button>
+          <button class="table-action-btn danger material-delete-btn" data-material-id="${escapeHtml(material.id)}" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
         </div>
       </td>
     `;
     tbody.insertBefore(row, tbody.firstChild);
+  }
+
+  function updateMaterialsSummary() {
+    const summaryEl = document.getElementById("materialsSummaryText");
+    if (!summaryEl) return;
+    const total = state.adminMaterials.length;
+    const downloads = 0;
+    const recent = state.adminMaterials.filter((item) => {
+      if (!item.created_at) return false;
+      const created = new Date(item.created_at);
+      const deltaMs = Date.now() - created.getTime();
+      return deltaMs >= 0 && deltaMs <= (7 * 24 * 60 * 60 * 1000);
+    }).length;
+    summaryEl.textContent = `${total} materiales · ${downloads} descargas totales · ${recent} subidos esta semana`;
+  }
+
+  function renderMaterialsTable() {
+    const tbody = document.getElementById("materialsTableBody");
+    if (!tbody) return;
+
+    if (!state.adminMaterials.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-small text-muted" style="padding:16px;">No hay materiales registrados todavía.</td>
+        </tr>
+      `;
+      updateMaterialsSummary();
+      return;
+    }
+
+    const rows = state.adminMaterials.map((material) => {
+      const course = normalizeRelation(material.course);
+      const lesson = normalizeRelation(material.lesson);
+      const iconClass = fileIconByExt(material.file_ext);
+      const extLabel = (material.file_ext || "archivo").toUpperCase();
+      return `
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="lesson-icon doc"><i class="fa-solid ${iconClass}"></i></div>
+              <div>
+                <strong>${escapeHtml(material.title || "Sin título")}</strong>
+                <div class="text-small text-muted">${escapeHtml(material.file_name || "archivo")}</div>
+              </div>
+            </div>
+          </td>
+          <td><span style="font-size: 11px; font-weight: 600; background: rgba(13,79,79,0.1); color: #0d4f4f; padding: 3px 8px; border-radius: 4px;">${escapeHtml(extLabel)}</span></td>
+          <td>
+            <div>${escapeHtml(course ? course.title : "—")}</div>
+            <div class="text-small text-muted">${escapeHtml(lesson ? lesson.title : "Sin clase específica")}</div>
+          </td>
+          <td>${formatBytes(material.size_bytes)}</td>
+          <td>0</td>
+          <td>${formatDate(material.created_at)}</td>
+          <td>
+            <div class="table-actions">
+              <button class="table-action-btn material-download-btn" data-material-id="${escapeHtml(material.id)}" title="Descargar"><i class="fa-solid fa-download"></i></button>
+              <button class="table-action-btn danger material-delete-btn" data-material-id="${escapeHtml(material.id)}" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      `;
+    });
+    tbody.innerHTML = rows.join("");
+    updateMaterialsSummary();
+  }
+
+  function bindMaterialsTableActions() {
+    const table = document.getElementById("materialsTable");
+    if (!table || table.dataset.boundActions === "true") return;
+    table.dataset.boundActions = "true";
+
+    table.addEventListener("click", async (event) => {
+      const downloadBtn = event.target.closest(".material-download-btn");
+      if (downloadBtn) {
+        const materialId = downloadBtn.getAttribute("data-material-id");
+        const material = state.adminMaterials.find((item) => sameId(item.id, materialId));
+        if (!material || !material.storage_path) return;
+        const signedUrl = await getSignedStorageUrl("lesson-materials", material.storage_path);
+        if (!signedUrl) {
+          toast("error", "No se pudo descargar", "No se pudo generar el enlace de descarga.");
+          return;
+        }
+        window.open(signedUrl, "_blank");
+        return;
+      }
+
+      const deleteBtn = event.target.closest(".material-delete-btn");
+      if (deleteBtn) {
+        const materialId = deleteBtn.getAttribute("data-material-id");
+        const material = state.adminMaterials.find((item) => sameId(item.id, materialId));
+        if (!material) return;
+        if (!window.confirm(`¿Eliminar material "${material.title || material.file_name}"?`)) return;
+        try {
+          const { error } = await supabase
+            .from("lesson_materials")
+            .delete()
+            .eq("id", material.id);
+          if (error) throw error;
+
+          state.adminMaterials = state.adminMaterials.filter((item) => !sameId(item.id, material.id));
+          renderMaterialsTable();
+          toast("success", "Material eliminado", "El material fue eliminado correctamente.");
+        } catch (err) {
+          toast("error", "No se pudo eliminar material", err.message);
+        }
+      }
+    });
   }
 
   function updateLessonsSummary() {
@@ -2171,6 +2304,10 @@
           populateLessonSelect(lessonSelect, []);
           return;
         }
+        const selectedCourse = state.courses.find((item) => sameId(item.id, courseSelect.value));
+        if (selectedCourse && planSelect) {
+          planSelect.value = selectedCourse.plan_required || "basico";
+        }
         const lessons = await loadLessons(courseSelect.value);
         populateLessonSelect(lessonSelect, lessons);
       } catch (err) {
@@ -2263,12 +2400,22 @@
           .select("id,title,file_name,file_ext,size_bytes,created_at");
 
         if (error) throw error;
+        if (!inserted || !inserted.length) {
+          throw new Error("No se recibió confirmación de materiales insertados.");
+        }
 
-        (inserted || []).forEach((item) => {
-          appendMaterialToTable(item, course ? course.title : "", lessonTitle);
-        });
+        if (document.getElementById("materialsTableBody")) {
+          await loadAdminMaterialsTable();
+          renderMaterialsTable();
+        }
 
         toast("success", "Material guardado", `Se subieron ${insertedRows.length} archivo(s) correctamente.`);
+        if (titleInput) titleInput.value = "";
+        if (descriptionInput) descriptionInput.value = "";
+        if (filesInput) filesInput.value = "";
+        if (lessonSelect) lessonSelect.value = "";
+        if (categorySelect) categorySelect.selectedIndex = 0;
+        if (bulkInput) bulkInput.value = "";
         if (window.AdminModal) {
           window.AdminModal.close("modal-material");
         }
@@ -2298,6 +2445,11 @@
         bindLessonsTableActions();
       }
       await initMaterialsForm();
+      if (document.getElementById("materialsTableBody")) {
+        await loadAdminMaterialsTable();
+        renderMaterialsTable();
+        bindMaterialsTableActions();
+      }
     } catch (err) {
       toast("error", "Error de Supabase", err.message);
     }
