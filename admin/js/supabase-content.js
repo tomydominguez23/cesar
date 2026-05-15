@@ -12,7 +12,9 @@
     isAdmin: false,
     courses: [],
     modulesByCourse: new Map(),
-    lessonsByCourse: new Map()
+    lessonsByCourse: new Map(),
+    mediaLibraryFiles: [],
+    pendingMediaUploadFiles: []
   };
 
   function toast(type, title, message) {
@@ -37,6 +39,15 @@
       .trim()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   function sanitizePathSegment(value) {
@@ -193,14 +204,27 @@
     return "fa-file-lines";
   }
 
-  async function uploadToBucket(bucket, path, file) {
+  async function uploadToBucket(bucket, path, file, options) {
+    const uploadOptions = {
+      upsert: Boolean(options && options.upsert),
+      contentType: file.type || undefined
+    };
     const { error } = await supabase.storage
       .from(bucket)
-      .upload(path, file, { upsert: false, contentType: file.type || undefined });
+      .upload(path, file, uploadOptions);
 
     if (error) {
       throw new Error(`No se pudo subir "${file.name}": ${error.message}`);
     }
+  }
+
+  async function getSignedStorageUrl(bucket, path) {
+    if (!path) return null;
+    const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, 60 * 60 * 24 * 7);
+    if (error || !data || !data.signedUrl) {
+      return null;
+    }
+    return data.signedUrl;
   }
 
   async function ensureAdmin() {
@@ -1172,6 +1196,214 @@
     });
   }
 
+  function getMediaDestinationConfig(destination) {
+    switch (destination) {
+      case "courses":
+        return { folder: "library/courses", label: "Cursos" };
+      case "banners":
+        return { folder: "library/banners", label: "Banners" };
+      case "testimonials":
+        return { folder: "library/testimonials", label: "Testimonios" };
+      case "logo":
+        return { folder: "branding", label: "Logo" };
+      default:
+        return { folder: "library/general", label: "General" };
+    }
+  }
+
+  function isImageLike(entry) {
+    const mimeType = String(entry.mimeType || "").toLowerCase();
+    const ext = String(entry.ext || "").toLowerCase();
+    return mimeType.startsWith("image/") || ["png", "jpg", "jpeg", "webp", "gif", "svg"].includes(ext);
+  }
+
+  function isVideoLike(entry) {
+    const mimeType = String(entry.mimeType || "").toLowerCase();
+    const ext = String(entry.ext || "").toLowerCase();
+    return mimeType.startsWith("video/") || ["mp4", "mov", "webm", "m4v", "avi"].includes(ext);
+  }
+
+  function updateMediaSummaryText() {
+    const summary = document.getElementById("mediaSummaryText");
+    if (!summary) return;
+
+    const totalSize = state.mediaLibraryFiles.reduce((acc, file) => acc + Number(file.size || 0), 0);
+    summary.textContent = `${state.mediaLibraryFiles.length} archivo(s) · ${formatBytes(totalSize)} usados`;
+  }
+
+  function renderMediaGrid() {
+    const grid = document.getElementById("mediaGrid");
+    if (!grid) return;
+
+    if (!state.mediaLibraryFiles.length) {
+      grid.innerHTML = '<div class="card" style="grid-column:1 / -1;"><div class="card-body" style="padding:18px;">No hay archivos todavía en la mediateca.</div></div>';
+      return;
+    }
+
+    grid.innerHTML = state.mediaLibraryFiles.map((item) => {
+      const safeName = escapeHtml(item.name || "archivo");
+      const safeDestination = escapeHtml(item.destinationLabel || "General");
+      const size = formatBytes(item.size || 0);
+      let mediaPreview = `<div style="width:100%;height:100%;background:#f7f8fa;display:flex;align-items:center;justify-content:center;"><i class="fa-solid ${fileIconByExt(item.ext)}" style="font-size:42px;color:var(--gray-400);"></i></div>`;
+
+      if (isImageLike(item) && item.previewUrl) {
+        mediaPreview = `<img src="${escapeHtml(item.previewUrl)}" alt="${safeName}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else if (isVideoLike(item)) {
+        mediaPreview = '<div style="width:100%;height:100%;background:#f7f8fa;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-circle-play" style="font-size:48px;color:var(--danger);opacity:.4;"></i></div>';
+      }
+
+      return `
+        <div class="media-item" onclick="selectMedia(this)">
+          ${mediaPreview}
+          <div class="media-item-overlay">
+            <div class="media-item-name">${safeName}</div>
+            <div class="media-item-size">${size} · ${safeDestination}</div>
+          </div>
+          <div class="media-item-check"><i class="fa-solid fa-check"></i></div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  async function loadMediaLibraryFiles() {
+    const mediaGrid = document.getElementById("mediaGrid");
+    if (!mediaGrid) return;
+
+    const destinationEntries = [
+      { key: "logo", folder: "branding" },
+      { key: "courses", folder: "library/courses" },
+      { key: "banners", folder: "library/banners" },
+      { key: "testimonials", folder: "library/testimonials" },
+      { key: "general", folder: "library/general" }
+    ];
+
+    const foundEntries = [];
+    for (let i = 0; i < destinationEntries.length; i += 1) {
+      const destination = destinationEntries[i];
+      const { data, error } = await supabase.storage
+        .from("media-library")
+        .list(destination.folder, { limit: 100, offset: 0, sortBy: { column: "updated_at", order: "desc" } });
+
+      if (error) {
+        throw new Error(`No se pudo cargar la carpeta "${destination.folder}": ${error.message}`);
+      }
+
+      const files = (data || []).filter((item) => item && item.name && item.name !== ".emptyFolderPlaceholder");
+      for (let fileIndex = 0; fileIndex < files.length; fileIndex += 1) {
+        const file = files[fileIndex];
+        const storagePath = `${destination.folder}/${file.name}`;
+        const destinationInfo = getMediaDestinationConfig(destination.key);
+        foundEntries.push({
+          id: file.id || `${destination.folder}-${file.name}`,
+          destinationKey: destination.key,
+          destinationLabel: destinationInfo.label,
+          name: file.name,
+          storagePath,
+          ext: getExtension(file.name),
+          size: Number((file.metadata && file.metadata.size) || file.size || 0),
+          mimeType: file.metadata && file.metadata.mimetype ? file.metadata.mimetype : "",
+          updatedAt: file.updated_at || file.created_at || null
+        });
+      }
+    }
+
+    const filesWithUrls = await Promise.all(foundEntries.map(async (entry) => {
+      if (!isImageLike(entry)) {
+        return entry;
+      }
+      const previewUrl = await getSignedStorageUrl("media-library", entry.storagePath);
+      return Object.assign({}, entry, { previewUrl });
+    }));
+
+    filesWithUrls.sort((a, b) => {
+      const first = new Date(a.updatedAt || 0).getTime();
+      const second = new Date(b.updatedAt || 0).getTime();
+      return second - first;
+    });
+
+    state.mediaLibraryFiles = filesWithUrls;
+    updateMediaSummaryText();
+    renderMediaGrid();
+  }
+
+  async function initMediaLibrary() {
+    const uploadInput = document.getElementById("mediaUploadInput");
+    const destinationSelect = document.getElementById("mediaUploadDestination");
+    const summaryText = document.getElementById("mediaUploadSelectionSummary");
+    const hint = document.getElementById("mediaUploadDestinationHint");
+    const confirmButton = document.getElementById("confirmMediaUploadDestinationBtn");
+    if (!uploadInput || !destinationSelect || !summaryText || !confirmButton) return;
+
+    function refreshDestinationHint() {
+      if (!hint) return;
+      if (destinationSelect.value === "logo") {
+        hint.textContent = "Se reemplazará el logo global del header usando una ruta fija en mediateca.";
+      } else {
+        hint.textContent = "Los archivos se guardarán en la carpeta seleccionada dentro de mediateca.";
+      }
+    }
+
+    destinationSelect.addEventListener("change", refreshDestinationHint);
+    refreshDestinationHint();
+
+    uploadInput.addEventListener("change", () => {
+      const files = uploadInput.files ? Array.from(uploadInput.files) : [];
+      if (!files.length) return;
+      state.pendingMediaUploadFiles = files;
+      summaryText.textContent = `${files.length} archivo(s) listo(s) para subir`;
+      if (window.AdminModal) {
+        window.AdminModal.open("modal-media-upload-target");
+      }
+    });
+
+    confirmButton.addEventListener("click", async () => {
+      const files = state.pendingMediaUploadFiles || [];
+      const destination = destinationSelect.value || "general";
+      if (!files.length) {
+        toast("warning", "Sin archivos", "Selecciona al menos un archivo antes de subir.");
+        return;
+      }
+
+      const originalButton = confirmButton.innerHTML;
+      confirmButton.disabled = true;
+      confirmButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo...';
+
+      try {
+        if (destination === "logo") {
+          const logoFile = files.find((file) => String(file.type || "").startsWith("image/")) || files[0];
+          await uploadToBucket("media-library", "branding/header-logo", logoFile, { upsert: true });
+          window.localStorage.setItem("pta-header-logo-version", String(Date.now()));
+          window.dispatchEvent(new CustomEvent("pta-logo-updated"));
+          toast("success", "Logo actualizado", "El nuevo logo ya está configurado en la mediateca.");
+        } else {
+          const destinationConfig = getMediaDestinationConfig(destination);
+          for (let i = 0; i < files.length; i += 1) {
+            const file = files[i];
+            const ext = getExtension(file.name);
+            const safeName = sanitizePathSegment(file.name) || `archivo-${Date.now()}.${ext || "bin"}`;
+            const storagePath = `${destinationConfig.folder}/${Date.now()}-${uniqueToken()}-${safeName}`;
+            await uploadToBucket("media-library", storagePath, file, { upsert: false });
+          }
+          toast("success", "Archivos subidos", `${files.length} archivo(s) subidos a ${destinationConfig.label}.`);
+        }
+
+        uploadInput.value = "";
+        state.pendingMediaUploadFiles = [];
+        if (window.AdminModal) {
+          window.AdminModal.close("modal-media-upload-target");
+        }
+        await loadMediaLibraryFiles();
+      } catch (err) {
+        toast("error", "No se pudo subir a mediateca", err.message);
+      } finally {
+        confirmButton.disabled = false;
+        confirmButton.innerHTML = originalButton;
+      }
+    });
+
+    await loadMediaLibraryFiles();
+  }
+
   async function init() {
     try {
       const allowed = await ensureAdmin();
@@ -1181,6 +1413,7 @@
       await initCoursesForm();
       await initClassesForm();
       await initMaterialsForm();
+      await initMediaLibrary();
     } catch (err) {
       toast("error", "Error de Supabase", err.message);
     }
