@@ -20,15 +20,21 @@
     return `${cleanBase}/storage/v1/object/public/media-library/${STORAGE_LOGO_PATH}${cacheBuster}`;
   }
 
-  function setLogoSrc(src) {
+  function setLogoSrc(src, isDynamicSource) {
     if (!src) return;
     const logoElements = getLogoElements();
     logoElements.forEach((img) => {
       if (!img.dataset.defaultSrc) {
         img.dataset.defaultSrc = img.getAttribute("src") || "";
       }
+      if (isDynamicSource) {
+        img.classList.add("logo-dynamic-source");
+      } else {
+        img.classList.remove("logo-dynamic-source");
+      }
       img.src = src;
       img.onerror = function() {
+        img.classList.remove("logo-dynamic-source");
         if (img.dataset.defaultSrc) {
           img.src = img.dataset.defaultSrc;
         }
@@ -66,11 +72,11 @@
 
     const signedLogo = await trySignedLogoUrl();
     if (signedLogo) {
-      setLogoSrc(signedLogo);
+      setLogoSrc(signedLogo, true);
       return;
     }
 
-    setLogoSrc(buildPublicLogoUrl());
+    setLogoSrc(buildPublicLogoUrl(), true);
   }
 
   function initBrandingLogo() {
