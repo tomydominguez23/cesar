@@ -15,6 +15,7 @@
     lessonsByCourse: new Map(),
     mediaLibraryFiles: [],
     pendingMediaUploadFiles: [],
+    mediaDetailPath: null,
     adminLessons: [],
     adminMaterials: [],
     openModulesCourseId: null,
@@ -2505,7 +2506,7 @@
       }
 
       return `
-        <div class="media-item" onclick="selectMedia(this)">
+        <div class="media-item" data-media-path="${escapeHtml(item.storagePath)}" onclick="selectMedia(this)">
           ${mediaPreview}
           <div class="media-item-overlay">
             <div class="media-item-name">${safeName}</div>
@@ -2578,12 +2579,181 @@
     renderMediaGrid();
   }
 
+  function findMediaEntryByPath(storagePath) {
+    return state.mediaLibraryFiles.find((item) => item.storagePath === storagePath) || null;
+  }
+
+  function getSelectedMediaEntriesFromGrid(grid) {
+    if (!grid) return [];
+    const selectedNodes = Array.from(grid.querySelectorAll(".media-item.selected[data-media-path]"));
+    return selectedNodes
+      .map((node) => findMediaEntryByPath(node.dataset.mediaPath))
+      .filter(Boolean);
+  }
+
+  function normalizeMediaFileName(inputName, currentName) {
+    const raw = String(inputName || "").trim();
+    if (!raw) {
+      throw new Error("Ingresa un nombre válido para el archivo.");
+    }
+
+    const currentExt = getExtension(currentName);
+    const typedExt = getExtension(raw);
+    const finalExt = typedExt || currentExt || "";
+    const baseName = typedExt ? raw.replace(/\.[^.]+$/, "") : raw;
+    const safeBase = sanitizePathSegment(baseName) || "archivo";
+    return finalExt ? `${safeBase}.${finalExt}` : safeBase;
+  }
+
+  async function renameMediaEntry(entry, nextFileName) {
+    if (!entry || !entry.storagePath) {
+      throw new Error("No se encontró el archivo seleccionado.");
+    }
+
+    const folderPath = entry.storagePath.includes("/")
+      ? entry.storagePath.slice(0, entry.storagePath.lastIndexOf("/"))
+      : "";
+    const nextPath = folderPath ? `${folderPath}/${nextFileName}` : nextFileName;
+    if (nextPath === entry.storagePath) {
+      return entry.storagePath;
+    }
+
+    const { data: fileBlob, error: downloadError } = await supabase.storage
+      .from("media-library")
+      .download(entry.storagePath);
+    if (downloadError || !fileBlob) {
+      throw new Error(`No se pudo leer el archivo original: ${downloadError ? downloadError.message : "sin datos"}`);
+    }
+
+    const uploadFile = new File([fileBlob], nextFileName, {
+      type: entry.mimeType || fileBlob.type || undefined
+    });
+    await uploadToBucket("media-library", nextPath, uploadFile, { upsert: false });
+
+    const { error: removeError } = await supabase.storage
+      .from("media-library")
+      .remove([entry.storagePath]);
+    if (removeError) {
+      await supabase.storage.from("media-library").remove([nextPath]);
+      throw new Error(`No se pudo completar el renombrado: ${removeError.message}`);
+    }
+
+    return nextPath;
+  }
+
+  async function deleteMediaEntries(entries) {
+    const storagePaths = entries
+      .map((entry) => (entry && entry.storagePath ? entry.storagePath : null))
+      .filter(Boolean);
+    if (!storagePaths.length) {
+      return;
+    }
+
+    const { error } = await supabase.storage
+      .from("media-library")
+      .remove(storagePaths);
+    if (error) {
+      throw new Error(`No se pudo eliminar archivo(s): ${error.message}`);
+    }
+
+    if (storagePaths.some((path) => path === "branding/header-logo")) {
+      window.localStorage.setItem("pta-header-logo-version", String(Date.now()));
+      window.dispatchEvent(new CustomEvent("pta-logo-updated"));
+    }
+  }
+
+  function renderMediaDetailPreview(target, entry, mediaUrl) {
+    if (!target) return;
+    const safeName = escapeHtml(entry && entry.name ? entry.name : "archivo");
+
+    if (entry && isImageLike(entry) && mediaUrl) {
+      target.innerHTML = `<img src="${escapeHtml(mediaUrl)}" alt="${safeName}" style="width:100%;height:100%;object-fit:contain;border-radius:var(--radius-md);">`;
+      return;
+    }
+
+    if (entry && isVideoLike(entry) && mediaUrl) {
+      target.innerHTML = `<video src="${escapeHtml(mediaUrl)}" controls style="width:100%;height:100%;object-fit:contain;border-radius:var(--radius-md);"></video>`;
+      return;
+    }
+
+    target.innerHTML = '<i class="fa-solid fa-image" style="font-size:64px;color:var(--gray-300);"></i>';
+  }
+
+  async function openMediaDetailByPath(storagePath) {
+    const entry = findMediaEntryByPath(storagePath);
+    if (!entry) {
+      toast("warning", "Archivo no encontrado", "No se pudo encontrar el archivo seleccionado.");
+      return;
+    }
+
+    state.mediaDetailPath = entry.storagePath;
+
+    const nameInput = document.getElementById("mediaDetailNameInput");
+    const urlInput = document.getElementById("mediaDetailUrlInput");
+    const typeText = document.getElementById("mediaDetailTypeText");
+    const sizeText = document.getElementById("mediaDetailSizeText");
+    const dimensionsText = document.getElementById("mediaDetailDimensionsText");
+    const uploadedText = document.getElementById("mediaDetailUploadedText");
+    const folderText = document.getElementById("mediaDetailFolderText");
+    const saveButton = document.getElementById("mediaDetailSaveBtn");
+    const previewBox = document.getElementById("mediaDetailPreview");
+
+    if (nameInput) {
+      nameInput.value = entry.name || "";
+    }
+    if (typeText) {
+      typeText.textContent = entry.mimeType || (entry.ext ? `.${entry.ext}` : "—");
+    }
+    if (sizeText) {
+      sizeText.textContent = formatBytes(entry.size || 0);
+    }
+    if (dimensionsText) {
+      dimensionsText.textContent = "—";
+    }
+    if (uploadedText) {
+      uploadedText.textContent = entry.updatedAt ? formatDate(entry.updatedAt) : "—";
+    }
+    if (folderText) {
+      folderText.textContent = entry.destinationLabel || "General";
+    }
+
+    const mediaUrl = await getSignedStorageUrl("media-library", entry.storagePath);
+    if (urlInput) {
+      urlInput.value = mediaUrl || `${window.location.origin}/storage/media-library/${entry.storagePath}`;
+    }
+    renderMediaDetailPreview(previewBox, entry, mediaUrl);
+
+    if (entry && isImageLike(entry) && mediaUrl && dimensionsText) {
+      const image = new Image();
+      image.onload = function() {
+        dimensionsText.textContent = `${image.naturalWidth} x ${image.naturalHeight}px`;
+      };
+      image.src = mediaUrl;
+    }
+
+    if (saveButton) {
+      const isLockedLogo = entry.storagePath === "branding/header-logo" || entry.destinationKey === "logo";
+      saveButton.disabled = isLockedLogo;
+      saveButton.title = isLockedLogo ? "El logo global usa una ruta fija y no se puede renombrar." : "";
+    }
+
+    if (window.AdminModal) {
+      window.AdminModal.open("modal-media-detail");
+    }
+  }
+
   async function initMediaLibrary() {
     const uploadInput = document.getElementById("mediaUploadInput");
     const destinationSelect = document.getElementById("mediaUploadDestination");
     const summaryText = document.getElementById("mediaUploadSelectionSummary");
     const hint = document.getElementById("mediaUploadDestinationHint");
     const confirmButton = document.getElementById("confirmMediaUploadDestinationBtn");
+    const mediaGrid = document.getElementById("mediaGrid");
+    const deleteSelectedButton = document.getElementById("deleteSelectedBtn");
+    const detailDeleteButton = document.getElementById("mediaDetailDeleteBtn");
+    const detailSaveButton = document.getElementById("mediaDetailSaveBtn");
+    const detailCopyButton = document.getElementById("mediaDetailCopyBtn");
+    const detailNameInput = document.getElementById("mediaDetailNameInput");
     if (!uploadInput || !destinationSelect || !summaryText || !confirmButton) return;
 
     function refreshDestinationHint() {
@@ -2652,6 +2822,129 @@
         confirmButton.innerHTML = originalButton;
       }
     });
+
+    if (mediaGrid) {
+      mediaGrid.addEventListener("dblclick", (event) => {
+        const item = event.target.closest(".media-item[data-media-path]");
+        if (!item) return;
+        openMediaDetailByPath(item.dataset.mediaPath);
+      });
+    }
+
+    if (deleteSelectedButton) {
+      deleteSelectedButton.addEventListener("click", async () => {
+        const selectedEntries = getSelectedMediaEntriesFromGrid(mediaGrid);
+        if (!selectedEntries.length) {
+          toast("info", "Sin selección", "Selecciona archivos antes de eliminar.");
+          return;
+        }
+
+        const approved = window.confirm(`¿Eliminar ${selectedEntries.length} archivo(s) seleccionados?`);
+        if (!approved) return;
+
+        const originalLabel = deleteSelectedButton.innerHTML;
+        deleteSelectedButton.disabled = true;
+        deleteSelectedButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Eliminando...';
+        try {
+          await deleteMediaEntries(selectedEntries);
+          toast("success", "Archivos eliminados", `Se eliminaron ${selectedEntries.length} archivo(s).`);
+          await loadMediaLibraryFiles();
+        } catch (err) {
+          toast("error", "No se pudo eliminar", err.message);
+        } finally {
+          deleteSelectedButton.disabled = false;
+          deleteSelectedButton.innerHTML = originalLabel;
+        }
+      });
+    }
+
+    if (detailCopyButton) {
+      detailCopyButton.addEventListener("click", async () => {
+        const urlInput = document.getElementById("mediaDetailUrlInput");
+        const value = urlInput ? urlInput.value : "";
+        if (!value) return;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(value);
+          }
+          toast("success", "Copiado", "URL copiada al portapapeles.");
+        } catch (_) {
+          toast("warning", "No se pudo copiar", "Copia manualmente la URL del campo.");
+        }
+      });
+    }
+
+    if (detailDeleteButton) {
+      detailDeleteButton.addEventListener("click", async () => {
+        const entry = findMediaEntryByPath(state.mediaDetailPath);
+        if (!entry) {
+          toast("warning", "Archivo no disponible", "No se encontró el archivo para eliminar.");
+          return;
+        }
+
+        const approved = window.confirm(`¿Eliminar "${entry.name}"?`);
+        if (!approved) return;
+
+        const originalLabel = detailDeleteButton.innerHTML;
+        detailDeleteButton.disabled = true;
+        detailDeleteButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Eliminando...';
+        try {
+          await deleteMediaEntries([entry]);
+          if (window.AdminModal) {
+            window.AdminModal.close("modal-media-detail");
+          }
+          toast("success", "Archivo eliminado", "El archivo se eliminó correctamente.");
+          await loadMediaLibraryFiles();
+        } catch (err) {
+          toast("error", "No se pudo eliminar", err.message);
+        } finally {
+          detailDeleteButton.disabled = false;
+          detailDeleteButton.innerHTML = originalLabel;
+        }
+      });
+    }
+
+    if (detailSaveButton) {
+      detailSaveButton.addEventListener("click", async () => {
+        const entry = findMediaEntryByPath(state.mediaDetailPath);
+        if (!entry) {
+          toast("warning", "Archivo no disponible", "No se encontró el archivo para editar.");
+          return;
+        }
+
+        const isLockedLogo = entry.storagePath === "branding/header-logo" || entry.destinationKey === "logo";
+        if (isLockedLogo) {
+          toast("info", "Edición limitada", "El logo global usa una ruta fija y no se puede renombrar.");
+          return;
+        }
+
+        const nextName = normalizeMediaFileName(detailNameInput ? detailNameInput.value : "", entry.name);
+        if (nextName === entry.name) {
+          toast("info", "Sin cambios", "El nombre no cambió.");
+          return;
+        }
+
+        const originalLabel = detailSaveButton.innerHTML;
+        detailSaveButton.disabled = true;
+        detailSaveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+        try {
+          const updatedPath = await renameMediaEntry(entry, nextName);
+          await loadMediaLibraryFiles();
+          await openMediaDetailByPath(updatedPath);
+          toast("success", "Archivo actualizado", "El nombre del archivo se actualizó correctamente.");
+        } catch (err) {
+          toast("error", "No se pudo guardar", err.message);
+        } finally {
+          detailSaveButton.disabled = false;
+          detailSaveButton.innerHTML = originalLabel;
+        }
+      });
+    }
+
+    window.openMediaDetailFromGrid = function(el) {
+      if (!el || !el.dataset || !el.dataset.mediaPath) return;
+      openMediaDetailByPath(el.dataset.mediaPath);
+    };
 
     await loadMediaLibraryFiles();
   }

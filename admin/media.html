@@ -174,41 +174,41 @@
     <div class="modal-body">
       <div style="display: flex; gap: 24px;">
         <div style="flex: 1;">
-          <div style="width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #0d4f4f, #1a6b6b); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
-            <i class="fa-solid fa-graduation-cap" style="font-size: 64px; color: rgba(255,255,255,0.3);"></i>
+          <div id="mediaDetailPreview" style="width: 100%; aspect-ratio: 16/9; background: #f7f8fa; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-image" style="font-size: 64px; color: var(--gray-300);"></i>
           </div>
         </div>
         <div style="width: 280px;">
           <div class="form-group">
             <label class="form-label">Nombre</label>
-            <input type="text" class="form-control" value="curso-primeros-pasos.jpg">
+            <input id="mediaDetailNameInput" type="text" class="form-control" value="">
           </div>
           <div class="form-group">
             <label class="form-label">URL</label>
             <div style="display: flex; gap: 6px;">
-              <input type="text" class="form-control" value="/assets/images/curso-primeros-pasos.jpg" readonly style="font-size: 12px;">
-              <button class="btn btn-sm btn-secondary" onclick="AdminToast.info('Copiado', 'URL copiada al portapapeles')"><i class="fa-solid fa-copy"></i></button>
+              <input id="mediaDetailUrlInput" type="text" class="form-control" value="" readonly style="font-size: 12px;">
+              <button id="mediaDetailCopyBtn" class="btn btn-sm btn-secondary" type="button"><i class="fa-solid fa-copy"></i></button>
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Alt Text</label>
-            <input type="text" class="form-control" placeholder="Descripción de la imagen...">
+            <input id="mediaDetailAltInput" type="text" class="form-control" placeholder="Próximamente..." disabled>
           </div>
           <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--gray-600);">
-            <div class="flex-between"><span>Tipo:</span> <strong>image/jpeg</strong></div>
-            <div class="flex-between"><span>Tamaño:</span> <strong>245 KB</strong></div>
-            <div class="flex-between"><span>Dimensiones:</span> <strong>1200 x 680px</strong></div>
-            <div class="flex-between"><span>Subido:</span> <strong>10 Mar 2026</strong></div>
-            <div class="flex-between"><span>Carpeta:</span> <strong>Cursos</strong></div>
+            <div class="flex-between"><span>Tipo:</span> <strong id="mediaDetailTypeText">—</strong></div>
+            <div class="flex-between"><span>Tamaño:</span> <strong id="mediaDetailSizeText">—</strong></div>
+            <div class="flex-between"><span>Dimensiones:</span> <strong id="mediaDetailDimensionsText">—</strong></div>
+            <div class="flex-between"><span>Subido:</span> <strong id="mediaDetailUploadedText">—</strong></div>
+            <div class="flex-between"><span>Carpeta:</span> <strong id="mediaDetailFolderText">—</strong></div>
           </div>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i> Eliminar</button>
+      <button id="mediaDetailDeleteBtn" class="btn btn-danger btn-sm" type="button"><i class="fa-solid fa-trash"></i> Eliminar</button>
       <div style="flex: 1;"></div>
       <button class="btn btn-secondary" onclick="AdminModal.close('modal-media-detail')">Cerrar</button>
-      <button class="btn btn-primary" onclick="AdminToast.success('Guardado', 'Los cambios se han guardado'); AdminModal.close('modal-media-detail');">
+      <button id="mediaDetailSaveBtn" class="btn btn-primary" type="button">
         <i class="fa-solid fa-check"></i> Guardar
       </button>
     </div>
@@ -243,6 +243,10 @@
   function selectMedia(el) {
     if (selectMode) {
       el.classList.toggle('selected');
+      return;
+    }
+    if (window.openMediaDetailFromGrid) {
+      window.openMediaDetailFromGrid(el);
     }
   }
 </script>

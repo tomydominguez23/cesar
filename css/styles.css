@@ -360,12 +360,19 @@ h6 { font-size: 1rem; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 112px;
+}
+
+.navbar.scrolled .container {
+  min-height: 96px;
 }
 
 .navbar-brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  height: 100%;
+  flex: 0 0 auto;
 }
 
 .navbar-brand .brand-logo {
@@ -382,18 +389,18 @@ h6 { font-size: 1rem; }
 }
 
 .navbar-brand .brand-logo.logo-dynamic-source {
-  height: 132px;
-  max-width: 780px;
+  height: 104px;
+  max-width: 620px;
 }
 
 .navbar-brand .brand-logo.login-brand-logo.logo-dynamic-source {
-  height: 148px;
-  max-width: 860px;
+  height: 120px;
+  max-width: 700px;
 }
 
 .navbar.scrolled .navbar-brand .brand-logo.logo-dynamic-source {
-  height: 116px;
-  max-width: 700px;
+  height: 92px;
+  max-width: 560px;
 }
 
 .navbar-brand .logo-icon {
@@ -2341,6 +2348,14 @@ h6 { font-size: 1rem; }
     display: flex;
   }
 
+  .navbar .container {
+    min-height: 84px;
+  }
+
+  .navbar.scrolled .container {
+    min-height: 78px;
+  }
+
   .navbar-brand .brand-logo {
     height: 64px;
     max-width: 380px;
@@ -2352,13 +2367,13 @@ h6 { font-size: 1rem; }
   }
 
   .navbar-brand .brand-logo.logo-dynamic-source {
-    height: 92px;
-    max-width: 540px;
+    height: 74px;
+    max-width: 430px;
   }
 
   .navbar-brand .brand-logo.login-brand-logo.logo-dynamic-source {
-    height: 108px;
-    max-width: 620px;
+    height: 88px;
+    max-width: 500px;
   }
   
   .footer-grid {
