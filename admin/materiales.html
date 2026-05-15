@@ -92,7 +92,7 @@
       <!-- Page Header -->
       <div class="page-header">
         <div>
-          <h2 style="font-size: 15px; color: var(--gray-500); font-weight: 500;">47 materiales · 234 descargas totales</h2>
+          <h2 id="materialsSummaryText" style="font-size: 15px; color: var(--gray-500); font-weight: 500;">Cargando materiales...</h2>
         </div>
         <div class="page-header-actions">
           <button class="btn btn-secondary"><i class="fa-solid fa-filter"></i> Filtrar</button>
@@ -140,168 +140,9 @@
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="materialsTableBody">
               <tr>
-                <td><input type="checkbox"></td>
-                <td>
-                  <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="lesson-icon doc" style="background: rgba(239,68,68,0.1); color: #ef4444;"><i class="fa-solid fa-file-pdf"></i></div>
-                    <div>
-                      <strong>Guía de Inicio Rápido</strong>
-                      <div class="text-small text-muted">guia-inicio-rapido.pdf</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-size: 11px; font-weight: 600; background: rgba(239,68,68,0.1); color: #ef4444; padding: 3px 8px; border-radius: 4px;">PDF</span></td>
-                <td>
-                  <div>Primeros Pasos</div>
-                  <div class="text-small text-muted">¿Qué es el Trading?</div>
-                </td>
-                <td>2.4 MB</td>
-                <td>187</td>
-                <td>10 Mar 2026</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="table-action-btn" title="Editar" onclick="AdminModal.open('modal-material')"><i class="fa-solid fa-pen"></i></button>
-                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
-                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>
-                  <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="lesson-icon doc" style="background: rgba(59,130,246,0.1); color: #3b82f6;"><i class="fa-solid fa-file-word"></i></div>
-                    <div>
-                      <strong>Plantilla de Plan de Trading</strong>
-                      <div class="text-small text-muted">plan-trading-template.docx</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-size: 11px; font-weight: 600; background: rgba(59,130,246,0.1); color: #3b82f6; padding: 3px 8px; border-radius: 4px;">DOCX</span></td>
-                <td>
-                  <div>El Mercado</div>
-                  <div class="text-small text-muted">Creando tu Plan</div>
-                </td>
-                <td>856 KB</td>
-                <td>134</td>
-                <td>8 Mar 2026</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
-                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>
-                  <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="lesson-icon doc" style="background: rgba(16,185,129,0.1); color: #10b981;"><i class="fa-solid fa-file-excel"></i></div>
-                    <div>
-                      <strong>Calculadora de Posiciones</strong>
-                      <div class="text-small text-muted">position-calculator.xlsx</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-size: 11px; font-weight: 600; background: rgba(16,185,129,0.1); color: #10b981; padding: 3px 8px; border-radius: 4px;">XLSX</span></td>
-                <td>
-                  <div>Gestión de Riesgo</div>
-                  <div class="text-small text-muted">Position Sizing</div>
-                </td>
-                <td>345 KB</td>
-                <td>98</td>
-                <td>5 Mar 2026</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
-                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>
-                  <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="lesson-icon doc" style="background: rgba(239,68,68,0.1); color: #ef4444;"><i class="fa-solid fa-file-pdf"></i></div>
-                    <div>
-                      <strong>Cheat Sheet - Patrones de Velas</strong>
-                      <div class="text-small text-muted">cheatsheet-velas.pdf</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-size: 11px; font-weight: 600; background: rgba(239,68,68,0.1); color: #ef4444; padding: 3px 8px; border-radius: 4px;">PDF</span></td>
-                <td>
-                  <div>Análisis Técnico</div>
-                  <div class="text-small text-muted">Velas Japonesas</div>
-                </td>
-                <td>1.8 MB</td>
-                <td>156</td>
-                <td>1 Mar 2026</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
-                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>
-                  <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="lesson-icon doc" style="background: rgba(232,168,56,0.1); color: #e8a838;"><i class="fa-solid fa-file-powerpoint"></i></div>
-                    <div>
-                      <strong>Presentación: Estrategias de Scalping</strong>
-                      <div class="text-small text-muted">scalping-strategies.pptx</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-size: 11px; font-weight: 600; background: rgba(232,168,56,0.1); color: #e8a838; padding: 3px 8px; border-radius: 4px;">PPTX</span></td>
-                <td>
-                  <div>Trading Avanzado</div>
-                  <div class="text-small text-muted">Scalping Avanzada</div>
-                </td>
-                <td>5.2 MB</td>
-                <td>67</td>
-                <td>25 Feb 2026</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
-                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><input type="checkbox"></td>
-                <td>
-                  <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="lesson-icon doc" style="background: rgba(107,114,128,0.1); color: #6b7280;"><i class="fa-solid fa-file-zipper"></i></div>
-                    <div>
-                      <strong>Pack Indicadores MT4</strong>
-                      <div class="text-small text-muted">indicadores-mt4.zip</div>
-                    </div>
-                  </div>
-                </td>
-                <td><span style="font-size: 11px; font-weight: 600; background: rgba(107,114,128,0.1); color: #6b7280; padding: 3px 8px; border-radius: 4px;">ZIP</span></td>
-                <td>
-                  <div>Análisis Técnico</div>
-                  <div class="text-small text-muted">Indicadores Personalizados</div>
-                </td>
-                <td>12.3 MB</td>
-                <td>89</td>
-                <td>20 Feb 2026</td>
-                <td>
-                  <div class="table-actions">
-                    <button class="table-action-btn" title="Editar"><i class="fa-solid fa-pen"></i></button>
-                    <button class="table-action-btn" title="Descargar"><i class="fa-solid fa-download"></i></button>
-                    <button class="table-action-btn danger" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
-                  </div>
-                </td>
+                <td colspan="8" class="text-small text-muted" style="padding: 16px;">Cargando materiales...</td>
               </tr>
             </tbody>
           </table>
