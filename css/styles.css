@@ -383,6 +383,10 @@ h6 { font-size: 1rem; }
   display: block;
 }
 
+.navbar-brand .brand-logo[src$="assets/logo-pro-trading-academy-usa.svg"]:not(.logo-fallback-ready) {
+  opacity: 0;
+}
+
 .navbar-brand .brand-logo.login-brand-logo {
   height: 108px;
   max-width: 640px;
