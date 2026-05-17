@@ -28,6 +28,57 @@
     return value || null;
   }
 
+  function normalizeTitleForOrder(value) {
+    return String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/&/g, " y ")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim()
+      .replace(/^\d+\s+/, "");
+  }
+
+  const basicContentOrder = [
+    "Configuración de tc2000",
+    "Compra y venta",
+    "Velas japonesas",
+    "Medias móviles",
+    "Líneas de tendencia",
+    "Estructura del mercado",
+    "Bollinger bands",
+    "Planes de inversión 1",
+    "Planes de inversiones 2",
+    "Panorama completo"
+  ].map(normalizeTitleForOrder);
+
+  const basicContentOrderMap = new Map(
+    basicContentOrder.map((title, index) => [title, index])
+  );
+
+  function getBasicContentOrderRank(lesson, moduleInfo) {
+    const candidates = [
+      moduleInfo && moduleInfo.title,
+      lesson && lesson.title
+    ];
+
+    for (const candidate of candidates) {
+      const rank = basicContentOrderMap.get(normalizeTitleForOrder(candidate));
+      if (rank !== undefined) return rank;
+    }
+
+    return basicContentOrder.length;
+  }
+
+  function isBasicCourse(course) {
+    const normalizedCourse = normalizeTitleForOrder([
+      course && course.title,
+      course && course.slug,
+      course && course.plan_required
+    ].join(" "));
+    return normalizedCourse.includes("basico") || normalizedCourse.includes("basic");
+  }
+
   function formatDuration(seconds) {
     const total = Number(seconds || 0);
     if (!total) return "—";
@@ -183,7 +234,7 @@
     if (isAdminPreview && requestedCourseId) {
       const response = await supabase
         .from("courses")
-        .select("id,title,description,status")
+        .select("id,title,slug,description,status,plan_required")
         .eq("id", requestedCourseId)
         .limit(1);
       courses = response.data || [];
@@ -191,7 +242,7 @@
     } else {
       const response = await supabase
         .from("courses")
-        .select("id,title,description,status")
+        .select("id,title,slug,description,status,plan_required")
         .eq("status", "published")
         .order("display_order", { ascending: true })
         .limit(100);
@@ -230,9 +281,15 @@
     ]);
 
     const modulesMap = new Map((modules || []).map((m) => [m.id, m]));
+    const useBasicContentOrder = isBasicCourse(course);
     const lessonsList = (lessons || []).slice().sort((a, b) => {
       const ma = modulesMap.get(a.module_id);
       const mb = modulesMap.get(b.module_id);
+      if (useBasicContentOrder) {
+        const rankA = getBasicContentOrderRank(a, ma);
+        const rankB = getBasicContentOrderRank(b, mb);
+        if (rankA !== rankB) return rankA - rankB;
+      }
       const moA = ma ? Number(ma.module_order) : 9999;
       const moB = mb ? Number(mb.module_order) : 9999;
       if (moA !== moB) return moA - moB;
