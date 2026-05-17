@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1100" height="220" viewBox="0 0 1100 220" role="img" aria-labelledby="title desc">
-  <title id="title">PRO TRADIUNG ACADEMY USA</title>
-  <desc id="desc">Logo de texto PRO TRADIUNG ACADEMY USA.</desc>
+  <title id="title">PRO TRADING ACADEMY USA</title>
+  <desc id="desc">Logo de texto PRO TRADING ACADEMY USA.</desc>
   <defs>
     <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#f8df9b"/>
@@ -10,7 +10,7 @@
   </defs>
 
   <rect x="0" y="0" width="1100" height="220" fill="transparent"/>
-  <text x="550" y="104" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="104" fill="#0a2f25" letter-spacing="2">PRO TRADIUNG</text>
+  <text x="550" y="104" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="104" fill="#0a2f25" letter-spacing="2">PRO TRADING</text>
   <line x1="170" y1="150" x2="390" y2="150" stroke="url(#gold)" stroke-width="4"/>
   <text x="550" y="176" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="50" fill="#bb8a35" letter-spacing="8">ACADEMY USA</text>
   <line x1="710" y1="150" x2="930" y2="150" stroke="url(#gold)" stroke-width="4"/>
