@@ -29,12 +29,15 @@
       }
       if (isDynamicSource) {
         img.classList.add("logo-dynamic-source");
+        img.classList.remove("logo-fallback-ready");
       } else {
         img.classList.remove("logo-dynamic-source");
+        img.classList.add("logo-fallback-ready");
       }
       img.src = src;
       img.onerror = function() {
         img.classList.remove("logo-dynamic-source");
+        img.classList.add("logo-fallback-ready");
         if (img.dataset.defaultSrc) {
           img.src = img.dataset.defaultSrc;
         }
