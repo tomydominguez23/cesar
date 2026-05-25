@@ -1,0 +1,3 @@
+# Página de inicio y sin listado de carpetas (evita "Index of /" en cPanel/Apache)
+DirectoryIndex index.html index.htm
+Options -Indexes
