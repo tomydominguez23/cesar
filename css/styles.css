@@ -383,7 +383,7 @@ h6 { font-size: 1rem; }
   display: block;
 }
 
-.navbar-brand .brand-logo[src$="assets/logo-pro-trading-academy-usa.svg"]:not(.logo-fallback-ready) {
+.navbar-brand .brand-logo[src*="logo-pro-trading-academy-usa.svg"]:not(.logo-fallback-ready) {
   opacity: 0;
 }
 
