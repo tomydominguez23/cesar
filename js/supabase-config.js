@@ -3,7 +3,9 @@
 
   const defaultConfig = {
     url: "https://bkgkizlrtczrzryhrrjg.supabase.co",
-    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZ2tpemxydGN6cnpyeWhycmpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNzQ2NzIsImV4cCI6MjA5MzY1MDY3Mn0.A97sd1Fqgxyys8SSjQJ6KctgqSdh9UIz2I2ZACLgxiU"
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrZ2tpemxydGN6cnpyeWhycmpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNzQ2NzIsImV4cCI6MjA5MzY1MDY3Mn0.A97sd1Fqgxyys8SSjQJ6KctgqSdh9UIz2I2ZACLgxiU",
+    // Opcional: URL directa del logo (p. ej. assets/header-logo.png en tu dominio)
+    headerLogoUrl: ""
   };
 
   window.SUPABASE_CONFIG = Object.assign({}, defaultConfig, window.SUPABASE_CONFIG || {});
