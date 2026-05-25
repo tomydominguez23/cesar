@@ -1,0 +1,36 @@
+# Despliega el sitio estático en cPanel usando secretos del repositorio.
+# Secretos requeridos: CPANEL_FTP_HOST, CPANEL_FTP_USERNAME, CPANEL_FTP_PASSWORD,
+# CPANEL_FTP_PORT, CPANEL_REMOTE_DIR
+
+name: Desplegar a cPanel (FTP)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Sincronizar archivos por FTPS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Subir sitio a cPanel por FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.CPANEL_FTP_HOST }}
+          username: ${{ secrets.CPANEL_FTP_USERNAME }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          port: ${{ secrets.CPANEL_FTP_PORT }}
+          protocol: ftps
+          server-dir: ${{ secrets.CPANEL_REMOTE_DIR }}
+          exclude: |
+            **/.git/**
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            README.md
+            .DS_Store
