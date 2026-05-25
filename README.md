@@ -86,6 +86,39 @@ Portal educativo completo para aprendizaje de trading profesional, inspirado en 
 2. Navegar por las diferentes secciones y paginas
 3. El login redirige al dashboard (demo, sin backend)
 
+## Despliegue automatico (GitHub → cPanel por FTP)
+
+Cada push a la rama `main` sube los archivos del sitio a cPanel mediante FTPS (puerto 21, modo explicito).
+
+### Datos FTP configurados en el workflow
+
+| Campo | Valor |
+|-------|--------|
+| Servidor | `ftp.ditecno.cl` |
+| Usuario | `admin@protradingacademy.com` |
+| Puerto / protocolo | `21` / FTPS explicito |
+
+### Paso obligatorio: secreto en GitHub
+
+La contraseña de la cuenta FTP **no** va en el repositorio. Debes crearla una sola vez en GitHub:
+
+1. Abre el repositorio en GitHub: `https://github.com/tomydominguez23/cesar`
+2. Ve a **Settings** → **Secrets and variables** → **Actions**
+3. Pulsa **New repository secret**
+4. Nombre: `FTP_PASSWORD`
+5. Valor: la contraseña que definiste al crear la cuenta FTP en cPanel
+6. Guarda el secreto
+
+### Probar el despliegue
+
+- Haz merge de los cambios a `main`, o ejecuta manualmente **Actions** → **Desplegar a cPanel (FTP)** → **Run workflow**.
+- Revisa el log del job; si falla por ruta remota, en cPanel confirma la carpeta raíz del FTP (a veces es `public_html/`). En ese caso edita `server-dir` en `.github/workflows/deploy-cpanel-ftp.yml` (por ejemplo `public_html/`).
+
+### Notas
+
+- No subas `.github/` ni archivos de git al hosting (ya están excluidos).
+- Si cambias la contraseña FTP en cPanel, actualiza el secreto `FTP_PASSWORD` en GitHub.
+
 ## Programas/Cursos Incluidos
 
 - Primeros Pasos
