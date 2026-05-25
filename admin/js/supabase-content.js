@@ -2796,7 +2796,11 @@
           await uploadToBucket("media-library", "branding/header-logo", logoFile, { upsert: true });
           window.localStorage.setItem("pta-header-logo-version", String(Date.now()));
           window.dispatchEvent(new CustomEvent("pta-logo-updated"));
-          toast("success", "Logo actualizado", "El nuevo logo ya está configurado en la mediateca.");
+          toast(
+            "success",
+            "Logo actualizado",
+            "Logo en mediateca. Para que se vea en la web pública: ejecuta supabase/storage-public-logo.sql en Supabase o sube assets/header-logo.png por FTP/cPanel."
+          );
         } else {
           const destinationConfig = getMediaDestinationConfig(destination);
           for (let i = 0; i < files.length; i += 1) {

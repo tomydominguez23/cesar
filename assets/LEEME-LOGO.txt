@@ -1,0 +1,10 @@
+Coloca aquí tu logo real con uno de estos nombres (el sitio lo usará antes que Supabase):
+
+  header-logo.png   (recomendado)
+  header-logo.webp
+  header-logo.jpg
+
+Tamaño sugerido: ancho ~600–900 px, fondo transparente si es PNG.
+
+Si solo usas Mediateca (Supabase), ejecuta también el SQL:
+  supabase/storage-public-logo.sql

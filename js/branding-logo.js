@@ -5,11 +5,23 @@
   const STORAGE_LOGO_PATH = "branding/header-logo";
   const LOGO_VERSION_KEY = "pta-header-logo-version";
   const FALLBACK_SUPABASE_URL = "https://bkgkizlrtczrzryhrrjg.supabase.co";
+  const STATIC_LOGO_FILES = [
+    "header-logo.webp",
+    "header-logo.png",
+    "header-logo.jpg",
+    "header-logo.jpeg",
+    "header-logo.svg"
+  ];
 
   let logoVersionPromise = null;
 
   function getLogoElements() {
     return Array.from(document.querySelectorAll(LOGO_SELECTOR));
+  }
+
+  function getConfiguredOverrideUrl() {
+    const config = window.SUPABASE_CONFIG || {};
+    return config.headerLogoUrl || window.PTA_HEADER_LOGO_URL || "";
   }
 
   function getSupabaseBaseUrl() {
@@ -40,6 +52,30 @@
     } catch (_) {
       return "";
     }
+  }
+
+  function getStaticAssetBases() {
+    const bases = new Set(["assets/", "../assets/"]);
+    const logos = getLogoElements();
+    logos.forEach((img) => {
+      const src = img.getAttribute("src") || img.dataset.defaultSrc || "";
+      const match = src.match(/^(?:\.\.\/)?assets\//);
+      if (match) {
+        bases.add(match[0]);
+      }
+    });
+    return Array.from(bases);
+  }
+
+  function buildStaticLogoCandidates(version) {
+    const bases = getStaticAssetBases();
+    const urls = [];
+    bases.forEach((base) => {
+      STATIC_LOGO_FILES.forEach((fileName) => {
+        urls.push(appendCacheBuster(`${base}${fileName}`, version));
+      });
+    });
+    return urls;
   }
 
   async function fetchLogoVersionFromStorage(client) {
@@ -107,39 +143,55 @@
         resolve(url);
       };
       probe.onerror = function() {
-        reject(new Error("No se pudo cargar el logo dinámico."));
+        reject(new Error("No se pudo cargar el logo."));
       };
       probe.src = url;
     });
   }
 
-  function applyFallbackLogo() {
-    const logoElements = getLogoElements();
-    logoElements.forEach((img) => {
-      if (!img.dataset.defaultSrc) {
-        img.dataset.defaultSrc = img.getAttribute("src") || "";
+  async function preloadFirstAvailable(urls) {
+    for (let i = 0; i < urls.length; i += 1) {
+      const candidate = urls[i];
+      if (!candidate) continue;
+      try {
+        return await preloadImage(candidate);
+      } catch (_) {
+        /* try next */
       }
-      img.classList.remove("logo-dynamic-source");
-      img.classList.add("logo-fallback-ready");
-      if (img.dataset.defaultSrc) {
-        const fallbackSrc = appendCacheBuster(img.dataset.defaultSrc, readStoredLogoVersion());
-        img.src = fallbackSrc;
-      }
+    }
+    return null;
+  }
+
+  function markLogoPending() {
+    getLogoElements().forEach((img) => {
+      img.classList.add("logo-pending");
+      img.classList.remove("logo-dynamic-source", "logo-fallback-ready");
+      img.removeAttribute("src");
     });
   }
 
-  function applyLoadedLogo(url) {
+  function applyLoadedLogo(url, sourceType) {
     const logoElements = getLogoElements();
     logoElements.forEach((img) => {
-      if (!img.dataset.defaultSrc) {
-        img.dataset.defaultSrc = img.getAttribute("src") || "";
-      }
-      img.classList.add("logo-dynamic-source");
+      img.classList.remove("logo-pending");
       img.classList.remove("logo-fallback-ready");
+      img.classList.add("logo-dynamic-source");
+      if (sourceType === "static") {
+        img.classList.add("logo-fallback-ready");
+      }
       img.onerror = function() {
-        applyFallbackLogo();
+        markLogoPending();
+        applyDynamicLogo();
       };
       img.src = url;
+    });
+  }
+
+  function hideLogo() {
+    getLogoElements().forEach((img) => {
+      img.classList.add("logo-pending");
+      img.classList.remove("logo-dynamic-source", "logo-fallback-ready");
+      img.removeAttribute("src");
     });
   }
 
@@ -176,18 +228,40 @@
     const logos = getLogoElements();
     if (!logos.length) return;
 
+    markLogoPending();
+
     const version = await resolveLogoCacheVersion();
-    const dynamicUrl = await resolveDynamicLogoUrl(version);
-    if (!dynamicUrl) {
-      applyFallbackLogo();
+    const candidates = [];
+
+    const overrideUrl = getConfiguredOverrideUrl();
+    if (overrideUrl) {
+      candidates.push(appendCacheBuster(overrideUrl, version));
+    }
+
+    buildStaticLogoCandidates(version).forEach((url) => candidates.push(url));
+
+    const staticLoaded = await preloadFirstAvailable(candidates);
+    if (staticLoaded) {
+      applyLoadedLogo(staticLoaded, "static");
       return;
     }
 
-    try {
-      const loadedUrl = await preloadImage(dynamicUrl);
-      applyLoadedLogo(loadedUrl);
-    } catch (_) {
-      applyFallbackLogo();
+    const dynamicUrl = await resolveDynamicLogoUrl(version);
+    if (dynamicUrl) {
+      try {
+        const loadedUrl = await preloadImage(dynamicUrl);
+        applyLoadedLogo(loadedUrl, "remote");
+        return;
+      } catch (_) {
+        /* continue */
+      }
+    }
+
+    hideLogo();
+    if (window.console && console.warn) {
+      console.warn(
+        "[Pro Trading Academy] No se pudo cargar el logo. Sube assets/header-logo.png en cPanel o ejecuta supabase/storage-public-logo.sql y vuelve a subir el logo en Mediateca."
+      );
     }
   }
 
