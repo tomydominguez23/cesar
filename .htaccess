@@ -1,3 +1,17 @@
 # Página de inicio y sin listado de carpetas (evita "Index of /" en cPanel/Apache)
 DirectoryIndex index.html index.htm
 Options -Indexes
+
+<IfModule mod_headers.c>
+  # HTML siempre revalida para no quedar con versiones viejas del portal
+  <FilesMatch "\.(html?)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # JS/CSS pueden cachearse poco tiempo; el query ?v= en los enlaces fuerza actualizaciones
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=300, must-revalidate"
+  </FilesMatch>
+</IfModule>
