@@ -1,5 +1,6 @@
-# Despliega el sitio estático en cPanel cada vez que se hace push a main.
-# La contraseña FTP debe configurarse como secreto en GitHub (ver README).
+# Despliega el sitio estático en cPanel usando secretos del repositorio.
+# Secretos requeridos: CPANEL_FTP_HOST, CPANEL_FTP_USERNAME, CPANEL_FTP_PASSWORD,
+# CPANEL_FTP_PORT, CPANEL_REMOTE_DIR
 
 name: Desplegar a cPanel (FTP)
 
@@ -20,13 +21,12 @@ jobs:
       - name: Subir sitio a cPanel por FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
-          server: ftp.ditecno.cl
-          username: admin@protradingacademy.com
-          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.CPANEL_FTP_HOST }}
+          username: ${{ secrets.CPANEL_FTP_USERNAME }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          port: ${{ secrets.CPANEL_FTP_PORT }}
           protocol: ftps
-          port: 21
-          # Raíz del FTP de la cuenta (cPanel suele apuntar ya a public_html del dominio)
-          server-dir: ./
+          server-dir: ${{ secrets.CPANEL_REMOTE_DIR }}
           exclude: |
             **/.git/**
             **/.git*
