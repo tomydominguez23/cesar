@@ -1,6 +1,11 @@
-# Despliega el sitio estático en cPanel usando secretos del repositorio.
-# Secretos requeridos: CPANEL_FTP_HOST, CPANEL_FTP_USERNAME, CPANEL_FTP_PASSWORD,
-# CPANEL_FTP_PORT, CPANEL_REMOTE_DIR
+# Despliega el sitio en cPanel (protradingacademyusa.com) vía FTPS explícito, puerto 21.
+#
+# Valores para los Repository secrets en GitHub:
+#   CPANEL_FTP_HOST      = ftp.ditecno.cl
+#   CPANEL_FTP_USERNAME  = admin@protradingacademyusa.com
+#   CPANEL_FTP_PASSWORD  = (contraseña de la cuenta FTP en cPanel)
+#   CPANEL_FTP_PORT      = 21
+#   CPANEL_REMOTE_DIR    = ./  (o public_html/ si aplica)
 
 name: Desplegar a cPanel (FTP)
 

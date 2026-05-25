@@ -86,25 +86,19 @@ Portal educativo completo para aprendizaje de trading profesional, inspirado en 
 2. Navegar por las diferentes secciones y paginas
 3. El login redirige al dashboard (demo, sin backend)
 
-## Despliegue automatico (GitHub Actions → cPanel)
+## Despliegue a cPanel (GitHub Actions)
 
-El workflow `.github/workflows/deploy-cpanel-ftp.yml` lee la conexion FTP desde **Repository secrets** (como en tu captura).
+Configura estos **Repository secrets** en GitHub (**Settings → Secrets and variables → Actions**):
 
-### Secretos que debes tener en Actions
-
-| Nombre del secreto | Valor de ejemplo |
-|--------------------|------------------|
+| Secreto | Valor actual |
+|---------|----------------|
 | `CPANEL_FTP_HOST` | `ftp.ditecno.cl` |
-| `CPANEL_FTP_USERNAME` | `admin@protradingacademy.com` |
+| `CPANEL_FTP_USERNAME` | `admin@protradingacademyusa.com` |
 | `CPANEL_FTP_PASSWORD` | Contraseña de la cuenta FTP en cPanel |
 | `CPANEL_FTP_PORT` | `21` |
-| `CPANEL_REMOTE_DIR` | `./` (raiz del FTP) o `public_html/` si tu cuenta apunta al home del usuario |
+| `CPANEL_REMOTE_DIR` | `./` (ajusta a `public_html/` si el FTP no apunta a la raíz del sitio) |
 
-El protocolo **FTPS explicito** va fijado en el workflow (`protocol: ftps`), acorde al puerto 21 de cPanel.
-
-### Ejecutar el despliegue
-
-- Push a la rama `main`, o **Actions** → **Desplegar a cPanel (FTP)** → **Run workflow**.
+El workflow usa **FTPS explícito** en el puerto 21. Tras guardar los secretos, haz push a `main` o ejecuta **Actions → Desplegar a cPanel (FTP) → Run workflow**.
 
 ## Programas/Cursos Incluidos
 
