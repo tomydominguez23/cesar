@@ -61,6 +61,9 @@
       <div class="login-form-wrapper animate-fade-in-right">
         <h3>Iniciar Sesion</h3>
         <p class="subtitle">Ingresa tus credenciales para acceder a tus cursos.</p>
+        <div id="paymentSuccessBanner" style="display:none; margin-bottom:16px; padding:12px 14px; border-radius:10px; background:rgba(16,185,129,0.12); color:#047857; font-size:0.9rem;">
+          <i class="fas fa-check-circle"></i> Pago recibido. Inicia sesión con el <strong>mismo email</strong> que usaste en Stripe para activar tu plan.
+        </div>
 
         <form id="loginForm" onsubmit="handleLogin(event)">
           <div class="form-group">
@@ -130,6 +133,14 @@
         eye.classList.replace('fa-eye-slash', 'fa-eye');
       }
     }
+
+    (function showPaymentSuccessBanner() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('payment') === 'success') {
+        const banner = document.getElementById('paymentSuccessBanner');
+        if (banner) banner.style.display = 'block';
+      }
+    })();
 
     async function handleLogin(e) {
       e.preventDefault();
