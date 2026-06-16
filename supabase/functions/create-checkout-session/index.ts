@@ -21,7 +21,12 @@ Deno.serve(async (req) => {
 
   try {
     const stripeSecret = Deno.env.get("STRIPE_SECRET_KEY");
-    const siteUrl = Deno.env.get("SITE_URL") || "https://protradingacademyusa.com";
+    const defaultSiteUrl = "https://protradingacademyusa.com";
+    let siteUrl = Deno.env.get("SITE_URL") || defaultSiteUrl;
+    // Stripe exige URLs absolutas con http/https.
+    if (!/^https?:\/\//i.test(siteUrl)) {
+      siteUrl = defaultSiteUrl;
+    }
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
 
