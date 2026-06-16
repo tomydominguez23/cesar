@@ -119,18 +119,24 @@
   }
 
   async function requireSession() {
-    const { data, error } = await supabase.auth.getSession();
-    if (error || !data || !data.session) {
+    const guard = window.StudentGuard;
+    if (!guard || !guard.requireStudentAccess) {
       window.location.href = "login.html";
       return null;
     }
-    return data.session;
+    const access = await guard.requireStudentAccess({ requireActivePlan: true });
+    if (!access) return null;
+    return access.session;
   }
 
   async function loadProfile(userId) {
+    const guard = window.StudentGuard;
+    if (guard && guard.loadProfile) {
+      return guard.loadProfile(supabase, userId);
+    }
     const { data } = await supabase
       .from("profiles")
-      .select("full_name,plan,role")
+      .select("full_name,plan,role,subscription_status")
       .eq("id", userId)
       .maybeSingle();
     return data || {};
@@ -138,8 +144,11 @@
 
   async function initDashboard(session) {
     const profile = await loadProfile(session.user.id);
+    const guard = window.StudentGuard;
     const studentName = profile.full_name || session.user.email || "Estudiante";
     const studentPlan = planLabel(profile.plan || "basico");
+    const userPlan = profile.plan || "basico";
+    const isAdmin = profile.role === "admin";
 
     const nameEl = document.getElementById("dashboardStudentName");
     const planEl = document.getElementById("dashboardStudentPlan");
@@ -162,7 +171,10 @@
       return;
     }
 
-    const list = courses || [];
+    const list = (courses || []).filter((course) => {
+      if (isAdmin) return true;
+      return guard && guard.canAccessPlan(userPlan, course.plan_required || "basico");
+    });
     const statsCourses = document.getElementById("dashboardStatCourses");
     if (statsCourses) statsCourses.textContent = String(list.length);
 
@@ -170,8 +182,9 @@
       coursesGrid.innerHTML = `
         <div class="card" style="grid-column: 1 / -1;">
           <div class="card-body">
-            <h4 style="margin-bottom:8px;">Aún no hay cursos publicados</h4>
-            <p class="text-gray">Cuando el administrador publique cursos, aparecerán aquí automáticamente.</p>
+            <h4 style="margin-bottom:8px;">No tienes programas disponibles en tu plan</h4>
+            <p class="text-gray">Actualiza tu suscripción para desbloquear más contenido.</p>
+            <a href="index.html#pricing" class="btn btn-primary btn-sm" style="margin-top:12px;">Ver planes</a>
           </div>
         </div>
       `;
@@ -227,6 +240,8 @@
     const adminPreview = params.get("admin_preview") === "1";
     const profile = await loadProfile(session.user.id);
     const isAdminPreview = adminPreview && profile.role === "admin";
+    const guard = window.StudentGuard;
+    const userPlan = profile.plan || "basico";
 
     let courses = [];
     let coursesError = null;
@@ -259,6 +274,23 @@
     }
 
     let course = courses.find((item) => item.id === requestedCourseId) || courses[0];
+
+    if (
+      !isAdminPreview &&
+      guard &&
+      !guard.canAccessPlan(userPlan, course.plan_required || "basico")
+    ) {
+      const list = document.getElementById("courseLessonList");
+      const playerContainer = document.getElementById("courseLessonPlayer");
+      if (playerContainer) {
+        playerContainer.innerHTML = `<div style="padding:24px; color:var(--gray-600);">Este programa no está incluido en tu plan actual. <a href="index.html#pricing" style="color:var(--primary); font-weight:600;">Actualiza tu plan</a> para acceder.</div>`;
+      }
+      if (list) {
+        list.innerHTML = `<div style="padding:16px; color:var(--gray-500);">Contenido bloqueado para tu plan actual.</div>`;
+      }
+      return;
+    }
+
     const courseId = course.id;
 
     const lessonsQuery = supabase
@@ -354,6 +386,20 @@
 
     async function renderLesson(lesson) {
       if (!lesson) return;
+
+      if (
+        !isAdminPreview &&
+        !lesson.is_free_preview &&
+        guard &&
+        !guard.canAccessPlan(userPlan, course.plan_required || "basico")
+      ) {
+        const playerContainer = document.getElementById("courseLessonPlayer");
+        if (playerContainer) {
+          playerContainer.innerHTML = `<div style="padding:24px; color:var(--gray-600);">Necesitas un plan activo para ver esta clase.</div>`;
+        }
+        return;
+      }
+
       const lessonTitle = document.getElementById("courseLessonTitle");
       const lessonDescription = document.getElementById("courseLessonDescription");
       const lessonDuration = document.getElementById("courseLessonDuration");

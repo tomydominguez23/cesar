@@ -120,8 +120,25 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
+  <script src="js/student-guard.js"></script>
   <script src="js/branding-logo.js?v=20260525b"></script>
   <script>
+    const ALLOWED_NEXT_PAGES = ["dashboard.html", "course.html", "faq.html", "calendar.html"];
+    const params = new URLSearchParams(window.location.search);
+    const pricingUrl = "index.html#pricing";
+
+    function getSafeNextUrl(raw) {
+      const fallback = "dashboard.html";
+      if (!raw) return fallback;
+      const value = String(raw);
+      if (value.includes("://") || value.startsWith("//")) return fallback;
+      const base = value.split("?")[0].split("#")[0].split("/").filter(Boolean).pop() || "";
+      if (!ALLOWED_NEXT_PAGES.includes(base)) return fallback;
+      return value.replace(/^\//, "");
+    }
+
+    const next = getSafeNextUrl(params.get("next"));
+
     function togglePassword() {
       const pass = document.getElementById('password');
       const eye = document.getElementById('eyeIcon');
@@ -135,12 +152,27 @@
     }
 
     (function showPaymentSuccessBanner() {
-      const params = new URLSearchParams(window.location.search);
       if (params.get('payment') === 'success') {
         const banner = document.getElementById('paymentSuccessBanner');
         if (banner) banner.style.display = 'block';
       }
     })();
+
+    async function redirectIfLoggedIn() {
+      const supabase = window.getSupabaseClient ? window.getSupabaseClient() : null;
+      if (!supabase || !window.StudentGuard) return;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const access = await window.StudentGuard.getStudentAccess(
+        supabase,
+        session.user.id,
+        session.user.email || ""
+      );
+      window.location.href = access.hasAccess ? next : pricingUrl;
+    }
+    redirectIfLoggedIn();
 
     async function handleLogin(e) {
       e.preventDefault();
@@ -164,7 +196,18 @@
           throw error;
         }
 
-        window.location.href = 'dashboard.html';
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session && window.StudentGuard) {
+          const access = await window.StudentGuard.getStudentAccess(
+            supabase,
+            session.user.id,
+            session.user.email || ""
+          );
+          window.location.href = access.hasAccess ? next : pricingUrl;
+          return;
+        }
+
+        window.location.href = next;
       } catch (err) {
         const message = err && err.message ? err.message : 'No se pudo iniciar sesión.';
         alert('Error de autenticación: ' + message);
