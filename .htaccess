@@ -3,6 +3,11 @@ DirectoryIndex index.html index.htm
 Options -Indexes
 
 <IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
   # HTML siempre revalida para no quedar con versiones viejas del portal
   <FilesMatch "\.(html?)$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
@@ -13,5 +18,12 @@ Options -Indexes
   # JS/CSS pueden cachearse poco tiempo; el query ?v= en los enlaces fuerza actualizaciones
   <FilesMatch "\.(css|js)$">
     Header set Cache-Control "public, max-age=300, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# No servir archivos sensibles si llegaran al hosting por error
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(sql|env|log|toml)$">
+    Require all denied
   </FilesMatch>
 </IfModule>

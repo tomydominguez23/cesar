@@ -192,6 +192,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-config.js"></script>
+  <script src="../js/security-guard.js"></script>
   <script src="../js/branding-logo.js?v=20260525b"></script>
   <script>
     (function() {
@@ -201,6 +202,10 @@
       const button = document.getElementById("adminLoginBtn");
       const message = document.getElementById("adminLoginMsg");
 
+      if (window.PTASecurityGuard && form) {
+        window.PTASecurityGuard.initForm(form, { minDelayMs: 3000 });
+      }
+
       function setMessage(text, type) {
         message.textContent = text || "";
         message.className = "msg" + (type ? " " + type : "");
@@ -209,6 +214,18 @@
       form.addEventListener("submit", async function(event) {
         event.preventDefault();
         setMessage("");
+
+        if (window.PTASecurityGuard) {
+          const check = window.PTASecurityGuard.validateSubmission(form, "login:admin", {
+            maxAttempts: 6,
+            windowMs: 20 * 60 * 1000,
+            minDelayMs: 3000
+          });
+          if (!check.ok) {
+            setMessage(check.message || "Demasiados intentos. Espera unos minutos.", "error");
+            return;
+          }
+        }
 
         const supabase = window.getSupabaseClient ? window.getSupabaseClient() : null;
         if (!supabase) {

@@ -87,16 +87,19 @@
         </div>
         <div class="stripe-input-group">
           <label>Publishable Key</label>
-          <input type="text" placeholder="pk_test_..." value="pk_test_51abc...">
+          <input type="text" placeholder="pk_live_... (solo en Supabase Secrets / plan-pricing.js)" value="" readonly>
         </div>
         <div class="stripe-input-group">
           <label>Secret Key</label>
-          <input type="password" placeholder="sk_test_..." value="sk_test_51abc...">
+          <input type="password" placeholder="Configurar en Supabase Secrets (STRIPE_SECRET_KEY)" value="" readonly>
         </div>
         <div class="stripe-input-group">
           <label>Webhook Secret</label>
-          <input type="password" placeholder="whsec_..." value="whsec_abc123...">
+          <input type="password" placeholder="Configurar en Supabase Secrets (STRIPE_WEBHOOK_SECRET)" value="" readonly>
         </div>
+        <p style="font-size:12px; opacity:0.85; margin-top:8px;">
+          Las claves secretas nunca se guardan en el sitio web. Configúralas en Supabase → Edge Functions → Secrets.
+        </p>
         <div style="display: flex; gap: 10px; margin-top: 16px;">
           <button class="btn btn-sm" style="background: rgba(255,255,255,0.2); color: #fff;">
             <i class="fa-solid fa-vial"></i> Verificar Conexión

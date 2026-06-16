@@ -24,6 +24,18 @@
   }
 
   async function startCheckout(planSlug, triggerButton) {
+    const guard = window.PTASecurityGuard;
+    if (guard) {
+      const check = guard.validateAction("checkout:" + planSlug, {
+        maxAttempts: 6,
+        windowMs: 15 * 60 * 1000
+      });
+      if (!check.ok) {
+        alert(check.message || "Demasiados intentos. Espera unos minutos.");
+        return;
+      }
+    }
+
     const supabase = window.getSupabaseClient ? window.getSupabaseClient() : null;
     if (!supabase) {
       alert("No se pudo conectar con Supabase. Intenta de nuevo en unos minutos.");
@@ -61,7 +73,10 @@
       window.location.href = data.url;
     } catch (err) {
       const message = err && err.message ? err.message : "No se pudo iniciar el pago.";
-      alert("Error al iniciar el pago: " + message);
+      const friendly = message.includes("Demasiados intentos")
+        ? message
+        : "Error al iniciar el pago: " + message;
+      alert(friendly);
       setButtonLoading(triggerButton, false);
     }
   }

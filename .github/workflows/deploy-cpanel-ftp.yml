@@ -32,5 +32,6 @@ jobs:
             **/.git*
             **/.github/**
             **/node_modules/**
+            **/supabase/**
             README.md
             .DS_Store

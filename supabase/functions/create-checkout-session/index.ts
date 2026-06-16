@@ -1,13 +1,18 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1?target=deno";
 import Stripe from "https://esm.sh/stripe@14.21.0?target=deno";
 import { isPlanSlug, PLAN_PRICE_IDS } from "../_shared/plans.ts";
+import { assertRateLimit, getAllowedOrigin, getClientIp } from "../_shared/rate-limit.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+const DEFAULT_SITE_URL = "https://protradingacademyusa.com";
 
 Deno.serve(async (req) => {
+  const siteUrl = resolveSiteUrl();
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": getAllowedOrigin(req, siteUrl),
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
+
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
   }
@@ -21,18 +26,20 @@ Deno.serve(async (req) => {
 
   try {
     const stripeSecret = Deno.env.get("STRIPE_SECRET_KEY");
-    const defaultSiteUrl = "https://protradingacademyusa.com";
-    let siteUrl = Deno.env.get("SITE_URL") || defaultSiteUrl;
-    // Stripe exige URLs absolutas con http/https.
-    if (!/^https?:\/\//i.test(siteUrl)) {
-      siteUrl = defaultSiteUrl;
-    }
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
 
     if (!stripeSecret || !supabaseUrl || !supabaseAnonKey) {
       throw new Error("Faltan variables de entorno en Supabase Edge Functions.");
     }
+
+    const clientIp = getClientIp(req);
+    await assertRateLimit({
+      action: "checkout_session",
+      bucketKey: `ip:${clientIp}`,
+      maxAttempts: 12,
+      windowSeconds: 60 * 60,
+    });
 
     const body = await req.json();
     const plan = String(body?.plan || "");
@@ -57,6 +64,13 @@ Deno.serve(async (req) => {
       if (userData?.user) {
         userId = userData.user.id;
         customerEmail = userData.user.email || undefined;
+
+        await assertRateLimit({
+          action: "checkout_session",
+          bucketKey: `user:${userId}`,
+          maxAttempts: 8,
+          windowSeconds: 60 * 60,
+        });
       }
     }
 
@@ -87,9 +101,18 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Error al crear checkout";
+    const status = message.includes("Demasiados intentos") ? 429 : 500;
     return new Response(JSON.stringify({ error: message }), {
-      status: 500,
+      status,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });
+
+function resolveSiteUrl(): string {
+  const configured = Deno.env.get("SITE_URL") || DEFAULT_SITE_URL;
+  if (/^https?:\/\//i.test(configured)) {
+    return configured.replace(/\/+$/, "");
+  }
+  return DEFAULT_SITE_URL;
+}

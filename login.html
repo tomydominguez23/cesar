@@ -121,6 +121,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-config.js"></script>
   <script src="js/student-guard.js"></script>
+  <script src="js/security-guard.js"></script>
   <script src="js/branding-logo.js?v=20260525b"></script>
   <script>
     const ALLOWED_NEXT_PAGES = ["dashboard.html", "course.html", "faq.html", "calendar.html"];
@@ -138,6 +139,13 @@
     }
 
     const next = getSafeNextUrl(params.get("next"));
+
+    (function initLoginProtection() {
+      const form = document.getElementById("loginForm");
+      if (window.PTASecurityGuard && form) {
+        window.PTASecurityGuard.initForm(form, { minDelayMs: 2500 });
+      }
+    })();
 
     function togglePassword() {
       const pass = document.getElementById('password');
@@ -175,6 +183,19 @@
 
     async function handleLogin(e) {
       e.preventDefault();
+      const form = document.getElementById("loginForm");
+      if (window.PTASecurityGuard) {
+        const check = window.PTASecurityGuard.validateSubmission(form, "login:student", {
+          maxAttempts: 8,
+          windowMs: 15 * 60 * 1000,
+          minDelayMs: 2500
+        });
+        if (!check.ok) {
+          alert(check.message || "Demasiados intentos. Espera unos minutos.");
+          return;
+        }
+      }
+
       const supabase = window.getSupabaseClient ? window.getSupabaseClient() : null;
       if (!supabase) {
         alert('No se pudo inicializar Supabase. Revisa la configuración.');
