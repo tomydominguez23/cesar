@@ -56,27 +56,48 @@
     basicContentOrder.map((title, index) => [title, index])
   );
 
-  function getBasicContentOrderRank(lesson, moduleInfo) {
-    const candidates = [
-      moduleInfo && moduleInfo.title,
-      lesson && lesson.title
-    ];
+  function isTc2000ConfigTitle(norm) {
+    if (!norm) return false;
+    const hasTc = /\btc2000?\b/.test(norm) || norm.includes("tc 200");
+    return hasTc && norm.includes("configur");
+  }
 
-    for (const candidate of candidates) {
-      const rank = basicContentOrderMap.get(normalizeTitleForOrder(candidate));
-      if (rank !== undefined) return rank;
+  function isCompraVentaTitle(norm) {
+    if (!norm) return false;
+    return norm.includes("compra") && norm.includes("venta");
+  }
+
+  function getContentOrderRank(lesson, moduleInfo) {
+    const lessonNorm = normalizeTitleForOrder(lesson && lesson.title);
+    const moduleNorm = normalizeTitleForOrder(moduleInfo && moduleInfo.title);
+
+    if (isTc2000ConfigTitle(lessonNorm)) return 0;
+    if (isCompraVentaTitle(lessonNorm)) return 1;
+
+    if (isTc2000ConfigTitle(moduleNorm)) return 0;
+    if (isCompraVentaTitle(moduleNorm)) return 1;
+
+    for (const norm of [lessonNorm, moduleNorm]) {
+      if (!norm) continue;
+      const mapped = basicContentOrderMap.get(norm);
+      if (mapped !== undefined) return mapped;
     }
 
     return basicContentOrder.length;
   }
 
-  function isBasicCourse(course) {
-    const normalizedCourse = normalizeTitleForOrder([
-      course && course.title,
-      course && course.slug,
-      course && course.plan_required
-    ].join(" "));
-    return normalizedCourse.includes("basico") || normalizedCourse.includes("basic");
+  function compareLessonsByContentOrder(a, b, modulesMap) {
+    const ma = modulesMap.get(a.module_id);
+    const mb = modulesMap.get(b.module_id);
+    const rankA = getContentOrderRank(a, ma);
+    const rankB = getContentOrderRank(b, mb);
+    if (rankA !== rankB) return rankA - rankB;
+
+    const moA = ma ? Number(ma.module_order) : 9999;
+    const moB = mb ? Number(mb.module_order) : 9999;
+    if (moA !== moB) return moA - moB;
+
+    return (Number(a.lesson_order) || 0) - (Number(b.lesson_order) || 0);
   }
 
   function formatDuration(seconds) {
@@ -313,20 +334,7 @@
     ]);
 
     const modulesMap = new Map((modules || []).map((m) => [m.id, m]));
-    const useBasicContentOrder = isBasicCourse(course);
-    const lessonsList = (lessons || []).slice().sort((a, b) => {
-      const ma = modulesMap.get(a.module_id);
-      const mb = modulesMap.get(b.module_id);
-      if (useBasicContentOrder) {
-        const rankA = getBasicContentOrderRank(a, ma);
-        const rankB = getBasicContentOrderRank(b, mb);
-        if (rankA !== rankB) return rankA - rankB;
-      }
-      const moA = ma ? Number(ma.module_order) : 9999;
-      const moB = mb ? Number(mb.module_order) : 9999;
-      if (moA !== moB) return moA - moB;
-      return (Number(a.lesson_order) || 0) - (Number(b.lesson_order) || 0);
-    });
+    const lessonsList = (lessons || []).slice().sort((a, b) => compareLessonsByContentOrder(a, b, modulesMap));
 
     const initialLesson = lessonsList.find((item) => item.id === requestedLessonId) || lessonsList[0] || null;
 
@@ -357,8 +365,17 @@
           grouped.get(key).lessons.push(lesson);
         });
 
+        const groupList = Array.from(grouped.values()).sort((ga, gb) => {
+          const minA = Math.min(...ga.lessons.map((l) => getContentOrderRank(l, ga.module)));
+          const minB = Math.min(...gb.lessons.map((l) => getContentOrderRank(l, gb.module)));
+          if (minA !== minB) return minA - minB;
+          const moA = ga.module ? Number(ga.module.module_order) : 9999;
+          const moB = gb.module ? Number(gb.module.module_order) : 9999;
+          return moA - moB;
+        });
+
         const chunks = [];
-        grouped.forEach((group) => {
+        groupList.forEach((group) => {
           if (group.module) {
             chunks.push(`
               <div style="padding:12px 24px; font-size:0.8rem; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.5px; background:var(--gray-50);">
@@ -366,7 +383,10 @@
               </div>
             `);
           }
-          group.lessons.forEach((lesson) => {
+          const sortedGroupLessons = group.lessons.slice().sort((a, b) =>
+            compareLessonsByContentOrder(a, b, modulesMap)
+          );
+          sortedGroupLessons.forEach((lesson) => {
             const active = initialLesson && initialLesson.id === lesson.id ? " active" : "";
             chunks.push(`
               <div class="lesson-item${active}" data-lesson-id="${lesson.id}">
