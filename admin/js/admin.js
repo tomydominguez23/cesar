@@ -258,10 +258,10 @@
     ],
 
     plans: [
-      { id: 1, name: 'Básico', price: 399, currency: 'USD', interval: 'one-time', features: ['Primeros Pasos', 'FAQ', 'Soporte básico'], stripeId: '', color: '#6b7280', students: 89 },
-      { id: 2, name: 'Medio', price: 699, currency: 'USD', interval: 'one-time', features: ['Todo lo de Básico', 'El Mercado', 'Gestión de Riesgo', 'Soporte prioritario'], stripeId: '', color: '#3b82f6', students: 134 },
-      { id: 3, name: 'Avanzado', price: 1000, currency: 'USD', interval: 'one-time', features: ['Todo lo de Medio', 'Análisis Técnico', 'Psicología del Trading', 'Mentorías grupales'], stripeId: '', color: '#8b5cf6', students: 87 },
-      { id: 4, name: 'Pro Trading', price: 1799, currency: 'USD', interval: 'one-time', features: ['Acceso total', 'Trading Avanzado', 'Mentorías 1:1', 'Señales en vivo', 'Comunidad VIP'], stripeId: '', color: '#e8a838', students: 52 }
+      { id: 1, name: 'Básico', price: 399, currency: 'USD', interval: 'month', features: ['Primeros Pasos', 'FAQ', 'Soporte básico'], stripeId: '', color: '#6b7280', students: 89 },
+      { id: 2, name: 'Medio', price: 1199, currency: 'USD', interval: 'month', features: ['Todo lo de Básico', 'El Mercado', 'Gestión de Riesgo', 'Soporte prioritario'], stripeId: '', color: '#3b82f6', students: 134 },
+      { id: 3, name: 'Avanzado', price: 1599, currency: 'USD', interval: 'month', features: ['Todo lo de Medio', 'Análisis Técnico', 'Psicología del Trading', 'Mentorías grupales'], stripeId: '', color: '#8b5cf6', students: 87 },
+      { id: 4, name: 'Pro Trading', price: 1995, currency: 'USD', interval: 'month', features: ['Acceso total', 'Trading Avanzado', 'Mentorías 1:1', 'Señales en vivo', 'Comunidad VIP'], stripeId: '', color: '#e8a838', students: 52 }
     ],
 
     monthlyRevenue: [28400, 31200, 35800, 42100, 38900, 45200, 51800, 48300, 53600, 58200, 62400, 67800],
