@@ -10,9 +10,9 @@
       basico: {
         slug: "basico",
         name: "Plan Básico",
-        price: 399,
+        price: 699,
         stripeProductId: "prod_UiM7i6tuAdIy5P",
-        stripePriceId: "price_1TivPjEdi9JcCWjpbrX1U1jj"
+        stripePriceId: "price_1Tj0QtEdi9JcCWjpTjB0AI0h"
       },
       medio: {
         slug: "medio",
