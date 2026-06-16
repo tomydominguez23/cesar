@@ -245,16 +245,16 @@
     ],
 
     users: [
-      { id: 1, name: 'Carlos Rodríguez', email: 'carlos@email.com', plan: 'pro', status: 'active', joined: '2025-11-15', progress: 78, revenue: 1799 },
-      { id: 2, name: 'María García', email: 'maria@email.com', plan: 'avanzado', status: 'active', joined: '2025-12-01', progress: 45, revenue: 1000 },
-      { id: 3, name: 'Juan Martínez', email: 'juan@email.com', plan: 'medio', status: 'active', joined: '2026-01-10', progress: 62, revenue: 699 },
+      { id: 1, name: 'Carlos Rodríguez', email: 'carlos@email.com', plan: 'pro', status: 'active', joined: '2025-11-15', progress: 78, revenue: 1995 },
+      { id: 2, name: 'María García', email: 'maria@email.com', plan: 'avanzado', status: 'active', joined: '2025-12-01', progress: 45, revenue: 1599 },
+      { id: 3, name: 'Juan Martínez', email: 'juan@email.com', plan: 'medio', status: 'active', joined: '2026-01-10', progress: 62, revenue: 1199 },
       { id: 4, name: 'Ana López', email: 'ana@email.com', plan: 'basico', status: 'active', joined: '2026-01-22', progress: 31, revenue: 399 },
-      { id: 5, name: 'Pedro Sánchez', email: 'pedro@email.com', plan: 'pro', status: 'active', joined: '2025-10-05', progress: 91, revenue: 1799 },
-      { id: 6, name: 'Laura Torres', email: 'laura@email.com', plan: 'avanzado', status: 'inactive', joined: '2025-09-20', progress: 55, revenue: 1000 },
-      { id: 7, name: 'Roberto Díaz', email: 'roberto@email.com', plan: 'medio', status: 'active', joined: '2026-02-14', progress: 12, revenue: 699 },
-      { id: 8, name: 'Sofia Ramírez', email: 'sofia@email.com', plan: 'pro', status: 'active', joined: '2026-01-05', progress: 68, revenue: 1799 },
+      { id: 5, name: 'Pedro Sánchez', email: 'pedro@email.com', plan: 'pro', status: 'active', joined: '2025-10-05', progress: 91, revenue: 1995 },
+      { id: 6, name: 'Laura Torres', email: 'laura@email.com', plan: 'avanzado', status: 'inactive', joined: '2025-09-20', progress: 55, revenue: 1599 },
+      { id: 7, name: 'Roberto Díaz', email: 'roberto@email.com', plan: 'medio', status: 'active', joined: '2026-02-14', progress: 12, revenue: 1199 },
+      { id: 8, name: 'Sofia Ramírez', email: 'sofia@email.com', plan: 'pro', status: 'active', joined: '2026-01-05', progress: 68, revenue: 1995 },
       { id: 9, name: 'Diego Hernández', email: 'diego@email.com', plan: 'basico', status: 'cancelled', joined: '2025-08-15', progress: 22, revenue: 399 },
-      { id: 10, name: 'Carmen Flores', email: 'carmen@email.com', plan: 'avanzado', status: 'active', joined: '2026-03-01', progress: 5, revenue: 1000 }
+      { id: 10, name: 'Carmen Flores', email: 'carmen@email.com', plan: 'avanzado', status: 'active', joined: '2026-03-01', progress: 5, revenue: 1599 }
     ],
 
     plans: [
