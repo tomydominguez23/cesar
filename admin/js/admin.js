@@ -248,17 +248,17 @@
       { id: 1, name: 'Carlos Rodríguez', email: 'carlos@email.com', plan: 'pro', status: 'active', joined: '2025-11-15', progress: 78, revenue: 1995 },
       { id: 2, name: 'María García', email: 'maria@email.com', plan: 'avanzado', status: 'active', joined: '2025-12-01', progress: 45, revenue: 1599 },
       { id: 3, name: 'Juan Martínez', email: 'juan@email.com', plan: 'medio', status: 'active', joined: '2026-01-10', progress: 62, revenue: 1199 },
-      { id: 4, name: 'Ana López', email: 'ana@email.com', plan: 'basico', status: 'active', joined: '2026-01-22', progress: 31, revenue: 399 },
+      { id: 4, name: 'Ana López', email: 'ana@email.com', plan: 'basico', status: 'active', joined: '2026-01-22', progress: 31, revenue: 699 },
       { id: 5, name: 'Pedro Sánchez', email: 'pedro@email.com', plan: 'pro', status: 'active', joined: '2025-10-05', progress: 91, revenue: 1995 },
       { id: 6, name: 'Laura Torres', email: 'laura@email.com', plan: 'avanzado', status: 'inactive', joined: '2025-09-20', progress: 55, revenue: 1599 },
       { id: 7, name: 'Roberto Díaz', email: 'roberto@email.com', plan: 'medio', status: 'active', joined: '2026-02-14', progress: 12, revenue: 1199 },
       { id: 8, name: 'Sofia Ramírez', email: 'sofia@email.com', plan: 'pro', status: 'active', joined: '2026-01-05', progress: 68, revenue: 1995 },
-      { id: 9, name: 'Diego Hernández', email: 'diego@email.com', plan: 'basico', status: 'cancelled', joined: '2025-08-15', progress: 22, revenue: 399 },
+      { id: 9, name: 'Diego Hernández', email: 'diego@email.com', plan: 'basico', status: 'cancelled', joined: '2025-08-15', progress: 22, revenue: 699 },
       { id: 10, name: 'Carmen Flores', email: 'carmen@email.com', plan: 'avanzado', status: 'active', joined: '2026-03-01', progress: 5, revenue: 1599 }
     ],
 
     plans: [
-      { id: 1, name: 'Básico', price: 399, currency: 'USD', interval: 'month', features: ['Primeros Pasos', 'FAQ', 'Soporte básico'], stripeId: '', color: '#6b7280', students: 89 },
+      { id: 1, name: 'Básico', price: 699, currency: 'USD', interval: 'month', features: ['Primeros Pasos', 'FAQ', 'Soporte básico'], stripeId: '', color: '#6b7280', students: 89 },
       { id: 2, name: 'Medio', price: 1199, currency: 'USD', interval: 'month', features: ['Todo lo de Básico', 'El Mercado', 'Gestión de Riesgo', 'Soporte prioritario'], stripeId: '', color: '#3b82f6', students: 134 },
       { id: 3, name: 'Avanzado', price: 1599, currency: 'USD', interval: 'month', features: ['Todo lo de Medio', 'Análisis Técnico', 'Psicología del Trading', 'Mentorías grupales'], stripeId: '', color: '#8b5cf6', students: 87 },
       { id: 4, name: 'Pro Trading', price: 1995, currency: 'USD', interval: 'month', features: ['Acceso total', 'Trading Avanzado', 'Mentorías 1:1', 'Señales en vivo', 'Comunidad VIP'], stripeId: '', color: '#e8a838', students: 52 }

@@ -45,7 +45,7 @@ Copia el **Signing secret** (`whsec_...`) a Supabase Secrets como `STRIPE_WEBHOO
 
 | Plan | Price ID |
 |------|----------|
-| Básico | `price_1TivPjEdi9JcCWjpbrX1U1jj` |
+| Básico | `price_1Tj0QtEdi9JcCWjpTjB0AI0h` |
 | Medio | `price_1TivQnEdi9JcCWjpCY5juiR3` |
 | Avanzado | `price_1TivQTEdi9JcCWjptCpf8Eq0` |
 | Pro Trading | `price_1TivQ4Edi9JcCWjpOgH6hdNx` |
