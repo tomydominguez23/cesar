@@ -41,32 +41,14 @@
     return data || {};
   }
 
-  async function applyPendingSubscription(supabase, userId, email) {
-    if (!email) return;
+  async function applyPendingSubscription(supabase) {
+    if (!supabase || !supabase.rpc) return;
 
-    const { data: pending } = await supabase
-      .from("pending_subscriptions")
-      .select("plan,stripe_customer_id,stripe_subscription_id,subscription_status,subscription_current_period_end")
-      .eq("email", String(email).toLowerCase())
-      .maybeSingle();
-
-    if (!pending) return;
-
-    await supabase
-      .from("profiles")
-      .update({
-        plan: pending.plan,
-        stripe_customer_id: pending.stripe_customer_id,
-        stripe_subscription_id: pending.stripe_subscription_id,
-        subscription_status: pending.subscription_status || "active",
-        subscription_current_period_end: pending.subscription_current_period_end
-      })
-      .eq("id", userId);
-
-    await supabase
-      .from("pending_subscriptions")
-      .delete()
-      .eq("email", String(email).toLowerCase());
+    const { error } = await supabase.rpc("apply_pending_subscription");
+    if (error) {
+      // Compatibilidad si el SQL aún no se ejecutó en Supabase.
+      console.warn("apply_pending_subscription:", error.message);
+    }
   }
 
   async function requireStudentAccess(options) {
@@ -88,7 +70,7 @@
     }
 
     const session = data.session;
-    await applyPendingSubscription(supabase, session.user.id, session.user.email || "");
+    await applyPendingSubscription(supabase);
     const profile = await loadProfile(supabase, session.user.id);
     const isAdmin = profile.role === "admin";
 
@@ -110,8 +92,8 @@
     return { session, profile, supabase, isAdmin };
   }
 
-  async function getStudentAccess(supabase, userId, email) {
-    await applyPendingSubscription(supabase, userId, email || "");
+  async function getStudentAccess(supabase, userId) {
+    await applyPendingSubscription(supabase);
     const profile = await loadProfile(supabase, userId);
     const isAdmin = profile.role === "admin";
     const hasAccess = isAdmin || isActiveSubscription(profile.subscription_status);

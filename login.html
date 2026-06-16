@@ -167,8 +167,7 @@
 
       const access = await window.StudentGuard.getStudentAccess(
         supabase,
-        session.user.id,
-        session.user.email || ""
+        session.user.id
       );
       window.location.href = access.hasAccess ? next : pricingUrl;
     }
@@ -200,8 +199,7 @@
         if (session && window.StudentGuard) {
           const access = await window.StudentGuard.getStudentAccess(
             supabase,
-            session.user.id,
-            session.user.email || ""
+            session.user.id
           );
           window.location.href = access.hasAccess ? next : pricingUrl;
           return;

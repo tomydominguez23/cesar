@@ -5,6 +5,7 @@
 Ejecuta en **SQL Editor**:
 
 - `supabase/stripe-profiles.sql`
+- `supabase/student-access-rls.sql` (RLS en tablas y storage — ver `STUDENT-RLS-SETUP.md`)
 
 ## 2. Secretos en Supabase
 

@@ -27,5 +27,6 @@ CREATE TABLE IF NOT EXISTS public.pending_subscriptions (
 
 ALTER TABLE public.pending_subscriptions ENABLE ROW LEVEL SECURITY;
 
--- Solo el service role (webhook) escribe; sin acceso público directo
+-- Sin políticas para authenticated/anon: solo service role (webhook) y
+-- apply_pending_subscription() (ver student-access-rls.sql) acceden a esta tabla.
 DROP POLICY IF EXISTS "pending_subscriptions service only" ON public.pending_subscriptions;
