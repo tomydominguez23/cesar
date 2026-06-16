@@ -547,20 +547,23 @@
                 </div>
                 <div class="stripe-input-group">
                   <label>Publishable Key</label>
-                  <input type="text" placeholder="pk_test_..." value="pk_test_51abc...">
+                  <input type="text" placeholder="pk_live_... (pública, en plan-pricing.js)" value="" readonly>
                 </div>
                 <div class="stripe-input-group">
                   <label>Secret Key</label>
-                  <input type="password" placeholder="sk_test_..." value="sk_test_51abc...">
+                  <input type="password" placeholder="Supabase Secret: STRIPE_SECRET_KEY" value="" readonly>
                 </div>
                 <div class="stripe-input-group">
                   <label>Webhook Secret</label>
-                  <input type="password" placeholder="whsec_..." value="whsec_abc123...">
+                  <input type="password" placeholder="Supabase Secret: STRIPE_WEBHOOK_SECRET" value="" readonly>
                 </div>
                 <div class="stripe-input-group">
                   <label>Webhook URL</label>
-                  <input type="text" value="https://protradingacademyusa.com/api/webhooks/stripe" readonly>
+                  <input type="text" value="https://bkgkizlrtczrzryhrrjg.supabase.co/functions/v1/stripe-webhook" readonly>
                 </div>
+                <p style="font-size:12px; opacity:0.85; margin-top:8px;">
+                  No almacenes claves secretas en el panel ni en el código del hosting.
+                </p>
               </div>
             </div>
 

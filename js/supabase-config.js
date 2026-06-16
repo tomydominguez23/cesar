@@ -10,6 +10,8 @@
 
   window.SUPABASE_CONFIG = Object.assign({}, defaultConfig, window.SUPABASE_CONFIG || {});
 
+  // La anonKey es pública por diseño; la seguridad real está en RLS (student-access-rls.sql).
+
   let cachedClient = null;
 
   window.getSupabaseClient = function() {
