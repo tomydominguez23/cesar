@@ -4,8 +4,18 @@
 -- =============================================================================
 
 -- -----------------------------------------------------------------------------
--- Funciones helper
+-- Funciones helper (eliminar versiones previas si cambió la firma)
 -- -----------------------------------------------------------------------------
+
+DROP FUNCTION IF EXISTS public.apply_pending_subscription();
+DROP FUNCTION IF EXISTS public.can_access_storage_object(text, text);
+DROP FUNCTION IF EXISTS public.storage_path_course_id(text);
+DROP FUNCTION IF EXISTS public.can_access_course(uuid);
+DROP FUNCTION IF EXISTS public.can_access_plan(text);
+DROP FUNCTION IF EXISTS public.has_active_subscription();
+DROP FUNCTION IF EXISTS public.current_user_plan();
+DROP FUNCTION IF EXISTS public.is_admin();
+DROP FUNCTION IF EXISTS public.plan_rank(text);
 
 CREATE OR REPLACE FUNCTION public.plan_rank(p_plan text)
 RETURNS integer
