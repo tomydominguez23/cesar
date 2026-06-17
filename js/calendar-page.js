@@ -52,7 +52,7 @@
     return `
       <nav class="dash-navbar">
         <div class="container-lg">
-          <div style="display:flex; align-items:center; gap:32px;">
+          <div class="dash-navbar-main">
             <a href="index.html" class="navbar-brand">
               <img class="brand-logo" src="assets/logo-pro-trading-academy-usa.svg" alt="Pro Trading Academy USA">
             </a>
@@ -85,7 +85,7 @@
 
       <main style="padding:32px 0 80px;">
         <div class="container-lg">
-          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:32px;">
+          <div class="calendar-quick-stats">
             <div style="background:var(--white); border-radius:var(--radius-md); padding:20px; border:1px solid var(--gray-200); border-left:4px solid #3b82f6;">
               <div style="font-size:0.75rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Frecuencia</div>
               <div style="font-weight:700; font-size:0.95rem; margin-bottom:4px;">Preguntas y Respuestas</div>
@@ -167,7 +167,7 @@
   function renderWeeklySessionCard(dayLabel, color, bg, zoomUrl) {
     const zoomHref = zoomUrl || FALLBACK_ZOOM_QA_URL;
     return `
-      <div style="background:var(--white); border-radius:var(--radius-md); padding:20px 24px; display:flex; align-items:center; gap:20px; border:1px solid var(--gray-200);">
+      <div style="background:var(--white); border-radius:var(--radius-md); padding:20px 24px; display:flex; align-items:center; gap:20px; border:1px solid var(--gray-200); flex-wrap:wrap;">
         <div style="width:56px; height:56px; background:${bg}; border-radius:var(--radius-sm); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0;">
           <span style="font-size:1rem; font-weight:800; color:${color};">${dayLabel}</span>
           <span style="font-size:0.65rem; color:var(--gray-500); text-transform:uppercase;">Semanal</span>
@@ -284,6 +284,9 @@
 
     const zoomUrl = await loadZoomUrl(access.supabase);
     root.innerHTML = renderShell(access.profile, zoomUrl);
+    if (window.PTAMobilePortalNav && window.PTAMobilePortalNav.setupDashNavbar) {
+      window.PTAMobilePortalNav.setupDashNavbar();
+    }
     generateCalendar(currentYear, currentMonth);
     bindCalendarNav();
   }

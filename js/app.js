@@ -26,28 +26,42 @@
 // Mobile menu toggle
 // ============================================
 (function() {
+  const navbar = document.getElementById('navbar');
   const toggle = document.getElementById('mobileToggle');
   const menu = document.getElementById('navMenu');
-  if (!toggle || !menu) return;
+  if (!navbar || !toggle || !menu) return;
+
+  function closeMenu() {
+    navbar.classList.remove('nav-open');
+    toggle.classList.remove('active');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-menu-open');
+  }
+
+  function openMenu() {
+    navbar.classList.add('nav-open');
+    toggle.classList.add('active');
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('nav-menu-open');
+  }
+
+  toggle.setAttribute('aria-label', 'Abrir menú');
+  toggle.setAttribute('aria-expanded', 'false');
 
   toggle.addEventListener('click', function() {
-    const isOpen = menu.style.display === 'flex';
-    if (isOpen) {
-      menu.style.display = 'none';
-      toggle.classList.remove('active');
+    if (navbar.classList.contains('nav-open')) {
+      closeMenu();
     } else {
-      menu.style.display = 'flex';
-      menu.style.flexDirection = 'column';
-      menu.style.position = 'absolute';
-      menu.style.top = '100%';
-      menu.style.left = '0';
-      menu.style.right = '0';
-      menu.style.background = 'rgba(13, 79, 79, 0.98)';
-      menu.style.padding = '20px 24px';
-      menu.style.gap = '16px';
-      menu.style.backdropFilter = 'blur(20px)';
-      toggle.classList.add('active');
+      openMenu();
     }
+  });
+
+  menu.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) closeMenu();
   });
 })();
 
@@ -265,9 +279,10 @@ function toggleFaq(el) {
         window.scrollTo({ top: top, behavior: 'smooth' });
 
         // Close mobile menu if open
-        const menu = document.getElementById('navMenu');
-        if (menu && window.innerWidth < 768) {
-          menu.style.display = 'none';
+        const navbar = document.getElementById('navbar');
+        if (navbar && window.innerWidth < 768) {
+          navbar.classList.remove('nav-open');
+          document.body.classList.remove('nav-menu-open');
         }
       }
     });
