@@ -37,7 +37,7 @@ USING (
   active = true
   AND (
     public.is_admin()
-    OR public.has_active_subscription()
+    OR auth.uid() IS NOT NULL
   )
 );
 

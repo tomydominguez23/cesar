@@ -1,6 +1,9 @@
 (function() {
   "use strict";
 
+  const FALLBACK_ZOOM_QA_URL =
+    "https://us06web.zoom.us/j/89321452328?pwd=Kcvax5ze3cXh5t5JBGXPynvcRGU4PC.1";
+
   const months = [
     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -36,8 +39,7 @@
   }
 
   function renderShell(profile, zoomUrl) {
-    const zoomHref = zoomUrl || "#";
-    const zoomDisabled = zoomUrl ? "" : " disabled aria-disabled=\"true\"";
+    const zoomHref = zoomUrl || FALLBACK_ZOOM_QA_URL;
     const studentName = (profile && profile.full_name) || "Estudiante";
     const studentPlan = planLabel(profile && profile.plan);
     const initials = studentName
@@ -104,7 +106,7 @@
                 <div style="font-size:0.75rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Acceso rápido</div>
                 <div style="font-weight:700; font-size:0.95rem; margin-bottom:4px;">Unirse a la sesión</div>
               </div>
-              <a href="${escapeHtml(zoomHref)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" style="width:fit-content;"${zoomDisabled}>
+              <a href="${escapeHtml(zoomHref)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary" style="width:fit-content;">
                 <i class="fas fa-video"></i> Abrir Zoom
               </a>
             </div>
@@ -163,8 +165,7 @@
   }
 
   function renderWeeklySessionCard(dayLabel, color, bg, zoomUrl) {
-    const zoomHref = zoomUrl || "#";
-    const zoomDisabled = zoomUrl ? "" : " disabled aria-disabled=\"true\"";
+    const zoomHref = zoomUrl || FALLBACK_ZOOM_QA_URL;
     return `
       <div style="background:var(--white); border-radius:var(--radius-md); padding:20px 24px; display:flex; align-items:center; gap:20px; border:1px solid var(--gray-200);">
         <div style="width:56px; height:56px; background:${bg}; border-radius:var(--radius-sm); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0;">
@@ -175,7 +176,7 @@
           <div style="font-weight:700; margin-bottom:2px;">Preguntas y Respuestas</div>
           <div style="font-size:0.85rem; color:var(--gray-500);"><i class="fas fa-clock"></i> 16:00 (Hora Arizona)</div>
         </div>
-        <a href="${escapeHtml(zoomHref)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary"${zoomDisabled}><i class="fas fa-video"></i> Unirse</a>
+        <a href="${escapeHtml(zoomHref)}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary"><i class="fas fa-video"></i> Unirse</a>
       </div>
     `;
   }
@@ -258,7 +259,7 @@
   }
 
   async function loadZoomUrl(supabase) {
-    if (!supabase) return "";
+    if (!supabase) return FALLBACK_ZOOM_QA_URL;
 
     const { data, error } = await supabase
       .from("live_session_links")
@@ -268,7 +269,7 @@
       .maybeSingle();
 
     if (error || !data || !data.zoom_url) {
-      return "";
+      return FALLBACK_ZOOM_QA_URL;
     }
 
     return String(data.zoom_url);
@@ -278,7 +279,7 @@
     const root = document.getElementById("calendarPageRoot");
     if (!root || !window.StudentGuard) return;
 
-    const access = await window.StudentGuard.requireStudentAccess({ requireActivePlan: true });
+    const access = await window.StudentGuard.requireStudentAccess({ requireActivePlan: false });
     if (!access) return;
 
     const zoomUrl = await loadZoomUrl(access.supabase);
