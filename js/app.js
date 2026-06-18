@@ -265,6 +265,25 @@ function toggleFaq(el) {
 // Smooth scroll for anchor links
 // ============================================
 (function() {
+  function getNavOffset() {
+    const navbar = document.querySelector('.navbar');
+    return navbar ? navbar.offsetHeight : 0;
+  }
+
+  function scrollToTarget(target, behavior) {
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - getNavOffset() - 20;
+    window.scrollTo({ top: top, behavior: behavior || 'smooth' });
+  }
+
+  function closeMobileNav() {
+    const navbar = document.getElementById('navbar');
+    if (navbar && window.innerWidth < 768) {
+      navbar.classList.remove('nav-open');
+      document.body.classList.remove('nav-menu-open');
+    }
+  }
+
   document.querySelectorAll('a[href^="#"]').forEach(function(link) {
     link.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
@@ -273,20 +292,24 @@ function toggleFaq(el) {
       const target = document.querySelector(href);
       if (target) {
         e.preventDefault();
-        const navHeight = document.querySelector('.navbar') ?
-          document.querySelector('.navbar').offsetHeight : 0;
-        const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 20;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-
-        // Close mobile menu if open
-        const navbar = document.getElementById('navbar');
-        if (navbar && window.innerWidth < 768) {
-          navbar.classList.remove('nav-open');
-          document.body.classList.remove('nav-menu-open');
-        }
+        scrollToTarget(target, 'smooth');
+        closeMobileNav();
       }
     });
   });
+
+  function scrollToHashOnLoad() {
+    const hash = window.location.hash;
+    if (!hash || hash === '#') return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    requestAnimationFrame(function() {
+      scrollToTarget(target, 'auto');
+    });
+  }
+
+  window.addEventListener('load', scrollToHashOnLoad);
+  window.addEventListener('hashchange', scrollToHashOnLoad);
 })();
 
 // ============================================
