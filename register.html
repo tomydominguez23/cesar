@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Crear Cuenta - Pro Trading Academy USA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css?v=20260702a">
+</head>
+<body>
+
+  <div class="login-page">
+    <div class="login-visual">
+      <div class="login-visual-content animate-fade-in-left">
+        <div style="margin-bottom:32px;">
+          <a href="index.html" class="navbar-brand" style="justify-content:center;">
+            <img class="brand-logo login-brand-logo" src="assets/logo-pro-trading-academy-usa.svg" alt="Pro Trading Academy USA">
+          </a>
+        </div>
+        <h2>Activa tu acceso<br>al portal de estudio</h2>
+        <p style="margin:16px auto 40px;">Crea tu cuenta con el mismo email que usaste al pagar para desbloquear tu plan automáticamente.</p>
+
+        <div class="login-stats-row">
+          <div class="hero-stat">
+            <span class="number" style="font-size:2rem;">2,500+</span>
+            <span class="label">Estudiantes</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number" style="font-size:2rem;">500+</span>
+            <span class="label">Clases</span>
+          </div>
+          <div class="hero-stat">
+            <span class="number" style="font-size:2rem;">95%</span>
+            <span class="label">Satisfaccion</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-form-side">
+      <div class="login-form-wrapper animate-fade-in-right">
+        <h3>Crear cuenta</h3>
+        <p class="subtitle">Completa el formulario para acceder a tus cursos.</p>
+
+        <div id="paymentSuccessBanner" class="auth-banner auth-banner-success" style="display:none;">
+          <i class="fas fa-check-circle"></i> Pago recibido. Crea tu cuenta con el <strong>mismo email</strong> de Stripe para activar tu plan.
+        </div>
+
+        <form id="registerForm" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label for="fullName"><i class="fas fa-user" style="color:var(--gray-400); margin-right:6px;"></i> Nombre completo</label>
+            <input type="text" id="fullName" class="form-control" placeholder="Tu nombre" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="email"><i class="fas fa-envelope" style="color:var(--gray-400); margin-right:6px;"></i> Correo electronico</label>
+            <input type="email" id="email" class="form-control" placeholder="tu@email.com" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="password"><i class="fas fa-lock" style="color:var(--gray-400); margin-right:6px;"></i> Contrasena</label>
+            <div class="password-field">
+              <input type="password" id="password" class="form-control" placeholder="Minimo 6 caracteres" required minlength="6" autocomplete="new-password">
+              <button type="button" class="password-toggle" onclick="togglePassword('password', 'eyeIcon')" aria-label="Mostrar contrasena">
+                <i class="fas fa-eye" id="eyeIcon"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword"><i class="fas fa-lock" style="color:var(--gray-400); margin-right:6px;"></i> Confirmar contrasena</label>
+            <div class="password-field">
+              <input type="password" id="confirmPassword" class="form-control" placeholder="Repite tu contrasena" required minlength="6" autocomplete="new-password">
+              <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', 'eyeIcon2')" aria-label="Mostrar contrasena">
+                <i class="fas fa-eye" id="eyeIcon2"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+            <i class="fas fa-user-plus"></i> Crear cuenta y entrar
+          </button>
+        </form>
+
+        <p style="text-align:center; margin-top:24px; color:var(--gray-500); font-size:0.9rem;">
+          Ya tienes cuenta? <a href="login.html" style="color:var(--primary); font-weight:600;">Inicia sesion</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/student-guard.js"></script>
+  <script src="js/security-guard.js"></script>
+  <script src="js/branding-logo.js?v=20260525b"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    (function initRegisterProtection() {
+      const form = document.getElementById("registerForm");
+      if (window.PTASecurityGuard && form) {
+        window.PTASecurityGuard.initForm(form, { minDelayMs: 600 });
+      }
+    })();
+
+    (function prefillEmail() {
+      const emailParam = params.get("email");
+      if (emailParam) {
+        const emailInput = document.getElementById("email");
+        if (emailInput) emailInput.value = emailParam.trim();
+      }
+      if (params.get("payment") === "success") {
+        const banner = document.getElementById("paymentSuccessBanner");
+        if (banner) banner.style.display = "block";
+      }
+    })();
+
+    function togglePassword(inputId, iconId) {
+      const pass = document.getElementById(inputId);
+      const eye = document.getElementById(iconId);
+      if (pass.type === "password") {
+        pass.type = "text";
+        eye.classList.replace("fa-eye", "fa-eye-slash");
+      } else {
+        pass.type = "password";
+        eye.classList.replace("fa-eye-slash", "fa-eye");
+      }
+    }
+
+    async function redirectIfLoggedIn() {
+      const supabase = window.getSupabaseClient ? window.getSupabaseClient() : null;
+      if (!supabase || !window.StudentGuard) return;
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const access = await window.StudentGuard.getStudentAccess(supabase, session.user.id);
+      window.location.href = access.hasAccess ? "dashboard.html" : "index.html#pricing";
+    }
+    redirectIfLoggedIn();
+
+    function friendlyRegisterError(err) {
+      const msg = (err && err.message) ? err.message : "";
+      if (msg.includes("already registered") || msg.includes("User already registered")) {
+        return "Este email ya tiene cuenta. Usa Iniciar sesion o recupera tu contrasena.";
+      }
+      if (msg.includes("Password")) {
+        return "La contrasena debe tener al menos 6 caracteres.";
+      }
+      return msg || "No se pudo crear la cuenta.";
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const form = document.getElementById("registerForm");
+      if (window.PTASecurityGuard) {
+        const check = window.PTASecurityGuard.validateSubmission(form, "register:student", {
+          maxAttempts: 6,
+          windowMs: 15 * 60 * 1000,
+          minDelayMs: 600
+        });
+        if (!check.ok) {
+          alert(check.message || "Demasiados intentos. Espera unos minutos.");
+          return;
+        }
+      }
+
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      if (password !== confirmPassword) {
+        alert("Las contrasenas no coinciden.");
+        return;
+      }
+
+      const supabase = window.getSupabaseClient ? window.getSupabaseClient() : null;
+      if (!supabase) {
+        alert("No se pudo inicializar Supabase. Revisa la configuracion.");
+        return;
+      }
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const email = document.getElementById("email").value.trim();
+      const fullName = document.getElementById("fullName").value.trim();
+      const originalLabel = submitBtn.innerHTML;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando cuenta...';
+
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { full_name: fullName }
+          }
+        });
+
+        if (error) throw error;
+
+        if (data.session && window.StudentGuard) {
+          await window.StudentGuard.applyPendingSubscription(supabase);
+          const access = await window.StudentGuard.getStudentAccess(supabase, data.session.user.id);
+          if (access.hasAccess) {
+            window.location.href = "dashboard.html";
+            return;
+          }
+          alert("Cuenta creada. Si pagaste recientemente, verifica que el email coincida con el de Stripe.");
+          window.location.href = "index.html#pricing";
+          return;
+        }
+
+        alert("Cuenta creada. Revisa tu email para confirmar el acceso y luego inicia sesion.");
+        window.location.href = "login.html";
+      } catch (err) {
+        if (window.PTASecurityGuard) {
+          window.PTASecurityGuard.recordFailedAttempt("register:student");
+        }
+        alert(friendlyRegisterError(err));
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel;
+      }
+    }
+  </script>
+</body>
+</html>

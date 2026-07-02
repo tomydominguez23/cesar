@@ -40,7 +40,7 @@
 
   window.PTA_STRIPE_CONFIG = {
     publishableKey: "pk_live_51RCqyfEdi9JcCWjpGtVK1tvlkt4lAOMky6M0PAd69umhbg6xqtOJRqZ3FI4DjDyEZdUUxEQggX2Zyw4Sav7gB2iX00AnCRCI6Q",
-    checkoutSuccessUrl: "https://protradingacademyusa.com/login.html?payment=success",
+    checkoutSuccessUrl: "https://protradingacademyusa.com/register.html?payment=success",
     checkoutCancelUrl: "https://protradingacademyusa.com/index.html#pricing?payment=cancelled"
   };
 })();

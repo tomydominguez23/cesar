@@ -437,22 +437,25 @@
       if (lesson.video_type === "upload" && lesson.video_path) {
         const signed = await getSignedUrl("lesson-videos", lesson.video_path);
         if (signed) {
-          playerHtml = `<video controls style="width:100%; max-height:520px; background:#000;"><source src="${signed}" type="video/mp4">Tu navegador no soporta video.</video>`;
+          playerHtml = `<video controls playsinline><source src="${signed}" type="video/mp4">Tu navegador no soporta video.</video>`;
         }
       } else if (lesson.video_type === "external_url" && lesson.video_url) {
-        playerHtml = `<video controls style="width:100%; max-height:520px; background:#000;"><source src="${lesson.video_url}" type="video/mp4"></video>`;
+        playerHtml = `<video controls playsinline><source src="${lesson.video_url}" type="video/mp4"></video>`;
       } else if (lesson.video_type === "youtube" && lesson.video_url) {
         const youtubeId = getYouTubeId(lesson.video_url);
         if (youtubeId) {
-          playerHtml = `<iframe style="width:100%; height:480px; border:0;" src="https://www.youtube.com/embed/${youtubeId}" allowfullscreen></iframe>`;
+          playerHtml = `<iframe src="https://www.youtube.com/embed/${youtubeId}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         }
       } else if (lesson.video_type === "vimeo" && lesson.video_url) {
         const vimeoId = getVimeoId(lesson.video_url);
         if (vimeoId) {
-          playerHtml = `<iframe style="width:100%; height:480px; border:0;" src="https://player.vimeo.com/video/${vimeoId}" allowfullscreen></iframe>`;
+          playerHtml = `<iframe src="https://player.vimeo.com/video/${vimeoId}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
         }
       }
-      if (playerContainer) playerContainer.innerHTML = playerHtml;
+      if (playerContainer) {
+        playerContainer.className = "";
+        playerContainer.innerHTML = playerHtml;
+      }
 
       const materialsQuery = supabase
         .from("lesson_materials")

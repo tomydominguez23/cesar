@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Iniciar Sesion - Pro Trading Academy USA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=20260616b">
+  <link rel="stylesheet" href="css/styles.css?v=20260702a">
 </head>
 <body>
 
@@ -24,7 +24,7 @@
         <h2>Bienvenido a<br>Pro Trading Academy USA</h2>
         <p style="margin:16px auto 40px;">Tu portal de estudio para dominar el trading profesional y alcanzar la libertad financiera.</p>
         
-        <div style="display:flex; gap:32px; justify-content:center;">
+        <div class="login-stats-row">
           <div class="hero-stat">
             <span class="number" style="font-size:2rem;">2,500+</span>
             <span class="label">Estudiantes</span>
@@ -39,18 +39,18 @@
           </div>
         </div>
 
-        <div style="margin-top:48px; display:flex; gap:12px; justify-content:center;">
-          <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); padding:10px 16px; border-radius:8px;">
+        <div class="login-badges-row">
+          <div class="login-badge">
             <i class="fas fa-video" style="color:var(--secondary);"></i>
-            <span style="font-size:0.85rem;">Clases en vivo</span>
+            <span>Clases en vivo</span>
           </div>
-          <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); padding:10px 16px; border-radius:8px;">
+          <div class="login-badge">
             <i class="fas fa-users" style="color:var(--secondary);"></i>
-            <span style="font-size:0.85rem;">Comunidad activa</span>
+            <span>Comunidad activa</span>
           </div>
-          <div style="display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); padding:10px 16px; border-radius:8px;">
+          <div class="login-badge">
             <i class="fas fa-tools" style="color:var(--secondary);"></i>
-            <span style="font-size:0.85rem;">Herramientas pro</span>
+            <span>Herramientas pro</span>
           </div>
         </div>
       </div>
@@ -61,20 +61,22 @@
       <div class="login-form-wrapper animate-fade-in-right">
         <h3>Iniciar Sesion</h3>
         <p class="subtitle">Ingresa tus credenciales para acceder a tus cursos.</p>
-        <div id="paymentSuccessBanner" style="display:none; margin-bottom:16px; padding:12px 14px; border-radius:10px; background:rgba(16,185,129,0.12); color:#047857; font-size:0.9rem;">
-          <i class="fas fa-check-circle"></i> Pago recibido. Inicia sesión con el <strong>mismo email</strong> que usaste en Stripe para activar tu plan.
+        <div id="paymentSuccessBanner" class="auth-banner auth-banner-success" style="display:none;">
+          <i class="fas fa-check-circle"></i> Pago recibido. Si es tu primera vez, <a href="register.html?payment=success" style="color:#047857; font-weight:700;">crea tu cuenta aqui</a> con el mismo email de Stripe.
         </div>
+
+        <div id="loginErrorBanner" class="auth-banner auth-banner-error" style="display:none;"></div>
 
         <form id="loginForm" onsubmit="handleLogin(event)">
           <div class="form-group">
             <label for="email"><i class="fas fa-envelope" style="color:var(--gray-400); margin-right:6px;"></i> Correo electronico</label>
-            <input type="email" id="email" class="form-control" placeholder="tu@email.com" required>
+            <input type="email" id="email" class="form-control" placeholder="tu@email.com" required autocomplete="email">
           </div>
           <div class="form-group">
             <label for="password"><i class="fas fa-lock" style="color:var(--gray-400); margin-right:6px;"></i> Contrasena</label>
-            <div style="position:relative;">
-              <input type="password" id="password" class="form-control" placeholder="Tu contrasena" required>
-              <button type="button" onclick="togglePassword()" style="position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--gray-400);">
+            <div class="password-field">
+              <input type="password" id="password" class="form-control" placeholder="Tu contrasena" required autocomplete="current-password">
+              <button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Mostrar contrasena">
                 <i class="fas fa-eye" id="eyeIcon"></i>
               </button>
             </div>
@@ -83,31 +85,17 @@
             <label class="checkbox-label">
               <input type="checkbox" checked> Recordarme
             </label>
-            <a href="#" class="forgot-link">Olvidaste tu contrasena?</a>
+            <a href="reset-password.html" class="forgot-link">Olvidaste tu contrasena?</a>
           </div>
           <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
             <i class="fas fa-sign-in-alt"></i> Ingresar al Portal
           </button>
         </form>
 
-        <div style="margin-top:24px; text-align:center;">
-          <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
-            <div style="flex:1; height:1px; background:var(--gray-200);"></div>
-            <span style="color:var(--gray-400); font-size:0.85rem;">o continua con</span>
-            <div style="flex:1; height:1px; background:var(--gray-200);"></div>
-          </div>
-          <div style="display:flex; gap:12px;">
-            <button class="btn btn-outline" style="flex:1; padding:12px;">
-              <i class="fab fa-google" style="color:#ea4335;"></i> Google
-            </button>
-            <button class="btn btn-outline" style="flex:1; padding:12px;">
-              <i class="fab fa-facebook" style="color:#1877f2;"></i> Facebook
-            </button>
-          </div>
-        </div>
-
         <p style="text-align:center; margin-top:24px; color:var(--gray-500); font-size:0.9rem;">
-          No tienes una cuenta? <a href="index.html#pricing" style="color:var(--primary); font-weight:600;">Registrate aqui</a>
+          No tienes una cuenta? <a href="register.html" style="color:var(--primary); font-weight:600;">Crear cuenta</a>
+          <span style="color:var(--gray-300); margin:0 6px;">|</span>
+          <a href="index.html#pricing" style="color:var(--primary); font-weight:600;">Ver planes</a>
         </p>
         <p style="text-align:center; margin-top:10px; font-size:0.85rem;">
           <a href="admin/login.html" style="color:var(--gray-500); font-weight:600;">
@@ -143,7 +131,7 @@
     (function initLoginProtection() {
       const form = document.getElementById("loginForm");
       if (window.PTASecurityGuard && form) {
-        window.PTASecurityGuard.initForm(form, { minDelayMs: 2500 });
+        window.PTASecurityGuard.initForm(form, { minDelayMs: 600 });
       }
     })();
 
@@ -157,6 +145,24 @@
         pass.type = 'password';
         eye.classList.replace('fa-eye-slash', 'fa-eye');
       }
+    }
+
+    function showLoginError(message) {
+      const banner = document.getElementById('loginErrorBanner');
+      if (!banner) return;
+      banner.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message;
+      banner.style.display = 'block';
+    }
+
+    function friendlyLoginError(err) {
+      const msg = (err && err.message) ? err.message : '';
+      if (msg.includes('Invalid login credentials')) {
+        return 'Email o contrasena incorrectos. Si acabas de pagar, primero <a href="register.html" style="color:#b91c1c; font-weight:700;">crea tu cuenta</a> con el mismo email de Stripe.';
+      }
+      if (msg.includes('Email not confirmed')) {
+        return 'Confirma tu email antes de iniciar sesion. Revisa tu bandeja de entrada.';
+      }
+      return msg || 'No se pudo iniciar sesion.';
     }
 
     (function showPaymentSuccessBanner() {
@@ -184,21 +190,24 @@
     async function handleLogin(e) {
       e.preventDefault();
       const form = document.getElementById("loginForm");
+      const errorBanner = document.getElementById('loginErrorBanner');
+      if (errorBanner) errorBanner.style.display = 'none';
+
       if (window.PTASecurityGuard) {
         const check = window.PTASecurityGuard.validateSubmission(form, "login:student", {
           maxAttempts: 8,
           windowMs: 15 * 60 * 1000,
-          minDelayMs: 2500
+          minDelayMs: 600
         });
         if (!check.ok) {
-          alert(check.message || "Demasiados intentos. Espera unos minutos.");
+          showLoginError(check.message || "Demasiados intentos. Espera unos minutos.");
           return;
         }
       }
 
       const supabase = window.getSupabaseClient ? window.getSupabaseClient() : null;
       if (!supabase) {
-        alert('No se pudo inicializar Supabase. Revisa la configuración.');
+        showLoginError('No se pudo inicializar Supabase. Revisa la configuracion.');
         return;
       }
 
@@ -208,13 +217,15 @@
       const originalLabel = submitBtn.innerHTML;
 
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesión...';
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando sesion...';
 
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
           throw error;
         }
+
+        await window.StudentGuard.applyPendingSubscription(supabase);
 
         const { data: { session } } = await supabase.auth.getSession();
         if (session && window.StudentGuard) {
@@ -222,14 +233,23 @@
             supabase,
             session.user.id
           );
-          window.location.href = access.hasAccess ? next : pricingUrl;
+
+          if (!access.hasAccess) {
+            showLoginError('Tu cuenta no tiene un plan activo. Verifica que el email coincida con el de tu pago o <a href="index.html#pricing" style="color:#b91c1c; font-weight:700;">elige un plan</a>.');
+            await supabase.auth.signOut();
+            return;
+          }
+
+          window.location.href = next;
           return;
         }
 
         window.location.href = next;
       } catch (err) {
-        const message = err && err.message ? err.message : 'No se pudo iniciar sesión.';
-        alert('Error de autenticación: ' + message);
+        if (window.PTASecurityGuard) {
+          window.PTASecurityGuard.recordFailedAttempt("login:student");
+        }
+        showLoginError(friendlyLoginError(err));
       } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalLabel;

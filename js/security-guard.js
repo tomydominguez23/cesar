@@ -99,9 +99,20 @@
       };
     }
 
+    return { ok: true };
+  }
+
+  function recordFailedAttempt(actionKey, options) {
+    const settings = Object.assign(
+      {
+        windowMs: 15 * 60 * 1000
+      },
+      options || {}
+    );
+    const key = actionKey || "default";
+    const pruned = pruneAttempts(readAttempts(key), settings.windowMs);
     pruned.push(now());
     writeAttempts(key, pruned);
-    return { ok: true };
   }
 
   function validateAction(actionKey, options) {
@@ -111,6 +122,7 @@
   window.PTASecurityGuard = {
     initForm,
     validateSubmission,
+    recordFailedAttempt,
     validateAction
   };
 })();
