@@ -38,4 +38,15 @@ El frontend (`js/student-guard.js`) ya llama esta función automáticamente.
 
 - El **service role** (webhooks Stripe, Edge Functions) **no** está limitado por RLS.
 - Si algo deja de funcionar tras aplicar el SQL, revisa que tu usuario admin tenga `role = 'admin'` en `profiles`.
+
+## Usuarios creados antes de Stripe / precios
+
+Si tienes estudiantes que ya existían en Supabase Auth antes del sistema de suscripciones, probablemente tienen `subscription_status = inactive` y **no pueden entrar** aunque la contraseña sea correcta.
+
+Ejecuta `supabase/activate-legacy-users.sql` en el SQL Editor. Ese script:
+
+1. Crea perfiles faltantes para usuarios en `auth.users`
+2. Activa (`subscription_status = active`) a quienes **no** tienen suscripción Stripe
+3. No modifica admins ni pagos pendientes en `pending_subscriptions`
+
 - Tras ejecutar el SQL, no hace falta redeploy del sitio estático salvo el cambio en `student-guard.js` (merge del PR).
