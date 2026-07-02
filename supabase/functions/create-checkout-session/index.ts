@@ -78,7 +78,7 @@ Deno.serve(async (req) => {
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [{ price: PLAN_PRICE_IDS[plan], quantity: 1 }],
-      success_url: `${siteUrl}/login.html?payment=success&plan=${plan}`,
+      success_url: `${siteUrl}/register.html?payment=success&plan=${plan}`,
       cancel_url: `${siteUrl}/index.html#pricing?payment=cancelled`,
       allow_promotion_codes: true,
       billing_address_collection: "auto",

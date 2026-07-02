@@ -51,6 +51,25 @@
     }
   }
 
+  function showGuardLoading() {
+    if (document.getElementById("pta-guard-loading")) return;
+    const overlay = document.createElement("div");
+    overlay.id = "pta-guard-loading";
+    overlay.className = "pta-guard-loading";
+    overlay.innerHTML = '<div class="pta-guard-spinner"></div><p>Verificando acceso...</p>';
+    document.body.appendChild(overlay);
+  }
+
+  function hideGuardLoading() {
+    document.documentElement.classList.remove("student-guard-pending");
+    const overlay = document.getElementById("pta-guard-loading");
+    if (overlay) overlay.remove();
+  }
+
+  if (document.documentElement.classList.contains("student-guard-pending")) {
+    document.addEventListener("DOMContentLoaded", showGuardLoading);
+  }
+
   async function requireStudentAccess(options) {
     const settings = Object.assign(
       { requireActivePlan: true, requiredPlan: null },
@@ -75,6 +94,7 @@
     const isAdmin = profile.role === "admin";
 
     if (settings.requireActivePlan && !isAdmin && !isActiveSubscription(profile.subscription_status)) {
+      hideGuardLoading();
       redirectToPricing();
       return null;
     }
@@ -84,11 +104,12 @@
       !isAdmin &&
       !canAccessPlan(profile.plan || "basico", settings.requiredPlan)
     ) {
+      hideGuardLoading();
       redirectToPricing();
       return null;
     }
 
-    document.documentElement.classList.remove("student-guard-pending");
+    hideGuardLoading();
     return { session, profile, supabase, isAdmin };
   }
 

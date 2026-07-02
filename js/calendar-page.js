@@ -208,7 +208,12 @@
         month === today.getMonth() &&
         year === today.getFullYear();
 
-      cell.className = "calendar-day" + (isToday ? " today" : "");
+      const key = `${month}-${day}`;
+      const hasEvents =
+        (events.weekly[dayOfWeek] && events.weekly[dayOfWeek].length > 0) ||
+        (events.special[key] && events.special[key].length > 0);
+
+      cell.className = "calendar-day" + (isToday ? " today" : "") + (hasEvents ? " has-events" : "");
 
       let html = `<div class="day-number">${day}</div>`;
 
@@ -218,7 +223,6 @@
         });
       }
 
-      const key = `${month}-${day}`;
       if (events.special[key]) {
         events.special[key].forEach((ev) => {
           html += `<div class="calendar-event ${ev.type}">${escapeHtml(ev.name)}</div>`;
