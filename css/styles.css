@@ -256,6 +256,10 @@ h6 { font-size: 1rem; }
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .badge-primary {
@@ -391,8 +395,11 @@ h6 { font-size: 1rem; }
   right: 0;
   z-index: 1000;
   padding: 16px 0;
+  padding-top: max(16px, env(safe-area-inset-top));
   transition: var(--transition);
   background: transparent;
+  width: 100%;
+  max-width: 100vw;
 }
 
 .navbar.scrolled {
@@ -407,6 +414,9 @@ h6 { font-size: 1rem; }
   align-items: center;
   justify-content: space-between;
   min-height: 112px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .navbar.scrolled .container {
@@ -418,7 +428,8 @@ h6 { font-size: 1rem; }
   align-items: center;
   gap: 12px;
   height: 100%;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .navbar-brand .brand-logo {
@@ -643,6 +654,22 @@ body.dash-nav-menu-open {
   display: flex;
   align-items: center;
   overflow: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+.hero-inner {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.hero-inner > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .hero::before {
@@ -684,6 +711,8 @@ body.dash-nav-menu-open {
   position: relative;
   z-index: 2;
   max-width: 680px;
+  width: 100%;
+  min-width: 0;
 }
 
 .hero-content h1 {
@@ -693,6 +722,8 @@ body.dash-nav-menu-open {
   line-height: 1.1;
   margin-bottom: 24px;
   letter-spacing: -1px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .hero-content h1 span {
@@ -707,21 +738,32 @@ body.dash-nav-menu-open {
   font-size: 1.25rem;
   margin-bottom: 40px;
   line-height: 1.7;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .hero-buttons {
   display: flex;
   gap: 16px;
   margin-bottom: 48px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
 }
 
 .hero-stats {
   display: flex;
   gap: 48px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
 }
 
 .hero-stat {
   text-align: center;
+  min-width: 0;
+  flex: 1 1 88px;
 }
 
 .hero-stat .number {
@@ -739,6 +781,9 @@ body.dash-nav-menu-open {
 .hero-visual {
   position: relative;
   z-index: 2;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .hero-chart {
@@ -748,6 +793,9 @@ body.dash-nav-menu-open {
   border-radius: var(--radius-lg);
   padding: 32px;
   box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-chart-header {
@@ -2710,6 +2758,8 @@ body.dash-nav-menu-open {
   .container,
   .container-lg {
     padding: 0 16px;
+    width: 100%;
+    max-width: 100%;
   }
   
   .section {
@@ -2734,15 +2784,22 @@ body.dash-nav-menu-open {
   
   .hero {
     min-height: auto;
-    padding: 100px 0 56px;
+    padding: calc(88px + env(safe-area-inset-top)) 0 56px;
   }
   
+  .hero-inner,
   .hero .container {
     flex-direction: column;
     gap: 32px;
+    align-items: stretch;
   }
 
   .hero-visual {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .hero-content {
     max-width: 100%;
   }
   
@@ -2753,24 +2810,50 @@ body.dash-nav-menu-open {
 
   .hero-content p {
     font-size: 1rem;
+    margin-bottom: 28px;
   }
   
   .hero-stats {
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 16px 20px;
+    justify-content: space-between;
+  }
+
+  .hero-stat {
+    flex: 1 1 calc(33% - 16px);
   }
   
   .hero-buttons {
     flex-direction: column;
     width: 100%;
+    gap: 12px;
+    margin-bottom: 32px;
   }
   
   .hero-buttons .btn {
     width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-chart {
+    padding: 20px 16px;
+  }
+
+  .hero .animate-fade-in-left,
+  .hero .animate-fade-in-right {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 
   .navbar {
     padding: 8px 0;
+    padding-top: max(8px, env(safe-area-inset-top));
   }
 
   .navbar .container {
@@ -2789,18 +2872,20 @@ body.dash-nav-menu-open {
   .navbar-brand .brand-logo.login-brand-logo,
   .navbar-brand .brand-logo.login-brand-logo.logo-dynamic-source {
     height: 48px;
-    max-width: min(72vw, 260px);
+    max-width: min(55vw, 200px);
   }
 
   .navbar-actions {
     gap: 8px;
     margin-left: auto;
+    flex-shrink: 0;
   }
 
   .navbar-actions .btn {
-    padding: 8px 12px;
-    font-size: 0.8rem;
+    padding: 8px 10px;
+    font-size: 0.78rem;
     min-height: 40px;
+    white-space: nowrap;
   }
 
   .navbar-actions .btn-ghost {
@@ -2847,7 +2932,12 @@ body.dash-nav-menu-open {
   
   .mobile-toggle {
     display: flex;
-    margin-left: 8px;
+    margin-left: 4px;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
   }
 
   .dash-navbar .container-lg,
@@ -3166,9 +3256,25 @@ body.dash-nav-menu-open {
   .hero-content h1 {
     font-size: 1.65rem;
   }
+
+  .hero-content p {
+    font-size: 0.95rem;
+  }
+
+  .hero-stat {
+    flex: 1 1 30%;
+  }
   
   .hero-stat .number {
     font-size: 1.75rem;
+  }
+
+  .hero-chart {
+    padding: 16px 12px;
+  }
+
+  .chart-bars {
+    height: 160px;
   }
   
   .pricing-price {
@@ -3182,7 +3288,12 @@ body.dash-nav-menu-open {
 
   .navbar-brand .brand-logo {
     height: 42px;
-    max-width: min(68vw, 220px);
+    max-width: min(52vw, 180px);
+  }
+
+  .navbar-actions .btn {
+    padding: 8px 8px;
+    font-size: 0.72rem;
   }
 
   .btn-lg {
