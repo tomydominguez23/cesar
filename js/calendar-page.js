@@ -51,7 +51,7 @@
 
     return `
       <nav class="dash-navbar">
-        <div class="container-lg">
+        <div class="container-lg dash-navbar-inner">
           <div class="dash-navbar-main">
             <a href="index.html" class="navbar-brand">
               <img class="brand-logo" src="assets/logo-pro-trading-academy-usa.svg" alt="Pro Trading Academy USA">

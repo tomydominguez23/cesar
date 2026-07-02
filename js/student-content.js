@@ -23,6 +23,20 @@
       .replace(/'/g, "&#039;");
   }
 
+  function formatMaterialLabel(value) {
+    const raw = String(value || "").trim();
+    if (!raw) return "";
+    let decoded = raw;
+    try {
+      decoded = decodeURIComponent(raw);
+    } catch (_) {
+      decoded = raw;
+    }
+    const parts = decoded.split(/[/\\]/);
+    const last = parts[parts.length - 1] || decoded;
+    return last.length > 72 ? last.slice(0, 69) + "..." : last;
+  }
+
   function normalizeRelation(value) {
     if (Array.isArray(value)) return value[0] || null;
     return value || null;
@@ -481,14 +495,20 @@
         const entries = await Promise.all(materialsList.map(async (material) => {
           const signed = await getSignedUrl("lesson-materials", material.storage_path);
           const href = signed || "#";
+          const title = material.title || formatMaterialLabel(material.file_name) || "Material";
+          const subtitle = material.description
+            ? formatMaterialLabel(material.description)
+            : formatMaterialLabel(material.file_name);
           return `
             <div class="tool-card">
               <div class="tool-icon pdf"><i class="fas fa-file"></i></div>
-              <div class="tool-info" style="flex:1;">
-                <h5>${escapeHtml(material.title || material.file_name)}</h5>
-                <p>${escapeHtml(material.description || material.file_name)}</p>
+              <div class="tool-info">
+                <h5>${escapeHtml(title)}</h5>
+                ${subtitle && subtitle !== title ? `<p>${escapeHtml(subtitle)}</p>` : ""}
               </div>
-              <a href="${href}" target="_blank" class="btn btn-sm btn-accent" ${signed ? "" : "disabled"}>Descargar</a>
+              <div class="tool-card-actions">
+                <a href="${href}" target="_blank" rel="noopener" class="btn btn-sm btn-accent" ${signed ? "" : "disabled"}>Descargar</a>
+              </div>
             </div>
           `;
         }));

@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=20260702a">
+  <link rel="stylesheet" href="css/styles.css?v=20260702b">
 </head>
-<body style="background: var(--gray-100);">
+<body class="portal-page course-page">
+
   <nav class="dash-navbar">
-    <div class="container-lg">
+    <div class="container-lg dash-navbar-inner">
       <div class="dash-navbar-main">
         <a href="index.html" class="navbar-brand">
           <img class="brand-logo" src="assets/logo-pro-trading-academy-usa.svg" alt="Pro Trading Academy USA">
@@ -24,69 +25,69 @@
         </div>
       </div>
       <div class="dash-user">
-        <div style="text-align:right;">
-          <div style="font-size:0.85rem; font-weight:600;">Estudiante</div>
+        <div class="dash-user-meta">
+          <div class="dash-user-name">Estudiante</div>
         </div>
         <div class="dash-user-avatar">ES</div>
       </div>
     </div>
   </nav>
 
-  <div style="background:var(--white); border-bottom:1px solid var(--gray-200); padding:12px 0;">
+  <div class="course-breadcrumb">
     <div class="container-lg">
-      <div style="display:flex; align-items:center; gap:8px; font-size:0.9rem; color:var(--gray-500);">
-        <a href="dashboard.html" style="color:var(--primary);">Mis programas</a>
-        <i class="fas fa-chevron-right" style="font-size:0.7rem;"></i>
+      <nav class="course-breadcrumb-nav" aria-label="Ruta del curso">
+        <a href="dashboard.html">Mis programas</a>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
         <span id="courseBreadcrumbTitle">Curso</span>
-      </div>
+      </nav>
     </div>
   </div>
 
-  <main style="padding:32px 0 80px;">
+  <main class="course-page-main">
     <div class="container-lg">
-      <h1 id="coursePageTitle" style="margin-bottom:18px; font-size:1.8rem;">Curso</h1>
+      <h1 id="coursePageTitle" class="course-page-title">Curso</h1>
       <div class="course-layout">
-        <div>
-          <div class="video-wrapper" style="margin-bottom:24px;">
+        <div class="course-main-col">
+          <div class="video-wrapper course-video">
             <div id="courseLessonPlayer" class="video-placeholder"></div>
           </div>
 
-          <div style="background:var(--white); border-radius:var(--radius-md); padding:32px; border:1px solid var(--gray-200); margin-bottom:24px;">
-            <h2 id="courseLessonTitle" style="font-size:1.5rem; margin-bottom:16px;">Clase</h2>
-            <div style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+          <section class="course-card course-lesson-card">
+            <h2 id="courseLessonTitle" class="course-lesson-title">Clase</h2>
+            <div class="course-lesson-tags">
               <span class="tag"><i class="fas fa-clock"></i> <span id="courseLessonDuration">—</span></span>
               <span class="tag"><i class="fas fa-play-circle"></i> Video</span>
             </div>
-            <p id="courseLessonDescription" style="color:var(--gray-600); line-height:1.8; margin-bottom:16px;">Selecciona una clase del panel derecho.</p>
-            <h4 style="margin-bottom:8px;">Notas</h4>
-            <p id="courseLessonNotes" style="color:var(--gray-600); line-height:1.7;">Sin notas.</p>
-            <div style="margin-top:18px;">
-              <a href="#" id="courseNextLessonBtn" class="btn btn-primary btn-sm" style="display:none;"></a>
+            <p id="courseLessonDescription" class="course-lesson-description">Selecciona una clase del panel derecho.</p>
+            <h4 class="course-notes-label">Notas</h4>
+            <p id="courseLessonNotes" class="course-lesson-notes">Sin notas.</p>
+            <div class="course-next-wrap">
+              <a href="#" id="courseNextLessonBtn" class="btn btn-primary btn-sm course-next-btn" style="display:none;"></a>
             </div>
-          </div>
+          </section>
 
-          <div style="background:var(--white); border-radius:var(--radius-md); padding:32px; border:1px solid var(--gray-200);">
-            <h3 style="margin-bottom:20px;"><i class="fas fa-download" style="color:var(--primary); margin-right:8px;"></i> Material de Apoyo</h3>
-            <div id="courseLessonMaterials" style="display:flex; flex-direction:column; gap:12px;">
+          <section class="course-card course-materials-card">
+            <h3 class="course-materials-title"><i class="fas fa-download"></i> Material de Apoyo</h3>
+            <div id="courseLessonMaterials" class="course-materials-list">
               <div class="text-small text-muted">Selecciona una clase para ver materiales.</div>
             </div>
-          </div>
+          </section>
         </div>
 
-        <div class="course-sidebar">
+        <aside class="course-sidebar">
           <div class="sidebar-header">
             <h4 id="courseSidebarTitle">Curso</h4>
             <span id="courseSidebarCount" class="lesson-count">0 clases</span>
           </div>
           <div id="courseLessonList" class="lesson-list"></div>
-        </div>
+        </aside>
       </div>
     </div>
   </main>
 
-  <footer style="background: var(--dark); padding: 24px 0; text-align: center;">
+  <footer class="portal-footer">
     <div class="container">
-      <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">&copy; 2026 Pro Trading Academy USA. Todos los derechos reservados.</p>
+      <p>&copy; 2026 Pro Trading Academy USA. Todos los derechos reservados.</p>
     </div>
   </footer>
 
@@ -94,7 +95,7 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/student-guard.js"></script>
   <script src="js/branding-logo.js?v=20260525b"></script>
-  <script src="js/student-content.js"></script>
-  <script src="js/mobile-portal-nav.js"></script>
+  <script src="js/student-content.js?v=20260702b"></script>
+  <script src="js/mobile-portal-nav.js?v=20260702b"></script>
 </body>
 </html>
