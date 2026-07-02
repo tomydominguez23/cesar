@@ -1639,6 +1639,36 @@ body.dash-nav-menu-open {
   font-size: 0.9rem;
 }
 
+/* Logo del portal de estudio (no usar tamaños del landing) */
+.dash-navbar .navbar-brand {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: calc(100% - 108px);
+  display: flex;
+  align-items: center;
+}
+
+.dash-navbar .navbar-brand .brand-logo,
+.dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
+.dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
+  width: min(72vw, 300px);
+  height: auto;
+  max-height: 58px;
+  max-width: min(72vw, 300px);
+  object-fit: contain;
+  object-position: left center;
+  flex-shrink: 0;
+}
+
+.dash-navbar .container-lg,
+.dash-navbar .dash-navbar-inner {
+  min-height: 72px;
+}
+
+.dash-navbar .container {
+  min-height: 72px;
+}
+
 /* ---- Dashboard Content ---- */
 .dash-header {
   background: var(--gradient-hero);
@@ -2966,13 +2996,23 @@ body.dash-nav-menu-open {
   }
 
   .dash-navbar .navbar-brand {
-    min-width: 0;
-    flex: 1;
+    flex: 0 1 auto;
+    max-width: calc(100% - 96px);
   }
 
-  .dash-navbar .navbar-brand .brand-logo {
-    height: 40px;
-    max-width: min(58vw, 220px);
+  .dash-navbar .navbar-brand .brand-logo,
+  .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
+  .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
+    width: min(68vw, 280px);
+    max-width: min(68vw, 280px);
+    max-height: 54px;
+    height: auto;
+  }
+
+  .dash-navbar .container-lg,
+  .dash-navbar .dash-navbar-inner,
+  .dash-navbar .container {
+    min-height: 68px;
   }
 
   .dash-mobile-toggle {
@@ -3299,6 +3339,15 @@ body.dash-nav-menu-open {
     max-width: min(52vw, 180px);
   }
 
+  .dash-navbar .navbar-brand .brand-logo,
+  .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
+  .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
+    width: min(64vw, 260px);
+    max-width: min(64vw, 260px);
+    max-height: 50px;
+    height: auto;
+  }
+
   .navbar-actions .btn {
     padding: 8px 8px;
     font-size: 0.72rem;
@@ -3474,6 +3523,14 @@ body.dash-nav-menu-open {
 
   .navbar-brand .brand-logo {
     max-width: min(48vw, 160px);
+  }
+
+  .dash-navbar .navbar-brand .brand-logo,
+  .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
+  .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
+    width: min(60vw, 240px);
+    max-width: min(60vw, 240px);
+    max-height: 46px;
   }
 
   .navbar-actions .btn {
