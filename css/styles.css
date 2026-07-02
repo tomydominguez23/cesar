@@ -440,7 +440,7 @@ h6 { font-size: 1rem; }
   min-width: 0;
 }
 
-.navbar-brand .brand-logo {
+.navbar:not(.dash-navbar) .navbar-brand .brand-logo {
   width: auto;
   height: 132px;
   max-width: 810px;
@@ -453,22 +453,22 @@ h6 { font-size: 1rem; }
   opacity: 0;
 }
 
-.navbar-brand .brand-logo.login-brand-logo {
+.navbar:not(.dash-navbar) .navbar-brand .brand-logo.login-brand-logo {
   height: 108px;
   max-width: 640px;
 }
 
-.navbar-brand .brand-logo.logo-dynamic-source {
+.navbar:not(.dash-navbar) .navbar-brand .brand-logo.logo-dynamic-source {
   height: 156px;
   max-width: 930px;
 }
 
-.navbar-brand .brand-logo.login-brand-logo.logo-dynamic-source {
+.navbar:not(.dash-navbar) .navbar-brand .brand-logo.login-brand-logo.logo-dynamic-source {
   height: 120px;
   max-width: 700px;
 }
 
-.navbar.scrolled .navbar-brand .brand-logo.logo-dynamic-source {
+.navbar:not(.dash-navbar).scrolled .navbar-brand .brand-logo.logo-dynamic-source {
   height: 138px;
   max-width: 840px;
 }
@@ -1639,22 +1639,26 @@ body.dash-nav-menu-open {
   font-size: 0.9rem;
 }
 
-/* Logo del portal de estudio (no usar tamaños del landing) */
+/* Logo del portal de estudio — tamaños independientes del landing */
 .dash-navbar .navbar-brand {
-  flex: 0 1 auto;
-  min-width: 0;
-  max-width: calc(100% - 108px);
+  flex: 1 1 auto;
+  min-width: 140px;
+  max-width: none;
   display: flex;
   align-items: center;
+  overflow: visible;
 }
 
 .dash-navbar .navbar-brand .brand-logo,
+.dash-navbar .navbar-brand .portal-brand-logo,
 .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
 .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-  width: min(72vw, 300px);
+  display: block;
+  width: clamp(200px, 72vw, 340px);
   height: auto;
-  max-height: 58px;
-  max-width: min(72vw, 300px);
+  max-height: 64px;
+  min-height: 40px;
+  max-width: none;
   object-fit: contain;
   object-position: left center;
   flex-shrink: 0;
@@ -1662,11 +1666,11 @@ body.dash-nav-menu-open {
 
 .dash-navbar .container-lg,
 .dash-navbar .dash-navbar-inner {
-  min-height: 72px;
+  min-height: 76px;
 }
 
 .dash-navbar .container {
-  min-height: 72px;
+  min-height: 76px;
 }
 
 /* ---- Dashboard Content ---- */
@@ -2905,10 +2909,10 @@ body.dash-nav-menu-open {
     min-height: 60px;
   }
 
-  .navbar-brand .brand-logo,
-  .navbar-brand .brand-logo.logo-dynamic-source,
-  .navbar-brand .brand-logo.login-brand-logo,
-  .navbar-brand .brand-logo.login-brand-logo.logo-dynamic-source {
+  .navbar:not(.dash-navbar) .navbar-brand .brand-logo,
+  .navbar:not(.dash-navbar) .navbar-brand .brand-logo.logo-dynamic-source,
+  .navbar:not(.dash-navbar) .navbar-brand .brand-logo.login-brand-logo,
+  .navbar:not(.dash-navbar) .navbar-brand .brand-logo.login-brand-logo.logo-dynamic-source {
     height: 48px;
     max-width: min(55vw, 200px);
   }
@@ -2980,56 +2984,64 @@ body.dash-nav-menu-open {
 
   .dash-navbar .container-lg,
   .dash-navbar .dash-navbar-inner {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-rows: auto auto;
     align-items: center;
+    column-gap: 10px;
+    row-gap: 0;
+    flex-wrap: unset;
     position: relative;
     width: 100%;
     max-width: 100%;
+    min-height: 72px;
   }
 
   .dash-navbar-main {
-    flex: 1;
-    min-width: 0;
-    gap: 12px;
-    display: flex;
-    align-items: center;
+    display: contents;
   }
 
   .dash-navbar .navbar-brand {
-    flex: 0 1 auto;
-    max-width: calc(100% - 96px);
+    grid-column: 1;
+    grid-row: 1;
+    flex: none;
+    min-width: 0;
+    max-width: none;
+    width: 100%;
   }
 
   .dash-navbar .navbar-brand .brand-logo,
+  .dash-navbar .navbar-brand .portal-brand-logo,
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-    width: min(68vw, 280px);
-    max-width: min(68vw, 280px);
-    max-height: 54px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 58px;
+    min-height: 38px;
     height: auto;
   }
 
-  .dash-navbar .container-lg,
-  .dash-navbar .dash-navbar-inner,
-  .dash-navbar .container {
-    min-height: 68px;
-  }
-
   .dash-mobile-toggle {
+    grid-column: 2;
+    grid-row: 1;
     display: flex;
     flex-shrink: 0;
-    order: 2;
+    order: unset;
   }
 
   .dash-user {
+    grid-column: 3;
+    grid-row: 1;
     flex-shrink: 0;
-    order: 3;
+    order: unset;
   }
 
   .dash-nav-links {
+    grid-column: 1 / -1;
+    grid-row: 2;
     display: none;
     width: 100%;
-    order: 4;
+    order: unset;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
@@ -3334,17 +3346,18 @@ body.dash-nav-menu-open {
     gap: 12px;
   }
 
-  .navbar-brand .brand-logo {
+  .navbar:not(.dash-navbar) .navbar-brand .brand-logo {
     height: 42px;
     max-width: min(52vw, 180px);
   }
 
   .dash-navbar .navbar-brand .brand-logo,
+  .dash-navbar .navbar-brand .portal-brand-logo,
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-    width: min(64vw, 260px);
-    max-width: min(64vw, 260px);
-    max-height: 50px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 54px;
     height: auto;
   }
 
@@ -3521,16 +3534,17 @@ body.dash-nav-menu-open {
     font-size: 1.5rem;
   }
 
-  .navbar-brand .brand-logo {
+  .navbar:not(.dash-navbar) .navbar-brand .brand-logo {
     max-width: min(48vw, 160px);
   }
 
   .dash-navbar .navbar-brand .brand-logo,
+  .dash-navbar .navbar-brand .portal-brand-logo,
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-    width: min(60vw, 240px);
-    max-width: min(60vw, 240px);
-    max-height: 46px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 50px;
   }
 
   .navbar-actions .btn {
