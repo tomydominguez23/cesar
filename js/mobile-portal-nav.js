@@ -5,7 +5,7 @@
     const navbar = document.querySelector(".dash-navbar");
     if (!navbar || navbar.dataset.mobileNavReady === "1") return;
 
-    const container = navbar.querySelector(".container-lg");
+    const container = navbar.querySelector(".container-lg, .dash-navbar-inner");
     const links = navbar.querySelector(".dash-nav-links");
     if (!container || !links) return;
 
@@ -19,7 +19,13 @@
       toggle.setAttribute("aria-label", "Abrir menú del portal");
       toggle.setAttribute("aria-expanded", "false");
       toggle.innerHTML = "<span></span><span></span><span></span>";
-      container.appendChild(toggle);
+
+      const userBlock = navbar.querySelector(".dash-user");
+      if (userBlock && userBlock.parentElement === container) {
+        container.insertBefore(toggle, userBlock);
+      } else {
+        container.appendChild(toggle);
+      }
     }
 
     function closeMenu() {
