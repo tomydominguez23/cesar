@@ -176,6 +176,9 @@
       img.classList.remove("logo-pending");
       img.classList.remove("logo-fallback-ready");
       img.classList.add("logo-dynamic-source");
+      if (img.closest(".dash-navbar")) {
+        img.classList.add("portal-brand-logo");
+      }
       if (sourceType === "static") {
         img.classList.add("logo-fallback-ready");
       }
@@ -183,6 +186,12 @@
         markLogoPending();
         applyDynamicLogo();
       };
+      img.removeAttribute("width");
+      img.removeAttribute("height");
+      img.style.removeProperty("width");
+      img.style.removeProperty("height");
+      img.style.removeProperty("max-width");
+      img.style.removeProperty("max-height");
       img.src = url;
     });
   }
