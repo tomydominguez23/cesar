@@ -54,7 +54,7 @@
         <div class="container-lg dash-navbar-inner">
           <div class="dash-navbar-main">
             <a href="index.html" class="navbar-brand">
-              <img class="brand-logo portal-brand-logo" src="assets/logo-portal-header.svg" data-default-src="assets/logo-portal-header.svg" alt="Pro Trading Academy USA">
+              <img class="brand-logo portal-brand-logo" src="assets/logo-portal-header.svg" data-default-src="assets/logo-portal-header.svg" alt="Pro Trading">
             </a>
             <div class="dash-nav-links">
               <a href="dashboard.html"><i class="fas fa-th-large"></i> Mis programas</a>
