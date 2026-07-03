@@ -1639,14 +1639,25 @@ body.dash-nav-menu-open {
   font-size: 0.9rem;
 }
 
-/* Logo del portal de estudio — claro sobre fondo verde */
+/* Logo del portal de estudio — claro sobre fondo verde, centrado */
+.dash-navbar .dash-navbar-inner {
+  position: relative;
+}
+
 .dash-navbar .navbar-brand {
-  flex: 1 1 auto;
-  min-width: 180px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  flex: none;
+  min-width: 0;
   max-width: none;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: visible;
+  pointer-events: auto;
 }
 
 .dash-navbar .navbar-brand .brand-logo,
@@ -1655,22 +1666,22 @@ body.dash-nav-menu-open {
 .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
   display: block;
   width: auto;
-  height: 72px;
-  max-height: 72px;
-  min-height: 56px;
-  max-width: min(92vw, 420px);
+  height: 48px;
+  max-height: 48px;
+  min-height: 40px;
+  max-width: min(72vw, 320px);
   object-fit: contain;
-  object-position: left center;
+  object-position: center center;
   flex-shrink: 0;
 }
 
 .dash-navbar .container-lg,
 .dash-navbar .dash-navbar-inner {
-  min-height: 88px;
+  min-height: 72px;
 }
 
 .dash-navbar .container {
-  min-height: 88px;
+  min-height: 72px;
 }
 
 /* ---- Dashboard Content ---- */
@@ -2997,7 +3008,7 @@ body.dash-nav-menu-open {
     position: relative;
     width: 100%;
     max-width: 100%;
-    min-height: 96px;
+    min-height: 84px;
     padding-top: 8px;
     padding-bottom: 8px;
   }
@@ -3008,11 +3019,13 @@ body.dash-nav-menu-open {
 
   .dash-navbar .navbar-brand {
     grid-area: logo;
+    position: static;
+    transform: none;
     flex: none;
     min-width: 0;
     max-width: none;
     width: 100%;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .dash-navbar .navbar-brand .brand-logo,
@@ -3020,10 +3033,10 @@ body.dash-nav-menu-open {
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
     width: auto;
-    max-width: min(100%, 380px);
-    height: 64px;
-    max-height: 64px;
-    min-height: 52px;
+    max-width: min(100%, 300px);
+    height: 44px;
+    max-height: 44px;
+    min-height: 36px;
   }
 
   .dash-mobile-toggle {
@@ -3359,10 +3372,10 @@ body.dash-nav-menu-open {
   .dash-navbar .navbar-brand .portal-brand-logo,
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-    height: 58px;
-    max-height: 58px;
-    min-height: 48px;
-    max-width: min(100%, 340px);
+    height: 40px;
+    max-height: 40px;
+    min-height: 34px;
+    max-width: min(88vw, 280px);
   }
 
   .navbar-actions .btn {
@@ -3546,10 +3559,10 @@ body.dash-nav-menu-open {
   .dash-navbar .navbar-brand .portal-brand-logo,
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-    height: 52px;
-    max-height: 52px;
-    min-height: 44px;
-    max-width: min(100%, 300px);
+    height: 38px;
+    max-height: 38px;
+    min-height: 32px;
+    max-width: min(100%, 260px);
   }
 
   .navbar-actions .btn {
