@@ -1639,25 +1639,17 @@ body.dash-nav-menu-open {
   font-size: 0.9rem;
 }
 
-/* Logo del portal de estudio — claro sobre fondo verde, centrado */
-.dash-navbar .dash-navbar-inner {
-  position: relative;
-}
-
+/* Logo del portal de estudio — izquierda, centrado vertical en la barra */
 .dash-navbar .navbar-brand {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  flex: none;
+  position: static;
+  transform: none;
+  flex: 0 1 auto;
   min-width: 0;
   max-width: none;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: visible;
-  pointer-events: auto;
 }
 
 .dash-navbar .navbar-brand .brand-logo,
@@ -1669,9 +1661,9 @@ body.dash-nav-menu-open {
   height: 48px;
   max-height: 48px;
   min-height: 40px;
-  max-width: min(72vw, 320px);
+  max-width: min(55vw, 280px);
   object-fit: contain;
-  object-position: center center;
+  object-position: left center;
   flex-shrink: 0;
 }
 
@@ -2999,8 +2991,8 @@ body.dash-nav-menu-open {
     grid-template-columns: 1fr auto auto;
     grid-template-rows: auto auto;
     grid-template-areas:
-      "logo logo logo"
-      ". menu user";
+      "logo menu user"
+      "nav nav nav";
     align-items: center;
     column-gap: 10px;
     row-gap: 6px;
@@ -3008,7 +3000,7 @@ body.dash-nav-menu-open {
     position: relative;
     width: 100%;
     max-width: 100%;
-    min-height: 84px;
+    min-height: 64px;
     padding-top: 8px;
     padding-bottom: 8px;
   }
@@ -3024,8 +3016,9 @@ body.dash-nav-menu-open {
     flex: none;
     min-width: 0;
     max-width: none;
-    width: 100%;
-    justify-content: center;
+    width: auto;
+    justify-content: flex-start;
+    justify-self: start;
   }
 
   .dash-navbar .navbar-brand .brand-logo,
@@ -3033,10 +3026,11 @@ body.dash-nav-menu-open {
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
     width: auto;
-    max-width: min(100%, 300px);
+    max-width: min(55vw, 260px);
     height: 44px;
     max-height: 44px;
     min-height: 36px;
+    object-position: left center;
   }
 
   .dash-mobile-toggle {
@@ -3054,8 +3048,9 @@ body.dash-nav-menu-open {
   }
 
   .dash-nav-links {
+    grid-area: nav;
     grid-column: 1 / -1;
-    grid-row: 3;
+    grid-row: auto;
     display: none;
     width: 100%;
     order: unset;
