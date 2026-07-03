@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="112" viewBox="0 0 480 112" role="img" aria-labelledby="title">
+  <title id="title">PRO TRADING ACADEMY USA</title>
+  <defs>
+    <linearGradient id="portal-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8df9b"/>
+      <stop offset="50%" stop-color="#e8a838"/>
+      <stop offset="100%" stop-color="#f3ca69"/>
+    </linearGradient>
+  </defs>
+  <text x="0" y="46" font-family="Georgia, Times New Roman, serif" font-size="42" font-weight="700" fill="#ffffff" letter-spacing="1">PRO TRADING</text>
+  <line x1="0" y1="62" x2="118" y2="62" stroke="url(#portal-gold)" stroke-width="3"/>
+  <text x="0" y="96" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" fill="url(#portal-gold)" letter-spacing="4">ACADEMY USA</text>
+  <line x1="300" y1="62" x2="418" y2="62" stroke="url(#portal-gold)" stroke-width="3"/>
+</svg>

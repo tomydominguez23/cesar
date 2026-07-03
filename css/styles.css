@@ -1639,10 +1639,10 @@ body.dash-nav-menu-open {
   font-size: 0.9rem;
 }
 
-/* Logo del portal de estudio — tamaños independientes del landing */
+/* Logo del portal de estudio — claro sobre fondo verde */
 .dash-navbar .navbar-brand {
   flex: 1 1 auto;
-  min-width: 140px;
+  min-width: 180px;
   max-width: none;
   display: flex;
   align-items: center;
@@ -1654,11 +1654,11 @@ body.dash-nav-menu-open {
 .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
 .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
   display: block;
-  width: clamp(200px, 72vw, 340px);
-  height: auto;
-  max-height: 64px;
-  min-height: 40px;
-  max-width: none;
+  width: auto;
+  height: 72px;
+  max-height: 72px;
+  min-height: 56px;
+  max-width: min(92vw, 420px);
   object-fit: contain;
   object-position: left center;
   flex-shrink: 0;
@@ -1666,11 +1666,11 @@ body.dash-nav-menu-open {
 
 .dash-navbar .container-lg,
 .dash-navbar .dash-navbar-inner {
-  min-height: 76px;
+  min-height: 88px;
 }
 
 .dash-navbar .container {
-  min-height: 76px;
+  min-height: 88px;
 }
 
 /* ---- Dashboard Content ---- */
@@ -2985,16 +2985,21 @@ body.dash-nav-menu-open {
   .dash-navbar .container-lg,
   .dash-navbar .dash-navbar-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: 1fr auto auto;
     grid-template-rows: auto auto;
+    grid-template-areas:
+      "logo logo logo"
+      ". menu user";
     align-items: center;
     column-gap: 10px;
-    row-gap: 0;
+    row-gap: 6px;
     flex-wrap: unset;
     position: relative;
     width: 100%;
     max-width: 100%;
-    min-height: 72px;
+    min-height: 96px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 
   .dash-navbar-main {
@@ -3002,43 +3007,42 @@ body.dash-nav-menu-open {
   }
 
   .dash-navbar .navbar-brand {
-    grid-column: 1;
-    grid-row: 1;
+    grid-area: logo;
     flex: none;
     min-width: 0;
     max-width: none;
     width: 100%;
+    justify-content: flex-start;
   }
 
   .dash-navbar .navbar-brand .brand-logo,
   .dash-navbar .navbar-brand .portal-brand-logo,
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-    width: 100%;
-    max-width: 100%;
-    max-height: 58px;
-    min-height: 38px;
-    height: auto;
+    width: auto;
+    max-width: min(100%, 380px);
+    height: 64px;
+    max-height: 64px;
+    min-height: 52px;
   }
 
   .dash-mobile-toggle {
-    grid-column: 2;
-    grid-row: 1;
+    grid-area: menu;
     display: flex;
     flex-shrink: 0;
     order: unset;
+    justify-self: end;
   }
 
   .dash-user {
-    grid-column: 3;
-    grid-row: 1;
+    grid-area: user;
     flex-shrink: 0;
     order: unset;
   }
 
   .dash-nav-links {
     grid-column: 1 / -1;
-    grid-row: 2;
+    grid-row: 3;
     display: none;
     width: 100%;
     order: unset;
@@ -3355,10 +3359,10 @@ body.dash-nav-menu-open {
   .dash-navbar .navbar-brand .portal-brand-logo,
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-    width: 100%;
-    max-width: 100%;
-    max-height: 54px;
-    height: auto;
+    height: 58px;
+    max-height: 58px;
+    min-height: 48px;
+    max-width: min(100%, 340px);
   }
 
   .navbar-actions .btn {
@@ -3542,9 +3546,10 @@ body.dash-nav-menu-open {
   .dash-navbar .navbar-brand .portal-brand-logo,
   .dash-navbar .navbar-brand .brand-logo.logo-dynamic-source,
   .dash-navbar .navbar-brand .brand-logo.logo-fallback-ready {
-    width: 100%;
-    max-width: 100%;
-    max-height: 50px;
+    height: 52px;
+    max-height: 52px;
+    min-height: 44px;
+    max-width: min(100%, 300px);
   }
 
   .navbar-actions .btn {
