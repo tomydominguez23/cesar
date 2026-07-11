@@ -119,6 +119,7 @@ async function main() {
       id: user.id,
       full_name: fullName,
       plan,
+      role: "student",
       subscription_status: "active"
     })
   });
