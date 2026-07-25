@@ -194,7 +194,7 @@
 // ============================================
 (function() {
   const chartContainer = document.getElementById('chartBars');
-  if (!chartContainer) return;
+  if (!chartContainer || chartContainer.hidden) return;
 
   const data = [
     { h: 45, type: 'green' }, { h: 30, type: 'red' }, { h: 60, type: 'green' },

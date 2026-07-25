@@ -123,6 +123,7 @@ AS $$
       WHEN public.is_admin() THEN true
       WHEN NOT public.has_active_subscription() THEN false
       WHEN p_bucket = 'media-library' AND p_path = 'branding/header-logo' THEN true
+      WHEN p_bucket = 'media-library' AND p_path IN ('branding/hero-video', 'branding/hero-video-poster') THEN true
       WHEN public.storage_path_course_id(p_path) IS NULL THEN false
       WHEN p_bucket = 'media-library' AND p_path ~ '^courses/[0-9a-f-]{36}/cover' THEN
         public.can_access_course(public.storage_path_course_id(p_path))

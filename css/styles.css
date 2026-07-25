@@ -794,6 +794,116 @@ body.dash-nav-menu-open {
   min-width: 0;
 }
 
+.hero-video {
+  width: 100%;
+  max-width: 560px;
+  margin-left: auto;
+}
+
+.hero-video-mount,
+.hero-video-fallback {
+  width: 100%;
+}
+
+.hero-video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: var(--shadow-xl);
+}
+
+.hero-video-player,
+.hero-video-embed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #061818;
+}
+
+.hero-video-player {
+  object-fit: cover;
+}
+
+.hero-video-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.95rem;
+  flex-wrap: wrap;
+}
+
+.hero-video-caption i {
+  color: var(--secondary);
+  margin-right: 6px;
+}
+
+.hero-video-cta {
+  color: var(--dark);
+  background: var(--gradient-gold);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.hero-video-cta:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.hero-video-placeholder {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 12px 8px 4px;
+}
+
+.hero-video-placeholder p {
+  margin: 0;
+  max-width: 280px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.hero-video-placeholder-btn {
+  width: 72px;
+  height: 72px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--gradient-gold);
+  color: var(--dark);
+  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  box-shadow: 0 10px 30px rgba(232, 168, 56, 0.28);
+  animation: heroPlayPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes heroPlayPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
 .hero-chart {
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(20px);
@@ -2887,6 +2997,19 @@ body.dash-nav-menu-open {
 
   .hero-chart {
     padding: 20px 16px;
+  }
+
+  .hero-video {
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .hero-video-caption {
+    font-size: 0.9rem;
+  }
+
+  .hero-video-placeholder {
+    min-height: 180px;
   }
 
   .hero .animate-fade-in-left,
