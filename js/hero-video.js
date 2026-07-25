@@ -173,33 +173,43 @@
     return document.getElementById("heroVideoMount");
   }
 
-  function getFallback() {
-    return document.getElementById("heroVideoFallback");
+  function getVisual() {
+    return document.getElementById("heroVideoVisual");
   }
 
-  function showFallback() {
-    const mount = getMount();
-    const fallback = getFallback();
-    if (mount) {
-      mount.hidden = true;
-      mount.innerHTML = "";
-    }
-    if (fallback) {
-      fallback.hidden = false;
-    }
+  function getHeroSection() {
+    const visual = getVisual();
+    return visual ? visual.closest(".hero") : document.querySelector(".hero");
   }
 
-  function showMount() {
+  function hideVideoBlock() {
     const mount = getMount();
-    const fallback = getFallback();
-    if (fallback) fallback.hidden = true;
-    if (mount) mount.hidden = false;
+    const visual = getVisual();
+    const hero = getHeroSection();
+
+    if (mount) mount.innerHTML = "";
+    if (visual) {
+      visual.hidden = true;
+      visual.setAttribute("aria-hidden", "true");
+    }
+    if (hero) hero.classList.remove("hero-has-video");
+  }
+
+  function showVideoBlock() {
+    const visual = getVisual();
+    const hero = getHeroSection();
+
+    if (visual) {
+      visual.hidden = false;
+      visual.setAttribute("aria-hidden", "false");
+    }
+    if (hero) hero.classList.add("hero-has-video");
   }
 
   function renderIframe(src) {
     const mount = getMount();
     if (!mount) return;
-    showMount();
+    showVideoBlock();
     const safeSrc = escapeAttr(src);
     mount.innerHTML = `
       <div class="hero-video-frame">
@@ -223,7 +233,7 @@
   function renderFileVideo(src, poster) {
     const mount = getMount();
     if (!mount) return;
-    showMount();
+    showVideoBlock();
     const safeSrc = escapeAttr(src);
     const posterAttr = poster ? ` poster="${escapeAttr(poster)}"` : "";
     mount.innerHTML = `
@@ -286,10 +296,10 @@
         return;
       }
     } catch (_) {
-      /* fallback below */
+      /* hide below */
     }
 
-    showFallback();
+    hideVideoBlock();
   }
 
   if (document.readyState === "loading") {
