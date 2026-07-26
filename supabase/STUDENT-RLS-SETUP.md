@@ -8,7 +8,8 @@ En **SQL Editor**, ejecuta en este orden:
 
 1. `supabase/stripe-profiles.sql` (si no lo hiciste antes)
 2. `supabase/storage-public-logo.sql` (logo público del header)
-3. **`supabase/student-access-rls.sql`** ← este archivo
+3. `supabase/storage-public-hero-video.sql` (video público del hero en la landing)
+4. **`supabase/student-access-rls.sql`** ← este archivo
 
 ## 2. Qué protege
 

@@ -2455,6 +2455,10 @@
         return { folder: "library/courses", label: "Cursos" };
       case "banners":
         return { folder: "library/banners", label: "Banners" };
+      case "hero-video":
+        return { folder: "branding", label: "Video del hero", fixedPath: "branding/hero-video" };
+      case "hero-video-poster":
+        return { folder: "branding", label: "Poster del hero", fixedPath: "branding/hero-video-poster" };
       case "testimonials":
         return { folder: "library/testimonials", label: "Testimonios" };
       case "logo":
@@ -2530,6 +2534,14 @@
       { key: "general", folder: "library/general" }
     ];
 
+    function resolveBrandingDestinationKey(fileName) {
+      const name = String(fileName || "");
+      if (name === "header-logo" || name.startsWith("header-logo.")) return "logo";
+      if (name === "hero-video-poster" || name.startsWith("hero-video-poster.")) return "hero-video-poster";
+      if (name === "hero-video" || name.startsWith("hero-video.")) return "hero-video";
+      return "logo";
+    }
+
     const foundEntries = [];
     for (let i = 0; i < destinationEntries.length; i += 1) {
       const destination = destinationEntries[i];
@@ -2545,10 +2557,13 @@
       for (let fileIndex = 0; fileIndex < files.length; fileIndex += 1) {
         const file = files[fileIndex];
         const storagePath = `${destination.folder}/${file.name}`;
-        const destinationInfo = getMediaDestinationConfig(destination.key);
+        const resolvedKey = destination.key === "logo"
+          ? resolveBrandingDestinationKey(file.name)
+          : destination.key;
+        const destinationInfo = getMediaDestinationConfig(resolvedKey);
         foundEntries.push({
           id: file.id || `${destination.folder}-${file.name}`,
-          destinationKey: destination.key,
+          destinationKey: resolvedKey,
           destinationLabel: destinationInfo.label,
           name: file.name,
           storagePath,
@@ -2660,6 +2675,10 @@
       window.localStorage.setItem("pta-header-logo-version", String(Date.now()));
       window.dispatchEvent(new CustomEvent("pta-logo-updated"));
     }
+    if (storagePaths.some((path) => path === "branding/hero-video" || path === "branding/hero-video-poster")) {
+      window.localStorage.setItem("pta-hero-video-version", String(Date.now()));
+      window.dispatchEvent(new CustomEvent("pta-hero-video-updated"));
+    }
   }
 
   function renderMediaDetailPreview(target, entry, mediaUrl) {
@@ -2732,9 +2751,16 @@
     }
 
     if (saveButton) {
-      const isLockedLogo = entry.storagePath === "branding/header-logo" || entry.destinationKey === "logo";
-      saveButton.disabled = isLockedLogo;
-      saveButton.title = isLockedLogo ? "El logo global usa una ruta fija y no se puede renombrar." : "";
+      const isLockedFixedPath = entry.storagePath === "branding/header-logo"
+        || entry.storagePath === "branding/hero-video"
+        || entry.storagePath === "branding/hero-video-poster"
+        || entry.destinationKey === "logo"
+        || entry.destinationKey === "hero-video"
+        || entry.destinationKey === "hero-video-poster";
+      saveButton.disabled = isLockedFixedPath;
+      saveButton.title = isLockedFixedPath
+        ? "Este archivo usa una ruta fija y no se puede renombrar."
+        : "";
     }
 
     if (window.AdminModal) {
@@ -2760,6 +2786,10 @@
       if (!hint) return;
       if (destinationSelect.value === "logo") {
         hint.textContent = "Se reemplazará el logo global del header usando una ruta fija en mediateca.";
+      } else if (destinationSelect.value === "hero-video") {
+        hint.textContent = "Se reemplazará el video del inicio (landing). Usa MP4 (recomendado: 45–90 segundos).";
+      } else if (destinationSelect.value === "hero-video-poster") {
+        hint.textContent = "Imagen de portada del video del hero (JPG/PNG/WebP). Opcional.";
       } else {
         hint.textContent = "Los archivos se guardarán en la carpeta seleccionada dentro de mediateca.";
       }
@@ -2800,6 +2830,32 @@
             "success",
             "Logo actualizado",
             "Logo en mediateca. Para que se vea en la web pública: ejecuta supabase/storage-public-logo.sql en Supabase o sube assets/header-logo.png por FTP/cPanel."
+          );
+        } else if (destination === "hero-video") {
+          const videoFile = files.find((file) => String(file.type || "").startsWith("video/")) || files[0];
+          if (!String(videoFile.type || "").startsWith("video/") && !/\.(mp4|webm|mov|m4v)$/i.test(videoFile.name || "")) {
+            throw new Error("Selecciona un archivo de video (MP4/WebM).");
+          }
+          await uploadToBucket("media-library", "branding/hero-video", videoFile, { upsert: true });
+          window.localStorage.setItem("pta-hero-video-version", String(Date.now()));
+          window.dispatchEvent(new CustomEvent("pta-hero-video-updated"));
+          toast(
+            "success",
+            "Video del hero actualizado",
+            "Para que se vea en la landing pública, ejecuta supabase/storage-public-hero-video.sql en Supabase (SQL Editor) si aún no lo has hecho."
+          );
+        } else if (destination === "hero-video-poster") {
+          const posterFile = files.find((file) => String(file.type || "").startsWith("image/")) || files[0];
+          if (!String(posterFile.type || "").startsWith("image/")) {
+            throw new Error("Selecciona una imagen para el poster del video.");
+          }
+          await uploadToBucket("media-library", "branding/hero-video-poster", posterFile, { upsert: true });
+          window.localStorage.setItem("pta-hero-video-version", String(Date.now()));
+          window.dispatchEvent(new CustomEvent("pta-hero-video-updated"));
+          toast(
+            "success",
+            "Poster del hero actualizado",
+            "La portada del video se usará en la landing cuando el video esté disponible."
           );
         } else {
           const destinationConfig = getMediaDestinationConfig(destination);
