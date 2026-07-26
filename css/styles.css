@@ -675,6 +675,24 @@ body.dash-nav-menu-open {
   min-width: 0;
 }
 
+.hero:not(.hero-has-video) .hero-inner {
+  justify-content: center;
+}
+
+.hero:not(.hero-has-video) .hero-content {
+  max-width: 760px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.hero:not(.hero-has-video) .hero-buttons {
+  justify-content: center;
+}
+
+.hero:not(.hero-has-video) .hero-stats {
+  justify-content: center;
+}
+
 .hero-inner > * {
   min-width: 0;
   max-width: 100%;
@@ -800,9 +818,12 @@ body.dash-nav-menu-open {
   margin-left: auto;
 }
 
-.hero-video-mount,
-.hero-video-fallback {
+.hero-video-mount {
   width: 100%;
+}
+
+.hero-visual[hidden] {
+  display: none !important;
 }
 
 .hero-video-frame {
