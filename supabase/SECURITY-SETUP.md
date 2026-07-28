@@ -36,6 +36,7 @@ Tras merge, **redeploy** en Supabase:
 
 - `create-checkout-session` (incluye rate limit por IP)
 - `stripe-webhook` (solo Stripe; no exponer URL)
+- `trading-assistant` (chat IA del portal; stub hasta conectar OpenAI/Claude)
 
 Secretos requeridos:
 

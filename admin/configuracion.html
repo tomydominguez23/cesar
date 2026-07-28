@@ -568,6 +568,36 @@
             </div>
 
             <div class="settings-section" style="margin-top: 28px;">
+              <h3 class="settings-section-title">Asistente de Trading (IA)</h3>
+              <p class="settings-section-desc">
+                Widget flotante en el portal. Mientras el flag esté apagado, solo administradores lo ven.
+              </p>
+
+              <div class="settings-row">
+                <div class="settings-row-info">
+                  <div class="settings-row-label">
+                    <i class="fa-solid fa-robot" style="margin-right: 6px; color: var(--primary);"></i>
+                    Mostrar chat a los alumnos
+                    <span id="aiChatEnabledBadge" class="status-badge pending" style="margin-left: 8px;">Solo admin</span>
+                  </div>
+                  <div class="settings-row-desc" id="aiChatEnabledHint">
+                    Flag apagado: solo tú (admin) ves el widget para probarlo.
+                  </div>
+                </div>
+                <div class="settings-row-control">
+                  <label class="form-switch">
+                    <input type="checkbox" id="aiChatEnabledToggle">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+              <p class="form-hint" style="margin-top: 8px;">
+                Requiere ejecutar <code>supabase/site-settings.sql</code> y desplegar la Edge Function
+                <code>trading-assistant</code>. La conexión a OpenAI/Claude se agregará después.
+              </p>
+            </div>
+
+            <div class="settings-section" style="margin-top: 28px;">
               <h3 class="settings-section-title">Otras Integraciones</h3>
 
               <div class="settings-row">
@@ -713,6 +743,9 @@
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
 <script src="js/admin.js"></script>
+<script src="js/ai-chat-settings.js"></script>
 </body>
 </html>
