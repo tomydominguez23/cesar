@@ -21,13 +21,6 @@
         stripeProductId: "prod_UiM9k9233PaV1l",
         stripePriceId: "price_1TivQnEdi9JcCWjpCY5juiR3"
       },
-      avanzado: {
-        slug: "avanzado",
-        name: "Plan Avanzado",
-        price: 1599,
-        stripeProductId: "prod_UiM8ZqNAQOrrfQ",
-        stripePriceId: "price_1TivQTEdi9JcCWjptCpf8Eq0"
-      },
       pro: {
         slug: "pro",
         name: "Pro Trading",
